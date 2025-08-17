@@ -1,0 +1,40 @@
+<resources>
+
+    <string name="app_name" translatable="false">Market</string>
+    <string name="product_price" translatable="false">%1$.2f €</string>
+    <string name="all_products">All Products</string>
+    <string name="wishlist">Wish List</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="shopping_history">Shopping History</string>
+    <string name="title_activity_products">Products</string>
+    <string name="add_to_wishlist">Add to wishlist</string>
+    <string name="add_to_shopping_list">Add to shopping list</string>
+    <string name="product_image">Image of the product</string>
+    <string name="no_description">No description</string>
+    <string name="product_quantity">Quantity: %1$d</string>
+    <string name="no_products_available">No products available</string>
+    <string name="product_apples">Apples</string>
+    <string name="apples_desc">Fresh and juicy apples.</string>
+    <string name="product_bananas">Bananas</string>
+    <string name="bananas_desc">Sweet and ripe bananas.</string>
+    <string name="product_milk">Milk</string>
+    <string name="milk_desc">Fresh milk from local farms.</string>
+    <string name="product_bread">Bread</string>
+    <string name="bread_desc">Freshly baked bread.</string>
+    <string name="product_eggs">Eggs</string>
+    <string name="eggs_desc">Organic eggs from free-range chickens.</string>
+    <string name="product_cheese">Cheese</string>
+    <string name="cheese_desc">A variety of cheeses.</string>
+    <string name="product_tomatoes">Tomatoes</string>
+    <string name="tomatoes_desc">Fresh tomatoes from the garden.</string>
+    <string name="product_carrots">Carrots</string>
+    <string name="carrots_desc">Crunchy and sweet carrots.</string>
+    <string name="back_button">Back</string>
+    <string name="empty_wishlist_text">Your wishlist is empty</string>
+    <string name="remove_item">Remove</string>
+    <string name="added_to_wishlist">Item added to wishlist</string>
+    <string name="removed_from_wishlist">Item removed from wishlist</string>
+    <string name="remove_from_wishlist">Remove from wishlist</string>
+    <string name="empty_shopping_list_text">Your shopping list is empty</string>
+
+</resources>

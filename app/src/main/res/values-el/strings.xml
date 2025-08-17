@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="all_products">Όλα τα Προϊόντα</string>
+    <string name="wishlist">Λίστα Επιθυμιών</string>
+    <string name="shopping_list">Λίστα Αγορών</string>
+    <string name="shopping_history">Ιστορικό Αγορών</string>
+    <string name="title_activity_products">Προϊόντα</string>
+    <string name="add_to_wishlist">Πρόσθεση στη λίστα επιθυμιών</string>
+    <string name="add_to_shopping_list">Πρόσθεση στη λίστα αγορών</string>
+    <string name="product_image">Εικόνα του προϊόντος</string>
+    <string name="no_description">Καμία περιγραφή</string>
+    <string name="product_quantity">Ποσότητα: %1$d</string>
+    <string name="no_products_available">Δεν υπάρχουν διαθέσιμα προϊόντα</string>
+    <string name="product_apples">Μήλα</string>
+    <string name="apples_desc">Φρέσκα και ζουμερά μήλα.</string>
+    <string name="product_bananas">Μπανάνες</string>
+    <string name="bananas_desc">Γλυκές και ώριμες μπανάνες.</string>
+    <string name="product_milk">Γάλα</string>
+    <string name="milk_desc">Φρέσκο γάλα από τοπικές φάρμες.</string>
+    <string name="product_bread">Ψωμί</string>
+    <string name="bread_desc">Φρεσκοψημένο ψωμί.</string>
+    <string name="product_eggs">Αυγά</string>
+    <string name="eggs_desc">Οργανικά αυγά από κοτόπουλα ελευθέρας βοσκής.</string>
+    <string name="product_cheese">Τυρί</string>
+    <string name="cheese_desc">Μια ποικιλία τυριών.</string>
+    <string name="product_tomatoes">Ντομάτες</string>
+    <string name="tomatoes_desc">Φρέσκες ντομάτες από τον κήπο.</string>
+    <string name="product_carrots">Καρότα</string>
+    <string name="carrots_desc">Τραγανά και γλυκά καρότα.</string>
+    <string name="back_button">Πίσω</string>
+    <string name="empty_wishlist_text">Η λίστα επιθυμιών σου είναι κενή</string>
+    <string name="remove_item">Αφαίρεση</string>
+    <string name="added_to_wishlist">Έγινε προσθήκη στη λίστα επιθυμιών</string>
+    <string name="removed_from_wishlist">Έγινε αφαίρεση από τη λίστα επιθυμιών</string>
+    <string name="remove_from_wishlist">Αφαίρεση από λίστα επιθυμιών</string>
+    <string name="empty_shopping_list_text">Η Λίστα αγορών σου είναι κενή</string>
+
+</resources>
