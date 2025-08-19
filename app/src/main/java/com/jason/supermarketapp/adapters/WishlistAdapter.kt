@@ -1,11 +1,15 @@
 package com.jason.supermarketapp.adapters
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ViewSwitcher
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jason.supermarketapp.R
@@ -20,9 +24,12 @@ class WishlistAdapter(
 
     class WishlistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productName: TextView = itemView.findViewById(R.id.productName)
-        val productPrice: TextView = itemView.findViewById(R.id.productPrice)
         val productImage: ImageView = itemView.findViewById(R.id.productImage)
         val removeButton: Button = itemView.findViewById(R.id.removeButton)
+        val priceSwitcher: ViewSwitcher = itemView.findViewById(R.id.priceSwitcher)
+        val normalPrice: TextView = itemView.findViewById(R.id.normalPrice)
+        val oldPrice: TextView = itemView.findViewById(R.id.oldPrice)
+        val newPrice: TextView = itemView.findViewById(R.id.newPrice)
 
     }
 
@@ -35,7 +42,29 @@ class WishlistAdapter(
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
         val product = products[position]
         holder.productName.text = holder.itemView.context.getString(product.nameResId)
-        holder.productPrice.text = holder.itemView.context.getString(R.string.product_price, product.price)
+
+        val hasDiscount = product.discount > 0.0
+
+        if (hasDiscount) {
+            // Switch to the discount layout
+            holder.priceSwitcher.displayedChild = 1
+
+            // Set the old price with a strikethrough
+            val oldPriceText = holder.itemView.context.getString(R.string.product_price, product.price)
+            val spannableString = SpannableString(oldPriceText)
+            spannableString.setSpan(StrikethroughSpan(), 0, oldPriceText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            holder.oldPrice.text = spannableString
+
+            // Calculate and set the new discounted price
+            val newPriceValue = product.price * (1 - product.discount)
+            holder.newPrice.text = holder.itemView.context.getString(R.string.product_price, newPriceValue)
+
+        } else {
+            // Switch to the normal price TextView
+            holder.priceSwitcher.displayedChild = 0
+            holder.normalPrice.text = holder.itemView.context.getString(R.string.product_price, product.price)
+        }
+
         // Load images from URL using Glide, with a fallback to local resources
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)

@@ -1,28 +1,33 @@
 package com.jason.supermarketapp.adapters
 
-import android.annotation.SuppressLint
-import android.content.Intent
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ImageView
+import android.widget.ViewSwitcher
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.jason.supermarketapp.ui.activities.ProductDetailsActivity
 import com.jason.supermarketapp.R
 import com.jason.supermarketapp.data.entities.Product
 
 class ProductAdapter(
-    private val products: MutableList<Product>,
     private val onItemClick: (Product) -> Unit,
     ) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+    ListAdapter<Product, ProductAdapter.ProductViewHolder>(ProductDiffCallback()) {
 
         class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val name: TextView = view.findViewById(R.id.productName)
-            val price: TextView = view.findViewById(R.id.productPrice)
             val image: ImageView = view.findViewById(R.id.productImage)
+            val priceSwitcher: ViewSwitcher = view.findViewById(R.id.priceSwitcher)
+            val normalPrice: TextView = view.findViewById(R.id.normalPrice)
+            val oldPrice: TextView = view.findViewById(R.id.oldPrice)
+            val newPrice: TextView = view.findViewById(R.id.newPrice)
 
         }
 
@@ -33,9 +38,32 @@ class ProductAdapter(
         }
 
         override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-            val product = products[position]
+            val product = getItem(position)
             holder.name.text = holder.itemView.context.getString(product.nameResId)
-            holder.price.text = holder.itemView.context.getString(R.string.product_price, product.price)
+
+            val hasDiscount = product.discount > 0.0
+
+            if (hasDiscount) {
+                // 1. Switch the ViewSwitcher to the discount layout (index 1)
+                holder.priceSwitcher.displayedChild = 1
+
+                // 2. Set the original price with a strikethrough effect
+                val oldPriceText = holder.itemView.context.getString(R.string.product_price, product.price)
+                val spannableString = SpannableString(oldPriceText)
+                spannableString.setSpan(StrikethroughSpan(), 0, oldPriceText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.oldPrice.text = spannableString
+
+                // 3. Calculate and set the new discounted price
+                val newPriceValue = product.price * (1 - product.discount)
+                holder.newPrice.text = holder.itemView.context.getString(R.string.product_price, newPriceValue)
+
+            } else {
+                // 1. Switch the ViewSwitcher to the normal price layout (index 0)
+                holder.priceSwitcher.displayedChild = 0
+
+                // 2. Set the regular price
+                holder.normalPrice.text = holder.itemView.context.getString(R.string.product_price, product.price)
+            }
 
             if (product.imageUrl.isNotEmpty()) {
                 // Load image from URL using Glide
@@ -52,22 +80,22 @@ class ProductAdapter(
 
             // Click on the whole row → open ProductDetailsActivity
             holder.itemView.setOnClickListener {
-                val context = holder.itemView.context
-                val intent = Intent(context, ProductDetailsActivity::class.java)
-                intent.putExtra("product", product)
-                context.startActivity(intent)
+                onItemClick(product)
             }
         }
-
-        override fun getItemCount(): Int = products.size
-
-        @SuppressLint("NotifyDataSetChanged")
-        fun updateData(newProducts: List<Product>) {
-            products.clear()
-            products.addAll(newProducts)
-            notifyDataSetChanged()
-        }
     }
+
+class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
+    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+        // Here you should compare a unique identifier for your products
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        // Compare the contents of the products to detect changes
+        return oldItem == newItem
+    }
+}
 
 
 

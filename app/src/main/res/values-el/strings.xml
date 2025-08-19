@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="product_price_on_sale">%1$.2f € <small class="sale">Έκπτωση</small></string>
     <string name="all_products">Όλα τα Προϊόντα</string>
     <string name="wishlist">Λίστα Επιθυμιών</string>
     <string name="shopping_list">Λίστα Αγορών</string>
@@ -35,5 +36,23 @@
     <string name="removed_from_wishlist">Έγινε αφαίρεση από τη λίστα επιθυμιών</string>
     <string name="remove_from_wishlist">Αφαίρεση από λίστα επιθυμιών</string>
     <string name="empty_shopping_list_text">Η Λίστα αγορών σου είναι κενή</string>
+    <string name="category_filter">Φιλτράρισμα</string>
+    <string name="filter_categories">Φίλτρο ανά Κατηγορία</string>
+    <string name="apply_text">Εφαρμογή</string>
+    <string name="cancel_text">Ακύρωση</string>
+    <string name="category_fruits">Φρούτα</string>
+    <string name="category_dairy">Γαλακτοκομικά</string>
+    <string name="category_bakery">Αρτοποιία</string>
+    <string name="category_vegetables">Λαχανικά</string>
+    <string name="category_meat">Κρέας</string>
+    <string name="category_beverages">Αναψυκτικά</string>
+    <string name="category_snacks">Σνακς</string>
+    <string name="category_seafood">Ψαρικά</string>
+    <string name="sold_out">Εξαντλήθηκε</string>
+    <string name="clear_wishlist">Καθάρισε λίστα επιθυμιών</string>
+    <string name="clear_wishlist_confirmation_message">Είσαι σίγουρος πως θέλεις να καθαρίσεις την λίστα επιθυμιών σου; Αυτή η πράξη δεν μπορεί να ακυρωθεί.</string>
+    <string name="yes">Ναι</string>
+    <string name="no">Όχι</string>
+    <string name="wishlist_cleared">Η λίστα επιθυμιών καθαρίστηκε.</string>
 
 </resources>

@@ -2,15 +2,23 @@ package com.jason.supermarketapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jason.supermarketapp.ui.viewmodels.ProductsViewModel
 import com.jason.supermarketapp.R
 import com.jason.supermarketapp.data.entities.Product
 import com.jason.supermarketapp.adapters.ProductAdapter
+import com.jason.supermarketapp.ui.viewmodels.ProductsUiState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class ProductsActivity : AppCompatActivity() {
@@ -19,6 +27,16 @@ class ProductsActivity : AppCompatActivity() {
     private lateinit var adapter: ProductAdapter
     private lateinit var tvEmpty: TextView
     private val viewModel: ProductsViewModel by viewModels()
+    private var filterDialog: AlertDialog? = null
+    private var filterMenuItem: MenuItem? = null
+    private lateinit var progressBar: View // Add a progress bar to show loading state
+
+    // Override to inflate the menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.products_menu, menu)
+        filterMenuItem = menu?.findItem(R.id.action_filter)
+        return true
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,14 +45,10 @@ class ProductsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        progressBar = findViewById(R.id.progressBar) // Initialize the progress bar
+
         setupRecyclerView()
-
-        // Observe the product list from the ViewModel
-        viewModel.products.observe(this) { products ->
-            adapter.updateData(products)
-            updateUI(products)
-        }
-
+        setupObservers()
     }
 
     private fun setupRecyclerView() {
@@ -43,7 +57,6 @@ class ProductsActivity : AppCompatActivity() {
         rvProducts.layoutManager = LinearLayoutManager(this)
 
         adapter = ProductAdapter(
-            products = mutableListOf(),
             onItemClick = { product ->
                 val intent = Intent(this, ProductDetailsActivity::class.java)
                 intent.putExtra("product", product)
@@ -51,6 +64,72 @@ class ProductsActivity : AppCompatActivity() {
             },
         )
         rvProducts.adapter = adapter
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.uiState.collectLatest { state ->
+                when (state) {
+                    is ProductsUiState.Loading -> {
+                        progressBar.visibility = View.VISIBLE
+                        filterMenuItem?.isEnabled = false
+                        rvProducts.visibility = View.GONE
+                        tvEmpty.visibility = View.GONE
+                    }
+                    is ProductsUiState.Success -> {
+                        progressBar.visibility = View.GONE
+                        filterMenuItem?.isEnabled = true
+                        adapter.submitList(state.products)
+                        updateUI(state.products)
+                    }
+                    is ProductsUiState.Error -> {
+                        progressBar.visibility = View.GONE
+                        filterMenuItem?.isEnabled = true
+                        tvEmpty.visibility = View.VISIBLE
+                        tvEmpty.text = state.message
+                    }
+                }
+            }
+        }
+    }
+
+    // Override to handle menu item clicks
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_filter -> {
+                val state = viewModel.uiState.value
+                if (state is ProductsUiState.Success) {
+                    showFilterDialog(state.categories, state.selectedCategories)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showFilterDialog(allCategories: Set<Int>, selectedCategories: Set<Int>) {
+        val allCategoriesResIds = allCategories.toTypedArray()
+        val selectedCategoriesResIds = selectedCategories.toMutableSet()
+
+        val categoryStrings = allCategoriesResIds.map {
+            this.getString(it)
+        }.toTypedArray()
+
+        val checkedItems = allCategoriesResIds.map {
+            it in selectedCategoriesResIds
+        }.toBooleanArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.filter_categories)
+            .setMultiChoiceItems(categoryStrings, checkedItems) { _, which, isChecked ->
+                val categoryResId = allCategoriesResIds[which]
+                if (isChecked) selectedCategoriesResIds.add(categoryResId) else selectedCategoriesResIds.remove(categoryResId)
+            }
+            .setPositiveButton(R.string.apply_text) { _, _ ->
+                viewModel.setCategoryFilter(selectedCategoriesResIds)
+            }
+            .setNegativeButton(R.string.cancel_text, null)
+            .show()
     }
 
     private fun updateUI(products: List<Product>) {
@@ -66,5 +145,10 @@ class ProductsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onDestroy() {
+        filterDialog?.dismiss()
+        super.onDestroy()
     }
 }

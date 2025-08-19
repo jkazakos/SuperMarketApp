@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -8,9 +9,8 @@
     android:gravity="center_vertical"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"> <!-- make the row respond to clicks -->
+    android:focusable="true">
 
-    <!-- Name and Price (left side) -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
@@ -23,18 +23,48 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="Product Name"/>
 
-        <TextView
-            android:id="@+id/productPrice"
+        <ViewSwitcher
+            android:id="@+id/priceSwitcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@android:color/holo_green_light"
-            android:textSize="18sp" />
+            android:layout_marginTop="6dp">
+
+            <TextView
+                android:id="@+id/normalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="18sp"
+                tools:text="10.99 €"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/oldPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    tools:text="15.00 €"/>
+
+                <TextView
+                    android:id="@+id/newPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/discount_orange"
+                    tools:text="10.00 €"/>
+            </LinearLayout>
+        </ViewSwitcher>
     </LinearLayout>
 
-    <!-- Remove Button (centered between name and image) -->
     <Button
         android:id="@+id/removeButton"
         android:layout_width="wrap_content"
@@ -45,11 +75,11 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/remove_item"/>
 
-    <!-- Product image (right side) -->
     <ImageView
         android:id="@+id/productImage"
         android:layout_width="96dp"
         android:layout_height="96dp"
+        android:contentDescription="@string/product_image"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_image"/>
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -11,25 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Top bar: Back button + Title -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingBottom="16dp">
-
-            <TextView
-                android:id="@+id/pageTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <!-- Product Image -->
         <ImageView
             android:id="@+id/detailImage"
             android:layout_width="match_parent"
@@ -37,7 +18,6 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/product_image" />
 
-        <!-- Product Name -->
         <TextView
             android:id="@+id/detailName"
             android:layout_width="match_parent"
@@ -45,35 +25,47 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            tools:text="Product Name"/>
 
-        <!-- Price -->
         <TextView
             android:id="@+id/detailPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="X.XX €" />
 
-        <!-- Quantity -->
+        <TextView
+            android:id="@+id/detailPriceOnSale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/discount_orange"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            tools:visibility="visible"
+            tools:text="X.XX €"/>
+
         <TextView
             android:id="@+id/detailQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            tools:text="Quantity: X"/>
 
-        <!-- Description -->
         <TextView
             android:id="@+id/detailDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            tools:text="This is a description of the product"/>
 
-        <!-- Buttons -->
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:orientation="horizontal"
