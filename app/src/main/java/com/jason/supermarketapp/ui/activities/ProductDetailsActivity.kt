@@ -1,5 +1,6 @@
 package com.jason.supermarketapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -16,10 +17,27 @@ import com.jason.supermarketapp.ui.viewmodels.ProductDetailsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import android.graphics.Paint
+import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.firebase.auth.FirebaseAuth
+import com.jason.supermarketapp.MainActivity
 
 class ProductDetailsActivity : AppCompatActivity() {
 
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    private val userId: String? get() = currentUser?.uid
+
     private val viewModel: ProductDetailsViewModel by viewModels()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.home_button_menu, menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +48,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         @Suppress("DEPRECATION")
         val product = intent.getParcelableExtra<Product>("product") ?: return
 
-        supportActionBar?.title = getString(product.nameResId)
+        supportActionBar?.title = product.getLocalizedName()
 
         val nameText: TextView = findViewById(R.id.detailName)
         val priceText: TextView = findViewById(R.id.detailPrice)
@@ -41,7 +59,10 @@ class ProductDetailsActivity : AppCompatActivity() {
         val wishlistBtn: Button = findViewById(R.id.wishListBtn)
         val shoppingListBtn: Button = findViewById(R.id.shoppingListBtn)
 
-        nameText.text = getString(product.nameResId)
+        nameText.text = product.getLocalizedName()
+
+        descriptionText.text = if (product.description.isNotEmpty()) product.getLocalizedDescription()
+        else getString(R.string.no_description)
 
         if (product.onSale) {
             // Show the regular price with a strikethrough effect
@@ -60,10 +81,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             priceTextOnSale.visibility = View.GONE
         }
 
-
         quantityText.text =  if (product.quantityAvailable !=0 ) getString(R.string.product_quantity, product.quantityAvailable) else getString(R.string.sold_out)
-
-        descriptionText.text = if (product.descriptionResId != 0) getString(product.descriptionResId) else getString(R.string.no_description)
 
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(this)
@@ -72,28 +90,48 @@ class ProductDetailsActivity : AppCompatActivity() {
                 .into(productImage)
         } else {
             // If no image URL, use the local resource or a default placeholder
-            productImage.setImageResource(
-                if (product.imageResId != 0) product.imageResId else R.drawable.placeholder_image
-            )
+            productImage.setImageResource(R.drawable.placeholder_image)
         }
 
-        viewModel.checkWishlistStatus(product.id)
+        // ---- Wishlist Button ----
+        if (userId == null) {
+            // Not logged in
+            wishlistBtn.setOnClickListener {
+                Toast.makeText(this, getString(R.string.sign_in_required), Toast.LENGTH_SHORT).show()
+                // Optional: navigate to SignInActivity
+            }
+        } else {
+            // Logged in: normal wishlist behavior
+            viewModel.checkWishlistStatus(userId!!, product.id)
 
-        wishlistBtn.setOnClickListener {
-            viewModel.toggleWishlistStatus(product.id)
-    }
+            wishlistBtn.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.toggleWishlistStatus(userId!!, product.id)
+                }
+            }
 
-        shoppingListBtn.setOnClickListener {
-            // TODO: handle adding to shopping list
+            lifecycleScope.launch {
+                viewModel.isInWishlist.collectLatest { isInWishlist ->
+                    wishlistBtn.text = if (isInWishlist)
+                        getString(R.string.remove_from_wishlist)
+                    else
+                        getString(R.string.add_to_wishlist)
+                }
+            }
         }
 
-        // Observe wishlist status to update the button text
-        lifecycleScope.launch {
-            viewModel.isInWishlist.collectLatest { isInWishlist ->
-                wishlistBtn.text = if (isInWishlist)
-                    getString(R.string.remove_from_wishlist)
-                else
-                    getString(R.string.add_to_wishlist)
+        // ---- Shopping List Button ----
+        if (userId == null) {
+            // Not logged in
+            shoppingListBtn.setOnClickListener {
+                Toast.makeText(this, getString(R.string.sign_in_required), Toast.LENGTH_SHORT).show()
+                // Optional: navigate to SignInActivity
+            }
+        } else {
+            shoppingListBtn.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.toggleShoppingListStatus(userId!!, product.id)
+                }
             }
         }
 
@@ -103,9 +141,82 @@ class ProductDetailsActivity : AppCompatActivity() {
                 Toast.makeText(this@ProductDetailsActivity, getString(messageResId), Toast.LENGTH_SHORT).show()
             }
         }
-}
+
+        // Observe when the ViewModel wants to show the quantity dialog
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showAddQuantityDialog.collectLatest { productId ->
+                    showQuantityDialog(product)
+                }
+            }
+        }
+
+    }
+
+    /** Shows a dialog to input quantity when adding a product to the shopping list.
+     * Validates the input against available stock and shows appropriate messages.
+     */
+    private fun showQuantityDialog(product: Product) {
+        val input = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            hint = getString(R.string.enter_quantity_hint)
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.add_to_shopping_list))
+            .setView(input)
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
+                val quantity = input.text.toString().toIntOrNull() ?: 0
+                when {
+                    // Case 1: Out of stock
+                    product.quantityAvailable <= 0 -> {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.out_of_stock),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    // Case 2: Exceeds stock
+                    quantity > product.quantityAvailable -> {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.product_availability, product.quantityAvailable),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    // Case 3: Valid quantity
+                    else -> {
+                        viewModel.addProductToShoppingList(
+                            userId ?: return@setPositiveButton,
+                            product.id,
+                            quantity
+                        )
+                    }
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel_text), null)
+            .show()
+    }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // Handles the back/home button in the action bar
+                finish()
+                true
+            }
+            R.id.action_go_to_main_menu -> {
+                // Go to your MainActivity (or whatever your home is)
+                startActivity(Intent(this, MainActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

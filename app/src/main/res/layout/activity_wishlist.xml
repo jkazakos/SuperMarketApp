@@ -6,6 +6,16 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/sign_in_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_required"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/empty_wishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

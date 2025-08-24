@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -12,11 +11,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SuperMarketApp">
         <activity
+            android:name=".ui.activities.SignUpActivity"
+            android:exported="false"
+            android:label="@string/sign_up"
+            android:theme="@style/Theme.SuperMarketApp"/>
+        <activity android:name=".ui.activities.SignInActivity"
+            android:exported="false"
+            android:label="@string/common_signin_button_text"
+            android:theme="@style/Theme.SuperMarketApp"/>
+        <activity
             android:name=".ui.activities.WishlistActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/wishlist"
+            android:theme="@style/Theme.SuperMarketApp"/>
+        <activity
+            android:name=".ui.activities.ShoppingListActivity"
+            android:exported="false"
+            android:label="@string/shopping_list"
+            android:theme="@style/Theme.SuperMarketApp"/>
+        <activity
+            android:name=".ui.activities.ShoppingHistoryActivity"
+            android:exported="false"
+            android:label="@string/shopping_history"
+            android:theme="@style/Theme.SuperMarketApp"/>
+        <activity
+            android:name=".ui.activities.CheckoutActivity"
+            android:exported="false"
+            android:label="@string/checkout"
+            android:theme="@style/Theme.SuperMarketApp"/>
         <activity
             android:name=".ui.activities.ProductDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.SuperMarketApp"/>
         <activity
             android:name=".ui.activities.ProductsActivity"
             android:exported="false"

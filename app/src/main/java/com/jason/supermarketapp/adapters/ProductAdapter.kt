@@ -39,7 +39,7 @@ class ProductAdapter(
 
         override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
             val product = getItem(position)
-            holder.name.text = holder.itemView.context.getString(product.nameResId)
+            holder.name.text = product.getLocalizedName()
 
             val hasDiscount = product.discount > 0.0
 
@@ -72,10 +72,8 @@ class ProductAdapter(
                     .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
                     .into(holder.image)
             } else {
-                // If no image URL, use the local resource or a default placeholder
-                holder.image.setImageResource(
-                    if (product.imageResId != 0) product.imageResId else R.drawable.placeholder_image
-                )
+                // If no image URL, use the default placeholder
+                holder.image.setImageResource(R.drawable.placeholder_image)
             }
 
             // Click on the whole row → open ProductDetailsActivity

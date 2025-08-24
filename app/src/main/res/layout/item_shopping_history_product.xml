@@ -72,18 +72,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
-
-        <!-- Minus button as icon -->
-        <ImageButton
-            android:id="@+id/decreaseButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/decrease_quantity"
-            android:src="@drawable/ic_remove_icon"
-            android:scaleType="centerInside"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
 
         <!-- Product quantity -->
         <TextView
@@ -93,19 +83,10 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:text="1"/>
 
-        <!-- Plus button as icon -->
-        <ImageButton
-            android:id="@+id/increaseButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/increase_quantity"
-            android:src="@drawable/ic_add_icon"
-            android:scaleType="centerInside" />
     </LinearLayout>
 
 

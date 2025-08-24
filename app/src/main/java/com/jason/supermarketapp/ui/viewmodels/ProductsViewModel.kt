@@ -9,30 +9,35 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import java.util.Locale
 
 sealed class ProductsUiState {
     object Loading : ProductsUiState()
     data class Success(
         val products: List<Product>,
-        val categories: Set<Int>,
-        val selectedCategories: Set<Int>
+        val categories: Set<String>,
+        val selectedCategories: Set<String>
         ) : ProductsUiState()
     data class Error(val message: String) : ProductsUiState()
 }
 
 class ProductsViewModel(): ViewModel() {
     private val repository = ProductRepository()
-    private val _selectedCategories = MutableStateFlow<Set<Int>>(emptySet())
+    private val _selectedCategories = MutableStateFlow<Set<String>>(emptySet())
+    private val locale = Locale.getDefault().language
     private val allProducts = repository.getProducts()
     val uiState: StateFlow<ProductsUiState> = combine(
         allProducts,
-        repository.getCategories(),
+        repository.getCategories(locale),
         _selectedCategories
     ) { allProductsList, categories, selected ->
         val filteredProducts = if (selected.isEmpty()) {
             allProductsList
         } else {
-            allProductsList.filter { selected.contains(it.categoryResId) }
+            allProductsList.filter { product ->
+                val productCategory = product.category[locale] ?: product.category["en"] ?: ""
+                selected.contains(productCategory)
+            }
         }
         ProductsUiState.Success(
             products = filteredProducts,
@@ -45,8 +50,12 @@ class ProductsViewModel(): ViewModel() {
         initialValue = ProductsUiState.Loading
     )
 
-    // Function to update the selected categories
-    fun setCategoryFilter(selectedCategories: Set<Int>) {
+    /** Update the selected categories for filtering products.
+     * If no categories are selected, all products will be shown.
+     *
+     * @param selectedCategories A set of selected category names.
+     */
+    fun setCategoryFilter(selectedCategories: Set<String>) {
         _selectedCategories.value = selectedCategories
     }
 

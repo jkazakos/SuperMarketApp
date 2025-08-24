@@ -41,7 +41,7 @@ class WishlistAdapter(
 
     override fun onBindViewHolder(holder: WishlistViewHolder, position: Int) {
         val product = products[position]
-        holder.productName.text = holder.itemView.context.getString(product.nameResId)
+        holder.productName.text = product.getLocalizedName()
 
         val hasDiscount = product.discount > 0.0
 
@@ -69,12 +69,10 @@ class WishlistAdapter(
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(product.imageUrl)
-                .placeholder(product.imageResId)
+                .placeholder(R.drawable.placeholder_image)
                 .into(holder.productImage)
         } else {
-            holder.productImage.setImageResource(
-                if (product.imageResId != 0) product.imageResId else R.drawable.placeholder_image
-            )
+            holder.productImage.setImageResource(R.drawable.placeholder_image)
         }
 
         holder.itemView.setOnClickListener {

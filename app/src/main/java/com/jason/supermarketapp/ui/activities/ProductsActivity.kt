@@ -31,7 +31,6 @@ class ProductsActivity : AppCompatActivity() {
     private var filterMenuItem: MenuItem? = null
     private lateinit var progressBar: View // Add a progress bar to show loading state
 
-    // Override to inflate the menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.products_menu, menu)
         filterMenuItem = menu?.findItem(R.id.action_filter)
@@ -51,6 +50,7 @@ class ProductsActivity : AppCompatActivity() {
         setupObservers()
     }
 
+    /** Initialize RecyclerView and its adapter */
     private fun setupRecyclerView() {
         rvProducts = findViewById(R.id.rvProducts)
         tvEmpty = findViewById(R.id.tvEmpty)
@@ -66,6 +66,7 @@ class ProductsActivity : AppCompatActivity() {
         rvProducts.adapter = adapter
     }
 
+    /** Setup observers for ViewModel's UI state */
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.uiState.collectLatest { state ->
@@ -93,7 +94,6 @@ class ProductsActivity : AppCompatActivity() {
         }
     }
 
-    // Override to handle menu item clicks
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
@@ -107,31 +107,29 @@ class ProductsActivity : AppCompatActivity() {
         }
     }
 
-    private fun showFilterDialog(allCategories: Set<Int>, selectedCategories: Set<Int>) {
-        val allCategoriesResIds = allCategories.toTypedArray()
-        val selectedCategoriesResIds = selectedCategories.toMutableSet()
+    /** Show filter dialog with categories */
+    private fun showFilterDialog(allCategories: Set<String>, selectedCategories: Set<String>) {
+        val allCategoriesArray = allCategories.toTypedArray()
+        val selectedCategoriesSet = selectedCategories.toMutableSet()
 
-        val categoryStrings = allCategoriesResIds.map {
-            this.getString(it)
-        }.toTypedArray()
-
-        val checkedItems = allCategoriesResIds.map {
-            it in selectedCategoriesResIds
+        val checkedItems = allCategoriesArray.map {
+            it in selectedCategoriesSet
         }.toBooleanArray()
 
         AlertDialog.Builder(this)
             .setTitle(R.string.filter_categories)
-            .setMultiChoiceItems(categoryStrings, checkedItems) { _, which, isChecked ->
-                val categoryResId = allCategoriesResIds[which]
-                if (isChecked) selectedCategoriesResIds.add(categoryResId) else selectedCategoriesResIds.remove(categoryResId)
+            .setMultiChoiceItems(allCategoriesArray, checkedItems) { _, which, isChecked ->
+                val category = allCategoriesArray[which]
+                if (isChecked) selectedCategoriesSet.add(category) else selectedCategoriesSet.remove(category)
             }
             .setPositiveButton(R.string.apply_text) { _, _ ->
-                viewModel.setCategoryFilter(selectedCategoriesResIds)
+                viewModel.setCategoryFilter(selectedCategoriesSet)
             }
             .setNegativeButton(R.string.cancel_text, null)
             .show()
     }
 
+    /** Update UI based on product list */
     private fun updateUI(products: List<Product>) {
         if (products.isEmpty()) {
             tvEmpty.visibility = TextView.VISIBLE

@@ -16,30 +16,17 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/empty_shopping_list"
+        android:id="@+id/shoppingHistoryEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/empty_shopping_list_text"
+        android:text="@string/empty_shopping_history_text"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:visibility="gone" />
 
-    <!-- RecyclerView takes all remaining space -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvShoppingList"
+        android:id="@+id/rvShoppingHistory"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <!-- Checkout button at the bottom -->
-    <Button
-        android:id="@+id/btnCheckout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/checkout"
-        android:backgroundTint="@color/green"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>

@@ -70,6 +70,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
     implementation(libs.org.jetbrains.kotlinx.coroutines)
     implementation(libs.glide)
 }

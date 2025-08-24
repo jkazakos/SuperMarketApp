@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.jason.supermarketapp.R
 import com.jason.supermarketapp.adapters.WishlistAdapter
 import com.jason.supermarketapp.ui.viewmodels.WishlistViewModel
@@ -21,11 +23,13 @@ class WishlistActivity : AppCompatActivity() {
     private lateinit var rvWishlist: RecyclerView
     private lateinit var adapter: WishlistAdapter
     private lateinit var emptyText: View
+    private lateinit var signInMessage: TextView
 
     private val viewModel: WishlistViewModel by viewModels()
     private var clearWishlistMenuItem: MenuItem? = null
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private val userId: String? get() = currentUser?.uid
 
-    // Override to inflate the menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.wishlist_menu, menu)
         return true
@@ -40,11 +44,21 @@ class WishlistActivity : AppCompatActivity() {
 
         rvWishlist = findViewById(R.id.rvWishlist)
         emptyText = findViewById(R.id.empty_wishlist)
+        signInMessage = findViewById(R.id.sign_in_message)
+
+        if (userId == null) {
+            // No user signed in → show message, hide RecyclerView
+            rvWishlist.visibility = View.GONE
+            emptyText.visibility = View.GONE
+            signInMessage.visibility = View.VISIBLE
+            return
+        }
 
         setupRecyclerView()
         observeViewModel()
     }
 
+    /** Sets up the RecyclerView with its adapter and layout manager. */
     private fun setupRecyclerView() {
         rvWishlist.layoutManager = LinearLayoutManager(this)
 
@@ -62,6 +76,7 @@ class WishlistActivity : AppCompatActivity() {
         rvWishlist.adapter = adapter
     }
 
+    /** Observes the ViewModel for changes in the wishlist items. */
     private fun observeViewModel() {
         viewModel.wishlistItems.observe(this) { products ->
             adapter.updateData(products)
@@ -70,6 +85,7 @@ class WishlistActivity : AppCompatActivity() {
         }
     }
 
+    /** Updates the UI based on whether the wishlist is empty or not. */
     private fun updateUI(products: List<Product>) {
         if (products.isEmpty()) {
             rvWishlist.visibility = View.GONE
@@ -90,6 +106,7 @@ class WishlistActivity : AppCompatActivity() {
         }
     }
 
+    /** Shows a confirmation dialog before clearing the wishlist. */
     private fun showClearWishlistConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.clear_wishlist))
@@ -106,7 +123,6 @@ class WishlistActivity : AppCompatActivity() {
             .show()
     }
 
-    // In the onPrepareOptionsMenu method, you can simply check if the list is empty.
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         clearWishlistMenuItem = menu?.findItem(R.id.action_clear_wishlist)
         val products = viewModel.wishlistItems.value ?: emptyList()
