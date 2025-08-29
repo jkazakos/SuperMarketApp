@@ -4,14 +4,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import android.util.Log
+import androidx.annotation.StringRes
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.jason.supermarketapp.R
 
+/** UserManager handles user profile operations in Firestore. */
 class UserManager {
 
     // Initialize Firestore instance
     private val firestore = FirebaseFirestore.getInstance()
     // Reference to the "users" collection
     private val usersCollection = firestore.collection("users")
+    // Instance of FirestoreManager for additional Firestore operations
+    private val firestoreManager = FirestoreManager()
 
     // Tag for logging
     companion object {
@@ -19,7 +26,7 @@ class UserManager {
     }
 
     /**
-     * Creates or updates a user's document in Firestore.
+     * Creates a user's document in Firestore.
      * This method is called after a successful Firebase Authentication sign-up.
      * It stores basic user profile information.
      *
@@ -52,63 +59,15 @@ class UserManager {
     }
 
     /**
-     * Retrieves a user's profile data from Firestore.
+     * Custom exceptions for sign-in errors.
      *
-     * @param userId The unique ID of the user.
-     * @return A Map<String, Any?> containing the user's data, or null if not found/error.
+     * InvalidEmail: Thrown when the email is not found.
+     * InvalidPassword: Thrown when the password is incorrect.
+     * GenericError: For other errors with a message.
      */
-    suspend fun getUserProfile(userId: String): Map<String, Any?>? {
-        return try {
-            val documentSnapshot = usersCollection.document(userId).get().await()
-            if (documentSnapshot.exists()) {
-                Log.d(TAG, "User profile retrieved for $userId")
-                documentSnapshot.data
-            } else {
-                Log.d(TAG, "User profile not found for $userId")
-                null
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error getting user profile for $userId: ${e.message}", e)
-            null
-        }
-    }
-
-    /**
-     * Updates specific fields in a user's profile document.
-     *
-     * @param userId The unique ID of the user.
-     * @param updates A Map<String, Any?> containing the fields to update (e.g., "firstName" to "NewFirstName").
-     * @return True if the update was successful, false otherwise.
-     */
-    suspend fun updateUserProfile(userId: String, updates: Map<String, Any?>): Boolean {
-        return try {
-            // update() method updates specific fields without overwriting the entire document
-            usersCollection.document(userId).update(updates).await()
-            Log.d(TAG, "User profile updated for $userId with: $updates")
-            true
-        } catch (e: Exception) {
-            Log.e(TAG, "Error updating user profile for $userId: ${e.message}", e)
-            false
-        }
-    }
-
-    /**
-     * Deletes a user's profile document from Firestore.
-     * NOTE: This does NOT delete the user from Firebase Authentication.
-     * That must be handled separately using FirebaseAuth.
-     *
-     * @param userId The unique ID of the user.
-     * @return True if the deletion was successful, false otherwise.
-     */
-    suspend fun deleteUserProfile(userId: String): Boolean {
-        return try {
-            usersCollection.document(userId).delete().await()
-            Log.d(TAG, "User profile deleted for $userId")
-            true
-        } catch (e: Exception) {
-            Log.e(TAG, "Error deleting user profile for $userId: ${e.message}", e)
-            false
-        }
+    sealed class SignInError(@StringRes val messageResId: Int) : Exception() {
+        object InvalidCredentials : SignInError(R.string.wrong_email_or_password)
+        class GenericError(@StringRes resId: Int) : SignInError(resId)
     }
 
     /**
@@ -116,9 +75,9 @@ class UserManager {
      *
      * @param email The user's email.
      * @param password The user's password.
-     * @param onResult Callback with success status and optional error message.
+     * @param onResult Callback with success status and error message.
      */
-    fun signIn(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+    fun signIn(email: String, password: String, onResult: (Boolean, SignInError?) -> Unit) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -126,8 +85,14 @@ class UserManager {
                     Log.d(TAG, "User signed in: ${auth.currentUser?.uid}")
                     onResult(true, null)
                 } else {
-                    Log.e(TAG, "Sign-in failed: ${task.exception?.message}", task.exception)
-                    onResult(false, task.exception?.message)
+                    val exception = task.exception
+                    val error = when (exception) {
+                        is FirebaseAuthInvalidUserException,
+                        is FirebaseAuthInvalidCredentialsException -> SignInError.InvalidCredentials
+                        else -> SignInError.GenericError(R.string.generic_error)
+                    }
+                    Log.e(TAG, "Sign-in failed", exception)
+                    onResult(false, error)
                 }
             }
     }
@@ -151,6 +116,48 @@ class UserManager {
         }
     }
 
-    //TODO: Implement exception handling and messaging for all methods e.g. "Email or password is incorrect"
+    /**
+     * Data class to hold spending totals.
+     * @property weekly Total spending in the past week.
+     * @property monthly Total spending in the past month.
+     */
+    data class SpendingTotals(
+        val weekly: Double,
+        val monthly: Double
+    )
+
+    /**
+     * Calculates the total spending for the past week and month from the user's purchase history.
+     *
+     * @param userId The unique ID of the user.
+     * @return A SpendingTotals data class containing weekly and monthly totals.
+     */
+    suspend fun getSpendingTotals(userId: String): SpendingTotals {
+        val history = firestoreManager.getPurchaseHistory(userId)
+        val now = System.currentTimeMillis()
+
+        val oneWeekAgo = now - 7 * 24 * 60 * 60 * 1000L
+
+        val monthStart = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.DAY_OF_MONTH, 1)
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        var weeklyTotal = 0.0
+        var monthlyTotal = 0.0
+
+        for (purchase in history) {
+            val time = purchase.datePurchased?.toDate()?.time ?: continue
+            val purchaseTotal = purchase.totalAmount
+
+            if (time >= oneWeekAgo) weeklyTotal += purchaseTotal
+            if (time >= monthStart) monthlyTotal += purchaseTotal
+        }
+
+        return SpendingTotals(weeklyTotal, monthlyTotal)
+    }
 
 }

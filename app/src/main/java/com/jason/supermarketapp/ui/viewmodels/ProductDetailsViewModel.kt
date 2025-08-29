@@ -52,23 +52,30 @@ class ProductDetailsViewModel : ViewModel() {
     fun toggleWishlistStatus(userId: String, productId: String) {
         viewModelScope.launch {
             val isInWishlist = isInWishlist.value
-            if (isInWishlist) {
+            val success = if (isInWishlist) {
                 wishlistRepository.removeWishlistItem(userId, productId)
-                _uiMessage.emit(R.string.removed_from_wishlist)
             } else {
                 wishlistRepository.addWishlistItem(userId, productId)
-                _uiMessage.emit(R.string.added_to_wishlist)
+            }
+
+            if (success) {
+                _uiMessage.emit(
+                    if (isInWishlist) R.string.removed_from_wishlist
+                    else R.string.added_to_wishlist
+                )
+            } else {
+                _uiMessage.emit(R.string.generic_error)
             }
         }
     }
 
+
     /** Trigger the display of a dialog to add a product to the shopping list
      *
      * Emits the productId to be added to the shopping list
-     * @param userId The ID of the user
      * @param productId The ID of the product to add
      */
-    fun toggleShoppingListStatus(userId: String, productId: String) {
+    fun toggleShoppingListStatus(productId: String) {
         viewModelScope.launch {
             _showAddQuantityDialog.emit(productId)
 
@@ -84,8 +91,12 @@ class ProductDetailsViewModel : ViewModel() {
      */
     fun addProductToShoppingList(userId: String, productId: String, quantity: Int) {
         viewModelScope.launch {
-            shoppingListRepository.addOrUpdateShoppingListItem(userId, productId, quantity)
-            _uiMessage.emit(R.string.added_to_shopping_list)
+            val success = shoppingListRepository.addOrUpdateShoppingListItem(userId, productId, quantity)
+            if (success) {
+                _uiMessage.emit(R.string.added_to_shopping_list)
+            } else {
+                _uiMessage.emit(R.string.failed_to_add_to_shopping_list)
+            }
         }
     }
 }

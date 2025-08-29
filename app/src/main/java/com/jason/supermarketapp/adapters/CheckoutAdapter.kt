@@ -38,6 +38,7 @@ class CheckoutAdapter(
         val totalPrice = finalPrice * quantity
         holder.productTotalPrice.text = holder.itemView.context.getString(R.string.product_price, totalPrice)
 
+        // Load product image with Glide
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(product.imageUrl)

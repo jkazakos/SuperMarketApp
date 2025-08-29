@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="product_price_on_sale">%1$.2f € <small class="sale">Έκπτωση</small></string>
+    <string name="all_products">Όλα τα Προϊόντα</string>
+    <string name="product_image">Εικόνα του προϊόντος</string>
+    <string name="no_description">Καμία περιγραφή</string>
+    <string name="product_quantity">Ποσότητα: %1$d</string>
+    <string name="product_availability">Διαθεσιμότητα: %1$d</string>
+    <string name="no_products_available">Δεν υπάρχουν διαθέσιμα προϊόντα</string>
+    <string name="stock_issues_title">Προβλήματα αποθέματος</string>
+    <string name="title_activity_products">Προϊόντα</string>
+    <string name="preview_more">… +%1$d ακόμα</string>
+    <string name="preview_items">%1$s</string>
+    <string name="preview_items_with_more">%1$s %2$s</string>
+    <string name="out_of_stock">Εκτός αποθέματος</string>
+    <string name="out_of_stock_item">Προϊόν εκτός αποθέματος: %1$s</string>
+
+    <string name="error_loading_product">Παρουσιάστηκε σφάλμα κατά τη φόρτωση του προϊόντος. Παρακαλώ δοκιμάστε ξανά.</string>
+
+</resources>

@@ -63,6 +63,7 @@ class ShoppingListAdapter(
             holder.normalPrice.text = holder.itemView.context.getString(R.string.product_price, product.price)
         }
 
+        // Load image with Glide
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(product.imageUrl)

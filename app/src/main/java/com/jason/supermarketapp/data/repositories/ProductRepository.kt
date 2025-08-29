@@ -7,6 +7,7 @@ import java.util.Locale
 
 class ProductRepository {
 
+    // Firestore manager instance to handle Firestore operations
     private val firestoreManager = FirestoreManager()
 
     /** Fetches the list of products from Firestore as a Flow.

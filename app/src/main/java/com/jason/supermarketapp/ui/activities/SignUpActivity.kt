@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
+import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -78,22 +79,32 @@ class SignUpActivity : AppCompatActivity() {
 
         // Input validation
         if (firstName.isEmpty()) {
-            editTextFirstName.error = "First Name is required"
+            editTextFirstName.error = getString(R.string.first_name_required)
             editTextFirstName.requestFocus()
             return
         }
         if (lastName.isEmpty()) {
-            editTextLastName.error = "Last Name is required"
+            editTextLastName.error = getString(R.string.last_name_required)
             editTextLastName.requestFocus()
             return
         }
         if (email.isEmpty()) {
-            editTextEmail.error = "Email is required"
+            editTextEmail.error = getString(R.string.email_required)
             editTextEmail.requestFocus()
             return
         }
-        if (password.isEmpty() || password.length < 6) {
-            editTextPassword.error = "Password must be at least 6 characters"
+        if (password.isEmpty()) {
+            editTextPassword.error = getString(R.string.password_required)
+            editTextPassword.requestFocus()
+            return
+        }
+        if (!isValidEmail(email)) {
+            editTextEmail.error = getString(R.string.invalid_email_format)
+            editTextEmail.requestFocus()
+            return
+        }
+        if (password.length < 6) {
+            editTextPassword.error = getString(R.string.short_password)
             editTextPassword.requestFocus()
             return
         }
@@ -125,18 +136,16 @@ class SignUpActivity : AppCompatActivity() {
                                             email
                                         )
                                         if (success) {
-                                            Toast.makeText(this@SignUpActivity, "Sign up successful!", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this@SignUpActivity, getString(R.string.sign_up_successful), Toast.LENGTH_LONG).show()
                                             val intent = Intent(this@SignUpActivity, MainActivity::class.java)
                                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                             startActivity(intent)
                                             finish()
                                         } else {
-                                            displayMessage("Sign up successful, but failed to save user profile.")
+                                            displayMessage(getString(R.string.user_save_error))
                                         }
                                     }
                                 } else {
-                                    val errorMessage = profileTask.exception?.message ?: "Failed to update profile."
-                                    displayMessage("Sign up successful, but failed to update profile: $errorMessage")
                                     Toast.makeText(
                                         this,
                                         "Sign up successful, but failed to update profile.",
@@ -185,6 +194,11 @@ class SignUpActivity : AppCompatActivity() {
             // fallback if something goes wrong
             tvSignInLink.text = text
         }
+    }
+
+    /** Validates email format */
+    fun isValidEmail(email: String): Boolean {
+        return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

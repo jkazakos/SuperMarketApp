@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="added_to_shopping_list">Item added to shopping list</string>
+    <string name="failed_to_add_to_shopping_list">Failed to add item to shopping list</string>
+    <string name="failed_to_update_item">Failed to update item</string>
+    <string name="removed_from_shopping_list">Item removed from shopping list</string>
+    <string name="failed_to_remove_from_shopping_list">Failed to remove item from shopping list</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="shopping_history">Shopping History</string>
+    <string name="add_to_shopping_list">Add to shopping list</string>
+    <string name="empty_shopping_list_text">Your shopping list is empty</string>
+    <string name="empty_shopping_history_text">Your shopping history is empty</string>
+    <string name="clear_shopping_list">Clear Shopping List</string>
+    <string name="clear_shopping_list_confirmation_message">Are you sure you want to clear your entire shopping list? This action cannot be undone.</string>
+    <string name="shopping_list_cleared">Shopping list has been cleared.</string>
+    <string name="failed_to_clear_shopping_list">Failed to clear shopping list</string>
+    <string name="clear_shopping_history">Clear Shopping History</string>
+    <string name="clear_shopping_history_confirmation_message">Are you sure you want to clear your entire shopping history? This action cannot be undone.</string>
+    <string name="shopping_history_cleared">Shopping history has been cleared.</string>
+    <string name="enter_quantity_hint">Enter quantity</string>
+    <string name="exceeded_stock">Requested quantity exceeds stock</string>
+    <string name="exceeded_stock_item">Requested quantity exceeds available stock: %1$s</string>
+    <string name="checkout">Checkout</string>
+    <string name="purchase_with_price">Purchase (%1$.2f €)</string>
+    <string name="buy_again_with_price">Buy Again (%1$.2f €)</string>
+    <string name="purchase_successful">Your purchase was successful</string>
+    <string name="purchase_failed">Your purchase failed. Please try again.</string>
+    <string name="increase_quantity">Increase quantity</string>
+    <string name="decrease_quantity">Decrease quantity</string>
+    <string name="invalid_quantity">Invalid quantity</string>
+
+</resources>

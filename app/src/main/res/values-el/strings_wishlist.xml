@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="wishlist">Λίστα Επιθυμιών</string>
+    <string name="empty_wishlist_text">Η λίστα επιθυμιών σου είναι κενή</string>
+    <string name="add_to_wishlist">Πρόσθεση στη λίστα επιθυμιών</string>
+    <string name="added_to_wishlist">Έγινε προσθήκη στη λίστα επιθυμιών</string>
+    <string name="remove_from_wishlist">Αφαίρεση από λίστα επιθυμιών</string>
+    <string name="removed_from_wishlist">Έγινε αφαίρεση από τη λίστα επιθυμιών</string>
+    <string name="clear_wishlist">Καθάρισε λίστα επιθυμιών</string>
+    <string name="clear_wishlist_confirmation_message">Είσαι σίγουρος πως θέλεις να καθαρίσεις την λίστα επιθυμιών σου; Αυτή η πράξη δεν μπορεί να ακυρωθεί.</string>
+    <string name="wishlist_cleared">Η λίστα επιθυμιών καθαρίστηκε.</string>
+
+
+</resources>

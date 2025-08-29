@@ -29,11 +29,28 @@ class ProductsActivity : AppCompatActivity() {
     private val viewModel: ProductsViewModel by viewModels()
     private var filterDialog: AlertDialog? = null
     private var filterMenuItem: MenuItem? = null
+    private var searchMenuItem: MenuItem? = null
     private lateinit var progressBar: View // Add a progress bar to show loading state
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.products_menu, menu)
         filterMenuItem = menu?.findItem(R.id.action_filter)
+        searchMenuItem = menu?.findItem(R.id.action_search)
+        val searchView = searchMenuItem?.actionView as? androidx.appcompat.widget.SearchView
+
+        searchView?.queryHint = getString(R.string.search)
+
+        searchView?.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.setSearchQuery(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.setSearchQuery(newText.orEmpty())
+                return true
+            }
+        })
         return true
     }
 
@@ -134,6 +151,15 @@ class ProductsActivity : AppCompatActivity() {
         if (products.isEmpty()) {
             tvEmpty.visibility = TextView.VISIBLE
             rvProducts.visibility = RecyclerView.GONE
+
+            val state = viewModel.uiState.value
+            if (state is ProductsUiState.Success) {
+                tvEmpty.text = if (state.searchQuery.isNotBlank()) {
+                    getString(R.string.no_results_found, state.searchQuery) // "No results found for ..."
+                } else {
+                    getString(R.string.no_products_available) // "No products available"
+                }
+            }
         } else {
             tvEmpty.visibility = TextView.GONE
             rvProducts.visibility = RecyclerView.VISIBLE

@@ -45,8 +45,13 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        @Suppress("DEPRECATION")
-        val product = intent.getParcelableExtra<Product>("product") ?: return
+        val product = intent.getParcelableExtra("product", Product::class.java)
+
+        if (product == null) {
+            Toast.makeText(this, getString(R.string.error_loading_product), Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
         supportActionBar?.title = product.getLocalizedName()
 
@@ -87,6 +92,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(product.imageUrl)
                 .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
+                .centerCrop()
                 .into(productImage)
         } else {
             // If no image URL, use the local resource or a default placeholder
@@ -130,7 +136,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         } else {
             shoppingListBtn.setOnClickListener {
                 lifecycleScope.launch {
-                    viewModel.toggleShoppingListStatus(userId!!, product.id)
+                    viewModel.toggleShoppingListStatus(product.id)
                 }
             }
         }

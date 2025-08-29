@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.combine
 
 class WishlistRepository {
 
+    // Firestore manager instance to handle Firestore operations
     private val firestoreManager = FirestoreManager()
 
     /** Get the wishlist items for a specific user
@@ -35,8 +36,8 @@ class WishlistRepository {
      * @param userId The ID of the user whose wishlist is to be updated.
      * @param productId The ID of the product to be added to the wishlist.
      */
-    suspend fun addWishlistItem(userId:String, productId: String) {
-        firestoreManager.addWishlistItem(userId, productId)
+    suspend fun addWishlistItem(userId:String, productId: String): Boolean {
+        return firestoreManager.addWishlistItem(userId, productId)
     }
 
     /** Remove a product from the wishlist
@@ -45,8 +46,8 @@ class WishlistRepository {
      * @param userId The ID of the user whose wishlist is to be updated.
      * @param productId The ID of the product to be removed from the wishlist.
      */
-    suspend fun removeWishlistItem(userId:String, productId: String) {
-        firestoreManager.removeWishlistItem(userId, productId)
+    suspend fun removeWishlistItem(userId:String, productId: String): Boolean {
+        return firestoreManager.removeWishlistItem(userId, productId)
     }
 
     /** Check if a product is in the wishlist with a Flow
@@ -61,25 +62,13 @@ class WishlistRepository {
         return firestoreManager.isProductInWishlistFlow(userId, productId)
     }
 
-    /** Check if a product is in the wishlist
-     *
-     * This method checks if a product is in the user's wishlist by delegating to the FirestoreManager.
-     * It returns true if the product is in the wishlist, false otherwise.
-     * @param userId The ID of the user whose wishlist is to be checked.
-     * @param productId The ID of the product to check for in the wishlist.
-     * @return A Boolean indicating whether the product is in the wishlist.
-     */
-    suspend fun isProductInWishlist(userId:String, productId: String): Boolean {
-        return firestoreManager.isProductInWishlist(userId, productId)
-    }
-
     /** Clear all items from the wishlist
      *
      * This method clears all items from the user's wishlist by delegating to the FirestoreManager.
      * @param userId The ID of the user whose wishlist is to be cleared.
      */
-    suspend fun clearWishlist(userId:String) {
-        firestoreManager.clearWishlist(userId)
+    suspend fun clearWishlist(userId:String): Boolean {
+        return firestoreManager.clearWishlist(userId)
     }
 
 }

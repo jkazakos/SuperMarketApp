@@ -10,6 +10,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +20,9 @@ import com.jason.supermarketapp.R
 import com.jason.supermarketapp.adapters.WishlistAdapter
 import com.jason.supermarketapp.ui.viewmodels.WishlistViewModel
 import com.jason.supermarketapp.data.entities.Product
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 class WishlistActivity : AppCompatActivity() {
 
@@ -24,9 +30,13 @@ class WishlistActivity : AppCompatActivity() {
     private lateinit var adapter: WishlistAdapter
     private lateinit var emptyText: View
     private lateinit var signInMessage: TextView
+    private lateinit var progressBar: View
+
 
     private val viewModel: WishlistViewModel by viewModels()
     private var clearWishlistMenuItem: MenuItem? = null
+    private val _uiMessage = MutableSharedFlow<Int>()
+    val uiMessage = _uiMessage.asSharedFlow()
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private val userId: String? get() = currentUser?.uid
 
@@ -45,6 +55,8 @@ class WishlistActivity : AppCompatActivity() {
         rvWishlist = findViewById(R.id.rvWishlist)
         emptyText = findViewById(R.id.empty_wishlist)
         signInMessage = findViewById(R.id.sign_in_message)
+        progressBar = findViewById(R.id.progressBar)
+
 
         if (userId == null) {
             // No user signed in → show message, hide RecyclerView
@@ -52,6 +64,15 @@ class WishlistActivity : AppCompatActivity() {
             emptyText.visibility = View.GONE
             signInMessage.visibility = View.VISIBLE
             return
+        }
+
+        // Update UI messages from ViewModel
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiMessage.collect { messageRes ->
+                    Toast.makeText(this@WishlistActivity, getString(messageRes), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         setupRecyclerView()
@@ -83,10 +104,23 @@ class WishlistActivity : AppCompatActivity() {
             updateUI(products)
             invalidateOptionsMenu()
         }
+
+        viewModel.isLoading.observe(this) { loading ->
+            if (loading) {
+                progressBar.visibility = View.VISIBLE
+                rvWishlist.visibility = View.GONE
+                emptyText.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+                updateUI(viewModel.wishlistItems.value ?: emptyList())
+            }
+        }
     }
 
     /** Updates the UI based on whether the wishlist is empty or not. */
     private fun updateUI(products: List<Product>) {
+        if (viewModel.isLoading.value == true) return
+
         if (products.isEmpty()) {
             rvWishlist.visibility = View.GONE
             emptyText.visibility = View.VISIBLE
@@ -112,16 +146,15 @@ class WishlistActivity : AppCompatActivity() {
             .setTitle(getString(R.string.clear_wishlist))
             .setMessage(getString(R.string.clear_wishlist_confirmation_message))
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                // User confirmed, now clear the wishlist
+                // User confirmed → let ViewModel handle clearing & showing message
                 viewModel.clearWishlist()
-                Toast.makeText(this, getString(R.string.wishlist_cleared), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(getString(R.string.no)) { dialog, _ ->
-                // User canceled, dismiss the dialog
                 dialog.dismiss()
             }
             .show()
     }
+
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         clearWishlistMenuItem = menu?.findItem(R.id.action_clear_wishlist)

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +19,7 @@ import com.jason.supermarketapp.R
 import com.jason.supermarketapp.adapters.ShoppingListAdapter
 import com.jason.supermarketapp.ui.viewmodels.ShoppingListViewModel
 import com.jason.supermarketapp.data.entities.Product
+import kotlinx.coroutines.launch
 
 class ShoppingListActivity : AppCompatActivity() {
 
@@ -25,6 +27,8 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var adapter: ShoppingListAdapter
     private lateinit var emptyText: View
     private lateinit var signInMessage: TextView
+    private lateinit var progressBar: View
+
 
     private val viewModel: ShoppingListViewModel by viewModels()
     private var clearShoppingListMenuItem: MenuItem? = null
@@ -86,6 +90,8 @@ class ShoppingListActivity : AppCompatActivity() {
         rvShoppingList = findViewById(R.id.rvShoppingList)
         emptyText = findViewById(R.id.empty_shopping_list)
         signInMessage = findViewById(R.id.sign_in_message)
+        progressBar = findViewById(R.id.progressBar)
+
 
         if (userId == null) {
             // No user signed in → show message, hide RecyclerView
@@ -114,16 +120,25 @@ class ShoppingListActivity : AppCompatActivity() {
                 startActivity(intent)
             },
             onIncreaseClick = { product, currentQuantity ->
-                viewModel.incrementQuantity(product.id, 1)
-            },
-            onDecreaseClick = { product, currentQuantity ->
-                if (currentQuantity > 0) {
-                    viewModel.decrementQuantity(product.id)
-                } else {
-                    viewModel.removeProductFromShoppingList(product.id)
-                    Toast.makeText(this, getString(R.string.removed_from_shopping_list), Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    val success = viewModel.incrementQuantity(product.id, 1)
+                    if (!success) {
+                        Toast.makeText(this@ShoppingListActivity, getString(R.string.failed_to_update_item), Toast.LENGTH_SHORT).show()
+                    }
                 }
-
+            },
+            onDecreaseClick = { product, newQuantity ->
+                lifecycleScope.launch {
+                    val success = viewModel.decrementQuantity(product.id, newQuantity)
+                    if (!success) {
+                        Toast.makeText(
+                            this@ShoppingListActivity,
+                            "Failed to update item",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Optionally: revert UI
+                    }
+                }
             }
         )
         rvShoppingList.adapter = adapter
@@ -138,12 +153,26 @@ class ShoppingListActivity : AppCompatActivity() {
             updateUI(items.map { it.first })
             invalidateOptionsMenu()
         }
+
+        viewModel.isLoading.observe(this) { loading ->
+            if (loading) {
+                progressBar.visibility = View.VISIBLE
+                rvShoppingList.visibility = View.GONE
+                emptyText.visibility = View.GONE
+                checkoutButton.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+                updateUI(viewModel.shoppingListItems.value?.map { it.first } ?: emptyList())
+            }
+        }
     }
 
     /** Updates the UI based on whether the shopping list is empty or not.
      * Shows or hides the RecyclerView, empty text, and checkout button accordingly.
      */
     private fun updateUI(products: List<Product>) {
+        if (viewModel.isLoading.value == true) return
+
         if (products.isEmpty()) {
             rvShoppingList.visibility = View.GONE
             emptyText.visibility = View.VISIBLE
@@ -174,11 +203,25 @@ class ShoppingListActivity : AppCompatActivity() {
             .setMessage(getString(R.string.clear_shopping_list_confirmation_message))
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 // User confirmed, now clear the wishlist
-                viewModel.clearShoppingList()
-                Toast.makeText(this, getString(R.string.shopping_list_cleared), Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    val success = viewModel.clearShoppingList() // suspend call
+                    if (success) {
+                        Toast.makeText(
+                            this@ShoppingListActivity,
+                            getString(R.string.shopping_list_cleared),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        adapter.updateData(emptyList()) // clear UI
+                    } else {
+                        Toast.makeText(
+                            this@ShoppingListActivity,
+                            getString(R.string.failed_to_clear_shopping_list),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
             .setNegativeButton(getString(R.string.no)) { dialog, _ ->
-                // User canceled, dismiss the dialog
                 dialog.dismiss()
             }
             .show()

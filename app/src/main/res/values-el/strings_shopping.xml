@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="added_to_shopping_list">Έγινε προσθήκη στη λίστα αγορών</string>
+    <string name="failed_to_add_to_shopping_list">Αποτυχία προσθήκης στη λίστα αγορών</string>
+    <string name="failed_to_update_item">Αποτυχία ενημέρωσης αντικειμένου</string>
+    <string name="removed_from_shopping_list">Έγινε αφαίρεση από τη λίστα αγορών</string>
+    <string name="failed_to_remove_from_shopping_list">Αποτυχία αφαίρεσης από τη λίστα αγορών</string>
+    <string name="shopping_list">Λίστα Αγορών</string>
+    <string name="shopping_history">Ιστορικό Αγορών</string>
+    <string name="add_to_shopping_list">Πρόσθεση στη λίστα αγορών</string>
+    <string name="empty_shopping_list_text">Η Λίστα αγορών σου είναι κενή</string>
+    <string name="empty_shopping_history_text">Το ιστορικό αγορών σου είναι κενό</string>
+    <string name="clear_shopping_list">Καθάρισε λίστα αγορών</string>
+    <string name="clear_shopping_list_confirmation_message">Είσαι σίγουρος πως θέλεις να καθαρίσεις την λίστα αγορών σου; Αυτή η πράξη δεν μπορεί να ακυρωθεί.</string>
+    <string name="shopping_list_cleared">Η λίστα αγορών καθαρίστηκε.</string>
+    <string name="failed_to_clear_shopping_list">Αποτυχία καθαρισμού της λίστας αγορών</string>
+    <string name="clear_shopping_history">Καθάρισε ιστορικό αγορών</string>
+    <string name="clear_shopping_history_confirmation_message">Είσαι σίγουρος πως θέλεις να καθαρίσεις το ιστορικό αγορών σου; Αυτή η πράξη δεν μπορεί να ακυρωθεί.</string>
+    <string name="shopping_history_cleared">Το ιστορικό αγορών καθαρίστηκε.</string>
+    <string name="enter_quantity_hint">Εισάγετε ποσότητα</string>
+    <string name="exceeded_stock">Η ζητούμενη ποσότητα υπερβαίνει το απόθεμα</string>
+    <string name="exceeded_stock_item">Η ζητούμενη ποσότητα υπερβαίνει το διαθέσιμο απόθεμα: %1$s</string>
+    <string name="checkout">Ολοκλήρωση αγοράς</string>
+    <string name="purchase_with_price">Αγορά (%1$.2f €)</string>
+    <string name="buy_again_with_price">Αγορά ξανά (%1$.2f €)</string>
+    <string name="purchase_successful">Η αγορά σας ήταν επιτυχής</string>
+    <string name="purchase_failed">Η αγορά σας απέτυχε. Παρακαλώ δοκιμάστε ξανά.</string>
+    <string name="increase_quantity">Αύξηση ποσότητας</string>
+    <string name="decrease_quantity">Μείωση ποσότητας</string>
+    <string name="invalid_quantity">Μη έγκυρη ποσότητα</string>
+
+</resources>

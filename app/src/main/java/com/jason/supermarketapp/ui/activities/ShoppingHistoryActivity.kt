@@ -1,5 +1,6 @@
 package com.jason.supermarketapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jason.supermarketapp.R
@@ -17,8 +17,6 @@ import com.jason.supermarketapp.data.entities.ShoppingHistory
 import com.jason.supermarketapp.adapters.ShoppingHistoryAdapter
 import com.jason.supermarketapp.ui.viewmodels.ShoppingHistoryViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class ShoppingHistoryActivity : AppCompatActivity() {
 
@@ -27,6 +25,7 @@ class ShoppingHistoryActivity : AppCompatActivity() {
     private lateinit var adapter: ShoppingHistoryAdapter
     private lateinit var emptyText: TextView
     private lateinit var signInMessage: TextView
+    private lateinit var progressBar: View
     private var clearShoppingHistoryMenuItem: MenuItem? = null
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private val userId: String? get() = currentUser?.uid
@@ -46,17 +45,12 @@ class ShoppingHistoryActivity : AppCompatActivity() {
         rvShoppingHistory = findViewById(R.id.rvShoppingHistory)
         emptyText = findViewById(R.id.shoppingHistoryEmpty)
         signInMessage = findViewById(R.id.sign_in_message)
-
-        lifecycleScope.launch {
-            viewModel.loadPurchaseHistory()
-            viewModel.purchaseHistory.collectLatest { historyList ->
-                updateUI(historyList)
-                invalidateOptionsMenu() // re-checks if the clear button should be enabled
-            }
-        }
+        progressBar = findViewById(R.id.progressBar)
 
         adapter = ShoppingHistoryAdapter(emptyList()) { historyItem ->
-            // TODO: Implement detailed view for the purchased shopping list
+            val intent = Intent(this, ShoppingHistoryDetailsActivity::class.java)
+            intent.putExtra("historyId", historyItem.id)
+            startActivity(intent)
         }
 
         rvShoppingHistory.layoutManager = LinearLayoutManager(this)
@@ -68,19 +62,44 @@ class ShoppingHistoryActivity : AppCompatActivity() {
             signInMessage.visibility = View.VISIBLE
 
         }
+
+        observeViewModel()
+        viewModel.loadPurchaseHistory()
+    }
+
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(this) { loading ->
+            val historyList = viewModel.purchaseHistory.value ?: emptyList()
+            updateUI(historyList, loading)
+            invalidateOptionsMenu()
+        }
+
+        viewModel.purchaseHistory.observe(this) { historyList ->
+            val loading = viewModel.isLoading.value ?: false
+            updateUI(historyList, loading)
+            invalidateOptionsMenu()
+        }
     }
 
     /** Update the UI based on the shopping history list */
-    private fun updateUI(historyList: List<ShoppingHistory>) {
-        if (historyList.isEmpty()) {
-            emptyText.visibility = View.VISIBLE
+    private fun updateUI(historyList: List<ShoppingHistory>, isLoading: Boolean) {
+        if (isLoading) {
+            progressBar.visibility = View.VISIBLE
             rvShoppingHistory.visibility = View.GONE
-        } else {
             emptyText.visibility = View.GONE
-            rvShoppingHistory.visibility = View.VISIBLE
-            adapter.updateData(historyList)
+        } else {
+            progressBar.visibility = View.GONE
+            if (historyList.isEmpty()) {
+                emptyText.visibility = View.VISIBLE
+                rvShoppingHistory.visibility = View.GONE
+            } else {
+                emptyText.visibility = View.GONE
+                rvShoppingHistory.visibility = View.VISIBLE
+                adapter.updateData(historyList)
+            }
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -111,7 +130,7 @@ class ShoppingHistoryActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         clearShoppingHistoryMenuItem = menu?.findItem(R.id.action_clear_shopping_history)
-        val products = viewModel.purchaseHistory.value
+        val products = viewModel.purchaseHistory.value ?: emptyList()
         clearShoppingHistoryMenuItem?.isEnabled = products.isNotEmpty()
         return super.onPrepareOptionsMenu(menu)
     }

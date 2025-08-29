@@ -65,7 +65,7 @@ class WishlistAdapter(
             holder.normalPrice.text = holder.itemView.context.getString(R.string.product_price, product.price)
         }
 
-        // Load images from URL using Glide, with a fallback to local resources
+        // Load images with Glide
         if (product.imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(product.imageUrl)

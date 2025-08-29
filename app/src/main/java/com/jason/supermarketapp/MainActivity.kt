@@ -19,6 +19,7 @@ import com.jason.supermarketapp.data.repositories.UserRepository
 import com.jason.supermarketapp.ui.activities.ProductsActivity
 import com.jason.supermarketapp.ui.activities.WishlistActivity
 import com.jason.supermarketapp.data.seeds.TestDataSeeder
+import com.jason.supermarketapp.ui.activities.ProfileActivity
 import com.jason.supermarketapp.ui.activities.ShoppingHistoryActivity
 import com.jason.supermarketapp.ui.activities.ShoppingListActivity
 import com.jason.supermarketapp.ui.activities.SignInActivity
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         val btnWishlist = findViewById<Button>(R.id.btnWishlist)
         val btnShoppingList = findViewById<Button>(R.id.btnShoppingList)
         val btnHistory = findViewById<Button>(R.id.btnHistory)
+        val btnProfile = findViewById<Button>(R.id.btnProfile)
         tvGreetingLoggedIn = findViewById(R.id.tvGreetingLoggedIn)
         tvGreetingGuest = findViewById(R.id.tvGreetingGuest)
         guestBottomContainer = findViewById(R.id.guestBottomContainer)
@@ -80,6 +82,9 @@ class MainActivity : AppCompatActivity() {
 
         btnHistory.setOnClickListener {
             startActivity(Intent(this, ShoppingHistoryActivity::class.java))
+        }
+        btnProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
         updateGreeting()

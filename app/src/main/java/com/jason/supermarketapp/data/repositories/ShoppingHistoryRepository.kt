@@ -10,10 +10,11 @@ import com.jason.supermarketapp.data.firestore.FirestoreManager
  */
 class ShoppingHistoryRepository {
 
+    // Firestore manager instance to handle Firestore operations
     private val firestoreManager = FirestoreManager()
 
     /**
-     * Save the current shopping list as a purchase history for the user.
+     * Save the current shopping list in the purchase history of the user.
      *
      * @param userId ID of the user
      * @param shoppingList List of Pairs, where each Pair contains a Product and its quantity
@@ -41,6 +42,35 @@ class ShoppingHistoryRepository {
      */
     suspend fun getPurchaseHistory(userId: String): List<ShoppingHistory> {
         return firestoreManager.getPurchaseHistory(userId)
+    }
+
+    /** Retrieve a specific shopping history entry by its ID.
+     *
+     * @param userId ID of the user
+     * @param historyId ID of the shopping history entry
+     * @return ShoppingHistory object if found, null otherwise
+     */
+    suspend fun getShoppingHistoryById(userId: String, historyId: String): ShoppingHistory? {
+        return firestoreManager.getShoppingHistoryById(userId, historyId)
+    }
+
+    /** Retrieve a map of product IDs to their image URLs.
+     *
+     * @param productIds List of product IDs to fetch images for
+     * @return Map where keys are product IDs and values are image URLs
+     */
+    suspend fun getProductImagesMap(productIds: List<String>): Map<String, String> {
+        return firestoreManager.getProductImagesMap(productIds)
+    }
+
+    /** Decrease the stock quantity of a product.
+     *
+     * @param productId ID of the product
+     * @param quantity Amount to decrease
+     * @return true if the operation was successful, false otherwise
+     */
+    suspend fun decreaseProductQuantity(productId: String, quantity: Int): Boolean {
+        return firestoreManager.decreaseProductQuantity(productId, quantity)
     }
 
 }

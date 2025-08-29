@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.jason.supermarketapp.MainActivity
 import com.jason.supermarketapp.R
 import com.jason.supermarketapp.adapters.CheckoutAdapter
+import com.jason.supermarketapp.data.entities.Product
 import com.jason.supermarketapp.data.repositories.ShoppingHistoryRepository
 import com.jason.supermarketapp.ui.viewmodels.ShoppingListViewModel
 import kotlinx.coroutines.launch
@@ -25,6 +26,7 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var btnPurchase: Button
     private lateinit var btnCancel: Button
     private lateinit var viewModel: ShoppingListViewModel
+    private val repository = ShoppingHistoryRepository()
     private val currentUser = FirebaseAuth.getInstance().currentUser
     val userId: String? get() = currentUser?.uid
 
@@ -60,6 +62,7 @@ class CheckoutActivity : AppCompatActivity() {
             btnPurchase.text = getString(R.string.purchase_with_price, grandTotal)
         }
 
+        // Handle purchase button click
         btnPurchase.setOnClickListener {
             val items = viewModel.shoppingListItems.value
             if (items.isNullOrEmpty()) return@setOnClickListener
@@ -70,9 +73,30 @@ class CheckoutActivity : AppCompatActivity() {
                 finalPrice * quantity
             }
 
-            // Use lifecycleScope for coroutine
             lifecycleScope.launch {
-                val success = ShoppingHistoryRepository().savePurchaseHistory(
+                var stockOk = true
+                var failedProduct: Product? = null
+
+                // 1. Try to decrement stock for each item
+                for ((product, quantity) in items) {
+                    val success = repository.decreaseProductQuantity(product.id, quantity)
+                    if (!success) {
+                        stockOk = false
+                        failedProduct = product
+                        break
+                    }
+                }
+
+                if (!stockOk) {
+                    val message = failedProduct?.let {
+                        getString(R.string.out_of_stock_item, failedProduct.getLocalizedName())
+                    } ?: getString(R.string.out_of_stock)
+                    Toast.makeText(this@CheckoutActivity, message, Toast.LENGTH_LONG).show()
+                    return@launch
+                }
+
+                // 2. Save to purchase history in Firestore
+                val success = repository.savePurchaseHistory(
                     userId = userId!!,
                     shoppingList = items,
                     totalAmount = totalAmount
@@ -96,10 +120,9 @@ class CheckoutActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-
-
         }
 
+        // Handle cancel button click
         btnCancel.setOnClickListener {
             finish() // Simply close the activity
         }

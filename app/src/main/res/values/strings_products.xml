@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="product_price" translatable="false">%1$.2f €</string>
+    <string name="product_quantity_in_list" translatable="false">x %1$d</string>
+
+    <string name="product_price_on_sale">%1$.2f € <small class="sale">Sale</small></string>
+    <string name="all_products">All Products</string>
+    <string name="product_image">Image of the product</string>
+    <string name="no_description">No description</string>
+    <string name="product_quantity">Quantity: %1$d</string>
+    <string name="product_availability">Availability: %1$d</string>
+    <string name="no_products_available">No products available</string>
+    <string name="stock_issues_title">Stock Issues</string>
+    <string name="title_activity_products">Products</string>
+    <string name="preview_more">… +%1$d more</string>
+    <string name="preview_items">%1$s</string>
+    <string name="preview_items_with_more">%1$s %2$s</string>
+    <string name="out_of_stock">Out of stock</string>
+    <string name="out_of_stock_item">Item out of stock: %1$s</string>
+
+    <string name="error_loading_product">Error occurred while loading the product. Please try again.</string>
+
+
+</resources>

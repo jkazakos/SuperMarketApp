@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="guest_message">You are browsing as a guest. Please sign in for a better experience.</string>
+    <string name="sign_in_required">Sign in to use this feature.</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_confirmation">Are you sure you want to sign out?</string>
+    <string name="signing_up">Signing up…</string>
+    <string name="sign_out_successful">You have been signed out.</string>
+    <string name="signed_in_message">You are signed in as %1$s.</string>
+    <string name="sign_in_prompt">Already have an account? Sign In!</string>
+    <string name="sign_in_prompt_link">Sign In!</string>
+    <string name="sign_up_prompt">Don\'t have an account? Sign Up!</string>
+    <string name="sign_up_prompt_link">Sign Up!</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password (min 6 characters)</string>
+    <string name="first_name_required">First name is required.</string>
+    <string name="last_name_required">Last name is required.</string>
+    <string name="email_required">Email is required.</string>
+    <string name="password_required">Password is required.</string>
+    <string name="invalid_email">Please enter a valid email address.</string>
+    <string name="short_password">Password must be at least 6 characters long.</string>
+    <string name="wrong_email_or_password">Incorrect email or password. Please try again.</string>
+    <string name="sign_up_error">Error during sign up. Please try again.</string>
+    <string name="email_password_required">Email and password are required.</string>
+    <string name="invalid_email_format">Invalid email format.</string>
+    <string name="sign_in_successful">You have successfully signed in.</string>
+    <string name="sign_up_successful">You have successfully signed up.</string>
+    <string name="user_save_error">Error saving user data. Please try again.</string>
+
+
+</resources>

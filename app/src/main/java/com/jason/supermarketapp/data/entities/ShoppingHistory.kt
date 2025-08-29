@@ -30,10 +30,11 @@ data class ShoppingHistoryItem(
  * Data class representing a shopping history record.
  * Each record corresponds to a completed purchase.
  */
+@Parcelize
 data class ShoppingHistory(
     @DocumentId
     val id: String = "", // Purchased shopping list ID
     val items: List<ShoppingHistoryItem> = emptyList(), // List of items purchased
     val totalAmount: Double = 0.0, // Total amount spent
     val datePurchased: Timestamp? = null // Firestore server timestamp
-)
+) : Parcelable

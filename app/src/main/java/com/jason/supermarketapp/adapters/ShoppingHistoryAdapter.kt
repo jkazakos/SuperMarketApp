@@ -34,6 +34,7 @@ class ShoppingHistoryAdapter(
         val totalPrice = history.totalAmount
         val itemCount = history.items.size
 
+        // Format date
         val formattedDate = history.datePurchased?.toDate()?.let {
             val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             sdf.format(it)

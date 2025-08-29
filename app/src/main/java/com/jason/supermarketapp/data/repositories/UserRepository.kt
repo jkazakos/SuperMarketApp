@@ -7,6 +7,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class UserRepository {
 
+    // UserManager instance to handle user-related operations
     private val userManager = UserManager()
 
     /** Create a new user profile in Firestore.
@@ -34,27 +35,27 @@ class UserRepository {
      */
     suspend fun signIn(email: String, password: String) {
         return suspendCoroutine { continuation ->
-            userManager.signIn(email, password) { success, errorMessage ->
+            userManager.signIn(email, password) { success, error ->
                 if (success) {
                     continuation.resume(Unit) // sign-in succeeded
                 } else {
-                    continuation.resumeWithException(Exception(errorMessage))
+                    continuation.resumeWithException(error!!)
                 }
             }
         }
     }
 
-    /** Get the profile information of a user.
-     *
-     * @param userId ID of the user
-     * @return Map containing user profile fields, or null if not found
-     */
-    suspend fun getUserProfile(userId: String): Map<String, Any?>? {
-        return userManager.getUserProfile(userId)
-    }
-
     /** Sign out the currently signed-in user. */
     fun signOut() {
         userManager.signOut()
+    }
+
+    /** Get the total spending of a user over the past week and month.
+     *
+     * @param userId ID of the user
+     * @return SpendingTotals object containing weekly and monthly totals
+     */
+    suspend fun getSpendingTotals(userId: String): UserManager.SpendingTotals {
+        return userManager.getSpendingTotals(userId)
     }
 }

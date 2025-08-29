@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
+import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jason.supermarketapp.MainActivity
 import com.jason.supermarketapp.R
+import com.jason.supermarketapp.data.firestore.UserManager
 import com.jason.supermarketapp.data.repositories.UserRepository
 import kotlinx.coroutines.launch
 
@@ -45,21 +47,45 @@ class SignInActivity : AppCompatActivity() {
         signInButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Email and password required", Toast.LENGTH_SHORT).show()
-            } else {
-                lifecycleScope.launch {
-                    try {
-                        userRepository.signIn(email, password)
-                        Toast.makeText(this@SignInActivity, "Signed in successfully", Toast.LENGTH_SHORT).show()
-                        // Navigate to MainActivity after successful sign-in
-                        val intent = Intent(this@SignInActivity, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
 
-                    } catch (e: Exception) {
-                        Toast.makeText(this@SignInActivity, "Sign in failed: ${e.message}", Toast.LENGTH_LONG).show()
+            when {
+                email.isEmpty() -> {
+                    Toast.makeText(this,
+                        getString(R.string.email_required),
+                        Toast.LENGTH_SHORT).show()
+                    emailEditText.requestFocus()
+                }
+                password.isEmpty() -> {
+                    Toast.makeText(this,
+                        getString(R.string.password_required),
+                        Toast.LENGTH_SHORT).show()
+                    passwordEditText.requestFocus()
+                }
+                !isValidEmail(email) -> {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.invalid_email_format),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    emailEditText.requestFocus()
+                }
+                else -> {
+                    lifecycleScope.launch {
+                        try {
+                            userRepository.signIn(email, password)
+                            Toast.makeText(this@SignInActivity, getString(R.string.sign_in_successful), Toast.LENGTH_SHORT).show()
+                            // Navigate to MainActivity after successful sign-in
+                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                            finish()
+
+                        } catch (e: UserManager.SignInError.InvalidCredentials) {
+                            Toast.makeText(this@SignInActivity, getString(e.messageResId), Toast.LENGTH_LONG).show()
+                            passwordEditText.requestFocus()
+                        } catch (e: UserManager.SignInError.GenericError) {
+                            Toast.makeText(this@SignInActivity, getString(e.messageResId), Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
@@ -90,6 +116,11 @@ class SignInActivity : AppCompatActivity() {
             // fallback if something goes wrong
             tvSignUpLink.text = text
         }
+    }
+
+    /** Validates email format */
+    fun isValidEmail(email: String): Boolean {
+        return email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
