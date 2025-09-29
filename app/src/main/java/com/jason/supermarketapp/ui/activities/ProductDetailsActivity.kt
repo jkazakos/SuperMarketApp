@@ -92,7 +92,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(product.imageUrl)
                 .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-                .centerCrop()
+                .fitCenter()
                 .into(productImage)
         } else {
             // If no image URL, use the local resource or a default placeholder

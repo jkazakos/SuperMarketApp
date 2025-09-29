@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 class ShoppingHistoryViewModel : ViewModel() {
 
     private val repository = ShoppingHistoryRepository()
-    private val userId: String
-        get() = FirebaseAuth.getInstance().currentUser?.uid ?: "default_user"
+    private val userId: String?
+        get() = FirebaseAuth.getInstance().currentUser?.uid
 
     private val _purchaseHistory = MutableStateFlow<List<ShoppingHistory>>(emptyList())
     val purchaseHistory: LiveData<List<ShoppingHistory>> = _purchaseHistory.asLiveData()
@@ -29,10 +29,12 @@ class ShoppingHistoryViewModel : ViewModel() {
 
     /** Load purchase history from repository */
     fun loadPurchaseHistory() {
+        val uid = userId ?: return
+
         viewModelScope.launch {
             _isLoading.value = true  // start loading
             try {
-                val history = repository.getPurchaseHistory(userId)
+                val history = repository.getPurchaseHistory(uid)
                 _purchaseHistory.value = history
             } catch (e: Exception) {
                 Log.e("ShoppingHistory", "Error loading purchase history", e)
@@ -45,8 +47,10 @@ class ShoppingHistoryViewModel : ViewModel() {
 
     /** Clear all purchase history for a user */
     fun clearPurchaseHistory() {
+        val uid = userId ?: return
+
         viewModelScope.launch {
-            val success = repository.clearPurchaseHistory(userId)
+            val success = repository.clearPurchaseHistory(uid)
             if (success) {
                 _purchaseHistory.value = emptyList()
             }

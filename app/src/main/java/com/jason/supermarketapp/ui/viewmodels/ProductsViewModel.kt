@@ -11,6 +11,16 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import java.util.Locale
 
+/** Enum representing the different sorting options for products. */
+enum class SortType {
+    NAME_ASCENDING,
+    NAME_DESCENDING,
+    PRICE_ASCENDING,
+    PRICE_DESCENDING,
+    DISCOUNT_ASCENDING,
+    DISCOUNT_DESCENDING
+}
+
 sealed class ProductsUiState {
     object Loading : ProductsUiState()
     data class Success(
@@ -28,12 +38,15 @@ class ProductsViewModel(): ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     private val locale = Locale.getDefault().language
     private val allProducts = repository.getProducts()
+    private val _sortType = MutableStateFlow(SortType.NAME_ASCENDING) // default sort
+
     val uiState: StateFlow<ProductsUiState> = combine(
         allProducts,
         repository.getCategories(locale),
         _selectedCategories,
-        _searchQuery
-    ) { allProductsList, categories, selected, query ->
+        _searchQuery,
+        _sortType
+    ) { allProductsList, categories, selected, query, sortType ->
 
         //1. Filter by category
         val categoryFiltered = if (selected.isEmpty()) {
@@ -45,8 +58,8 @@ class ProductsViewModel(): ViewModel() {
             }
         }
 
-        //2. Filter by search query
-        val finalFiltered = if (query.isBlank()) {
+        // 2. Filter by search query
+        val queryFiltered = if (query.isBlank()) {
             categoryFiltered
         } else {
             categoryFiltered.filter { product ->
@@ -54,8 +67,19 @@ class ProductsViewModel(): ViewModel() {
                 productName.contains(query, ignoreCase = true)
             }
         }
+
+        // 3. Apply sorting
+        val sorted = when (sortType) {
+            SortType.NAME_ASCENDING -> queryFiltered.sortedBy { it.name[locale] ?: it.name["en"] ?: "" }
+            SortType.NAME_DESCENDING -> queryFiltered.sortedByDescending { it.name[locale] ?: it.name["en"] ?: "" }
+            SortType.PRICE_ASCENDING -> queryFiltered.sortedBy { it.price * (1 - it.discount) }
+            SortType.PRICE_DESCENDING -> queryFiltered.sortedByDescending { it.price * (1 - it.discount) }
+            SortType.DISCOUNT_ASCENDING -> queryFiltered.sortedBy { it.discount }
+            SortType.DISCOUNT_DESCENDING -> queryFiltered.sortedByDescending { it.discount }
+        }
+
         ProductsUiState.Success(
-            products = finalFiltered,
+            products = sorted,
             categories = categories,
             selectedCategories = selected,
             searchQuery = query
@@ -75,9 +99,23 @@ class ProductsViewModel(): ViewModel() {
         _selectedCategories.value = selectedCategories
     }
 
-    /** Update search query */
+    /** Update search query
+     *
+     * @param query The search query string.
+     */
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }
+
+    /** Update sort type
+     *
+     * @param sortType The selected SortType.
+     */
+    fun setSortType(sortType: SortType) {
+        _sortType.value = sortType
+    }
+
+    val sortType: SortType
+        get() = _sortType.value
 
 }

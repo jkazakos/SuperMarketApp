@@ -17,6 +17,7 @@ import com.jason.supermarketapp.R
 import com.jason.supermarketapp.data.entities.Product
 import com.jason.supermarketapp.adapters.ProductAdapter
 import com.jason.supermarketapp.ui.viewmodels.ProductsUiState
+import com.jason.supermarketapp.ui.viewmodels.SortType
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -120,6 +121,10 @@ class ProductsActivity : AppCompatActivity() {
                 }
                 true
             }
+            R.id.action_sort -> {
+                showSortDialog()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -145,6 +150,43 @@ class ProductsActivity : AppCompatActivity() {
             .setNegativeButton(R.string.cancel_text, null)
             .show()
     }
+
+    /** Show sort options dialog */
+    private fun showSortDialog() {
+        val options = arrayOf(
+            getString(R.string.sort_name_asc),
+            getString(R.string.sort_name_desc),
+            getString(R.string.sort_price_asc),
+            getString(R.string.sort_price_desc),
+            getString(R.string.sort_discount_asc),
+            getString(R.string.sort_discount_desc)
+        )
+
+        val currentSort = when (viewModel.sortType) {
+            SortType.NAME_ASCENDING -> 0
+            SortType.NAME_DESCENDING -> 1
+            SortType.PRICE_ASCENDING -> 2
+            SortType.PRICE_DESCENDING -> 3
+            SortType.DISCOUNT_ASCENDING -> 4
+            SortType.DISCOUNT_DESCENDING -> 5
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.sort))
+            .setSingleChoiceItems(options, currentSort) { dialog, which ->
+                when (which) {
+                    0 -> viewModel.setSortType(SortType.NAME_ASCENDING)
+                    1 -> viewModel.setSortType(SortType.NAME_DESCENDING)
+                    2 -> viewModel.setSortType(SortType.PRICE_ASCENDING)
+                    3 -> viewModel.setSortType(SortType.PRICE_DESCENDING)
+                    4 -> viewModel.setSortType(SortType.DISCOUNT_ASCENDING)
+                    5 -> viewModel.setSortType(SortType.DISCOUNT_DESCENDING)
+                }
+                dialog.dismiss() // close after selection
+            }
+            .show()
+    }
+
 
     /** Update UI based on product list */
     private fun updateUI(products: List<Product>) {

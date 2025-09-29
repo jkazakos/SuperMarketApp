@@ -8,6 +8,14 @@
     <string name="add">Προσθήκη</string>
     <string name="category_filter">Φιλτράρισμα</string>
     <string name="filter_categories">Φίλτρο ανά Κατηγορία</string>
+    <string name="sort">Ταξινόμηση</string>
+    <string name="sort_by">Ταξινόμηση κατά</string>
+    <string name="sort_name_asc">Όνομα (Α-Ω)</string>
+    <string name="sort_name_desc">Όνομα (Ω-Α)</string>
+    <string name="sort_price_asc">Τιμή (Χαμηλή προς Υψηλή)</string>
+    <string name="sort_price_desc">Τιμή (Υψηλή προς Χαμηλή)</string>
+    <string name="sort_discount_asc">Έκπτωση (Χαμηλή προς Υψηλή)</string>
+    <string name="sort_discount_desc">Έκπτωση (Υψηλή προς Χαμηλή)</string>
     <string name="apply_text">Εφαρμογή</string>
     <string name="cancel_text">Ακύρωση</string>
     <string name="sold_out">Εξαντλήθηκε</string>

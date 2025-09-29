@@ -12,19 +12,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.jason.supermarketapp.data.repositories.ProductRepository
 import com.jason.supermarketapp.data.repositories.UserRepository
 import com.jason.supermarketapp.ui.activities.ProductsActivity
 import com.jason.supermarketapp.ui.activities.WishlistActivity
-import com.jason.supermarketapp.data.seeds.TestDataSeeder
 import com.jason.supermarketapp.ui.activities.ProfileActivity
 import com.jason.supermarketapp.ui.activities.ShoppingHistoryActivity
 import com.jason.supermarketapp.ui.activities.ShoppingListActivity
 import com.jason.supermarketapp.ui.activities.SignInActivity
 import com.jason.supermarketapp.ui.activities.SignUpActivity
-import kotlinx.coroutines.launch
+import com.jason.supermarketapp.data.repositories.ProductRepository
+import com.jason.supermarketapp.data.seeds.TestDataSeeder
+import androidx.lifecycle.lifecycleScope
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,10 +51,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Initialize the Firestore database and seed it with test data
-        val repository = ProductRepository()
-        lifecycleScope.launch {
-            TestDataSeeder.insertTestProducts(repository, this)
-        }
+        // val repository = ProductRepository()
+        // lifecycleScope.launch {
+        //     TestDataSeeder.insertTestProducts(repository, this)
+        // }
 
         val btnProducts = findViewById<Button>(R.id.btnProducts)
         val btnWishlist = findViewById<Button>(R.id.btnWishlist)

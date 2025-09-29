@@ -56,15 +56,15 @@ class ShoppingHistoryActivity : AppCompatActivity() {
         rvShoppingHistory.layoutManager = LinearLayoutManager(this)
         rvShoppingHistory.adapter = adapter
 
-        if (userId == null) {
+        if (userId !== null) {
+            observeViewModel()
+            viewModel.loadPurchaseHistory()
+        } else {
             emptyText.visibility = View.GONE
             rvShoppingHistory.visibility = View.GONE
             signInMessage.visibility = View.VISIBLE
-
         }
 
-        observeViewModel()
-        viewModel.loadPurchaseHistory()
     }
 
     private fun observeViewModel() {
@@ -83,6 +83,16 @@ class ShoppingHistoryActivity : AppCompatActivity() {
 
     /** Update the UI based on the shopping history list */
     private fun updateUI(historyList: List<ShoppingHistory>, isLoading: Boolean) {
+        // User not signed in, only show sign-in message
+        if (userId == null) {
+            progressBar.visibility = View.GONE
+            rvShoppingHistory.visibility = View.GONE
+            emptyText.visibility = View.GONE
+            signInMessage.visibility = View.VISIBLE
+            return
+        }
+        // User signed in, show appropriate views
+        signInMessage.visibility = View.GONE
         if (isLoading) {
             progressBar.visibility = View.VISIBLE
             rvShoppingHistory.visibility = View.GONE

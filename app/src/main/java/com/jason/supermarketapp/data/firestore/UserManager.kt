@@ -65,8 +65,12 @@ class UserManager {
      * InvalidPassword: Thrown when the password is incorrect.
      * GenericError: For other errors with a message.
      */
-    sealed class SignInError(@StringRes val messageResId: Int) : Exception() {
-        object InvalidCredentials : SignInError(R.string.wrong_email_or_password)
+    sealed class SignInError(@param:StringRes val messageResId: Int) :
+        Exception("Sign-in error, string resource id: $messageResId") {
+        object InvalidCredentials : SignInError(R.string.wrong_email_or_password) {
+            private fun readResolve(): Any = InvalidCredentials
+        }
+
         class GenericError(@StringRes resId: Int) : SignInError(resId)
     }
 
