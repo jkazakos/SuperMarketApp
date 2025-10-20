@@ -21,9 +21,6 @@ import com.jason.supermarketapp.ui.activities.ShoppingHistoryActivity
 import com.jason.supermarketapp.ui.activities.ShoppingListActivity
 import com.jason.supermarketapp.ui.activities.SignInActivity
 import com.jason.supermarketapp.ui.activities.SignUpActivity
-import com.jason.supermarketapp.data.repositories.ProductRepository
-import com.jason.supermarketapp.data.seeds.TestDataSeeder
-import androidx.lifecycle.lifecycleScope
 
 class MainActivity : AppCompatActivity() {
 
@@ -108,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 userRepository.signOut()
                 Toast.makeText(this, getString(R.string.sign_out_successful), Toast.LENGTH_SHORT).show()
                 Log.d("Auth", "User signed out")
-                invalidateOptionsMenu() // 👈 refresh menu visibility
+                invalidateOptionsMenu() // refresh menu visibility
                 updateGreeting()
             }
             .setNegativeButton(getString(R.string.cancel_text), null)
