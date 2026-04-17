@@ -94,10 +94,3 @@ class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
         return oldItem == newItem
     }
 }
-
-
-
-
-
-
-

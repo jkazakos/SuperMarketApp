@@ -68,9 +68,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.ktx)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.firestore)
     implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     implementation(libs.org.jetbrains.kotlinx.coroutines)
     implementation(libs.glide)
 }
