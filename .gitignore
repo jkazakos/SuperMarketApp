@@ -51,6 +51,7 @@ obj/
 
 # Firebase / Google Services
 app/google-services.json
+TestDataSeeder.kt
 
 # Android Studio specific
 .externalNativeBuild/
