@@ -1,0 +1,40 @@
+workflows:
+  ios-release:
+    name: iOS Build (.ipa)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      node: 20
+      xcode: latest
+      cocoapods: default
+      groups:
+        # Group created in Codemagic UI containing your Apple / App Store credentials
+        # (e.g. APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_PRIVATE_KEY)
+        - app_store_credentials
+      vars:
+        XCODE_WORKSPACE: 'ios/SuperMarketApp.xcworkspace'
+        XCODE_SCHEME: 'SuperMarketApp'
+        BUNDLE_ID: 'com.jason.supermarketapp'
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm install --legacy-peer-deps
+      - name: Expo Prebuild (Generate native iOS project)
+        script: |
+          npx expo prebuild --platform ios --clean
+      - name: Install CocoaPods
+        script: |
+          cd ios && pod install
+      - name: Set up code signing
+        script: |
+          # If using App Store Connect API integration in Codemagic:
+          # app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          xcode-project use-profiles
+      - name: Build IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log

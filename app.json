@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "SuperMarketApp",
+    "slug": "supermarket-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/placeholder_image.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jason.supermarketapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/placeholder_image.png",
+        "backgroundColor": "#111827"
+      },
+      "package": "com.jason.supermarketapp"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/placeholder_image.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#111827"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ca0dfb3d-9e2e-4ab7-88f9-c79a48857f25"
+      }
+    },
+    "owner": "jkazakos-team"
+  }
+}

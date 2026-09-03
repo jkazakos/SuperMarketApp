@@ -1,70 +1,28 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+# Node & Dependencies
+node_modules/
+npm-debug.*
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Native builds
+/android/
+/ios/
+*.orig.*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# macOS & Editor
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
-
-#Gradle build files
-.gradle/
-*/build/
-# Locals config files
-# IntelliJ / Android Studio
+*.pem
 .idea/
-*.iws
-*.ipr
+.vscode/
+*.iml
 
-# Log files
-*.log
-
-# Generated files
-captures/
-output.json
-
-# Kotlin/Java compiled classes
-*.class
-*.jar
-*.war
-*.ear
-
-# APKs and generated binaries
-*.apk
-*.ap_
-*.aab
-
-# NDK
-obj/
-*.so
-
-# Misc
-*.orig
-*.swp
-
-# Firebase / Google Services
-app/google-services.json
-TestDataSeeder.kt
-
-# Android Studio specific
-.externalNativeBuild/
-.cxx/
-
-# JetBrains
-out/
-
-# MacOS
-*.DS_Store
-
-# Kotlin specific
-*.kotlin_module
-
-# Gradle Wrapper JAR if you want to ignore it (optional)
-# gradle/wrapper/gradle-wrapper.jar
+# TypeScript
+*.tsbuildinfo
