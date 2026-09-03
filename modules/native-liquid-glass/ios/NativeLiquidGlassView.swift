@@ -94,9 +94,8 @@ public final class NativeLiquidGlassView: ExpoView {
     vibrancyView.frame = glassPill.bounds
     blurView.contentView.addSubview(vibrancyView)
 
-    // Active pill blur & vibrancy
+    // Active pill blur
     let activeBlur = UIBlurEffect(style: isDark ? .systemChromeMaterialDark : .systemChromeMaterialLight)
-    let activeVibrancy = UIVibrancyEffect(blurEffect: activeBlur, style: .fill)
     activeBlurView.effect = activeBlur
 
     glassPill.layer.borderColor = UIColor.white.withAlphaComponent(isDark ? 0.18 : 0.70).cgColor
@@ -249,7 +248,7 @@ public final class NativeLiquidGlassView: ExpoView {
   }
 
   private func updateTabStyles() {
-    for (i, button) in tabButtons.enumerated() {
+    for (i, _) in tabButtons.enumerated() {
       let isSelected = (i == selectedIndex)
       let label = tabLabels[i]
       let icon = tabIcons[i]
