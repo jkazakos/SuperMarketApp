@@ -20,9 +20,12 @@ export enum SortType {
 }
 
 export const getLocalizedName = (
-  product: Product,
+  product?: Product | null,
   locale: string = 'en'
 ): string => {
+  if (!product || !product.name || typeof product.name !== 'object') {
+    return '';
+  }
   return (
     product.name[locale] ||
     product.name['en'] ||
@@ -32,9 +35,12 @@ export const getLocalizedName = (
 };
 
 export const getLocalizedDescription = (
-  product: Product,
+  product?: Product | null,
   locale: string = 'en'
 ): string => {
+  if (!product || !product.description || typeof product.description !== 'object') {
+    return '';
+  }
   return (
     product.description[locale] ||
     product.description['en'] ||
@@ -44,9 +50,12 @@ export const getLocalizedDescription = (
 };
 
 export const getLocalizedCategory = (
-  product: Product,
+  product?: Product | null,
   locale: string = 'en'
 ): string => {
+  if (!product || !product.category || typeof product.category !== 'object') {
+    return '';
+  }
   return (
     product.category[locale] ||
     product.category['en'] ||
@@ -55,9 +64,10 @@ export const getLocalizedCategory = (
   );
 };
 
-export const getDiscountedPrice = (product: Product): number => {
+export const getDiscountedPrice = (product?: Product | null): number => {
+  if (!product) return 0;
   if (product.onSale && product.discount > 0) {
     return product.price * (1.0 - product.discount);
   }
-  return product.price;
+  return product.price || 0;
 };

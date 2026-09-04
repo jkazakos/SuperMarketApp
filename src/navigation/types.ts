@@ -19,17 +19,17 @@ export type MainTabScreenProps<
 export type RootStackParamList = {
   '(tabs)': undefined;
   MainTabs: undefined;
-  'product-details': { product: Product };
+  'product-details': { product: Product; id?: string };
   checkout: undefined;
   history: undefined;
-  'history-details': { history: ShoppingHistory };
+  'history-details': { history: ShoppingHistory; id?: string };
   settings: undefined;
   'sign-in': undefined;
   'sign-up': undefined;
-  ProductDetails: { product: Product };
+  ProductDetails: { product: Product; id?: string };
   Checkout: undefined;
   History: undefined;
-  HistoryDetails: { history: ShoppingHistory };
+  HistoryDetails: { history: ShoppingHistory; id?: string };
   Settings: undefined;
   SignIn: undefined;
   SignUp: undefined;

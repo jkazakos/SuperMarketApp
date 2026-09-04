@@ -29,19 +29,69 @@ const PLACEHOLDER_IMAGE = require('../../../../assets/images/placeholder_image.p
 export const ProductDetailsScreen: React.FC<
   RootStackScreenProps<'ProductDetails'>
 > = ({ route, navigation }) => {
-  const { product } = route.params;
+  const product = route?.params?.product;
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const user = useAuthStore((s) => s.user);
-  const isInWishlist = useWishlistStore((s) => s.isInWishlist(product.id));
+  const isInWishlist = useWishlistStore((s) =>
+    product?.id ? s.isInWishlist(product.id) : false
+  );
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const addToCart = useCartStore((s) => s.addItem);
 
   const [quantity, setQuantity] = useState(1);
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
+
+  if (!product || typeof product !== 'object' || !product.id) {
+    return (
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.background,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 24,
+            paddingTop: Math.max(insets.top, 16),
+          },
+        ]}
+      >
+        <Ionicons
+          name="alert-circle-outline"
+          size={64}
+          color={colors.textSecondary}
+        />
+        <Text
+          style={{
+            color: colors.textPrimary,
+            fontSize: 18,
+            fontWeight: '600',
+            marginTop: 16,
+            textAlign: 'center',
+          }}
+        >
+          {t('productNotFound', 'Product not found')}
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.primary,
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 8,
+            marginTop: 20,
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+            {t('goBack', 'Go Back')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   const isSoldOut = product.quantityAvailable <= 0;
   const isSale = product.onSale && product.discount > 0;

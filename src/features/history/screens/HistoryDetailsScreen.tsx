@@ -12,10 +12,58 @@ import { RootStackScreenProps } from '@/navigation/types';
 export const HistoryDetailsScreen: React.FC<
   RootStackScreenProps<'HistoryDetails'>
 > = ({ route, navigation }) => {
-  const { history } = route.params;
+  const history = route?.params?.history;
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
+
+  if (!history || typeof history !== 'object' || !Array.isArray(history.items)) {
+    return (
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.background,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 24,
+            paddingTop: Math.max(insets.top, 16),
+          },
+        ]}
+      >
+        <Ionicons
+          name="alert-circle-outline"
+          size={64}
+          color={colors.textSecondary}
+        />
+        <Text
+          style={{
+            color: colors.textPrimary,
+            fontSize: 18,
+            fontWeight: '600',
+            marginTop: 16,
+            textAlign: 'center',
+          }}
+        >
+          {t('historyNotFound', 'Order details not found')}
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.primary,
+            paddingHorizontal: 24,
+            paddingVertical: 12,
+            borderRadius: 8,
+            marginTop: 20,
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+            {t('goBack', 'Go Back')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   const dateStr = history.datePurchased
     ? DateFormatter.formatShortDate(history.datePurchased, i18n.language)

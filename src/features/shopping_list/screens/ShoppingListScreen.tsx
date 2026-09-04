@@ -104,6 +104,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
             onPress={() =>
               (navigation as any).navigate('product-details', {
                 product: item.product,
+                id: item.product.id,
               })
             }
             onIncrement={() => updateQuantity(item.product.id, item.quantity + 1)}
