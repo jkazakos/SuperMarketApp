@@ -4,9 +4,12 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "build:apk": "cd android && ./gradlew assembleRelease",
+    "build:apk-debug": "cd android && ./gradlew assembleDebug",
+    "build:aab": "cd android && ./gradlew bundleRelease",
+    "android:clean": "cd android && ./gradlew clean",
     "format": "prettier --write ."
   },
   "dependencies": {
