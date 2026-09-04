@@ -36,7 +36,7 @@ export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
   };
 
   const handleCardPress = (item: ShoppingHistory) => {
-    navigation.navigate('HistoryDetails', { history: item });
+    (navigation as any).navigate('history-details', { history: item });
   };
 
   if (!user) {

@@ -50,7 +50,7 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
   }, [wishlistIds, allProducts]);
 
   const handleProductPress = (product: Product) => {
-    (navigation as any).navigate('ProductDetails', { product });
+    (navigation as any).navigate('product-details', { product });
   };
 
   const handleClear = async () => {

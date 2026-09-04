@@ -55,7 +55,7 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
           onPress: () => {
             navigation.reset({
               index: 0,
-              routes: [{ name: 'MainTabs' }],
+              routes: [{ name: '(tabs)' }],
             });
           },
         },

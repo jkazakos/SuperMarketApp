@@ -207,7 +207,9 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
             <Text style={{ color: colors.textSecondary }}>
               Don't have an account?{' '}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <TouchableOpacity
+              onPress={() => (navigation as any).navigate('sign-up')}
+            >
               <Text style={[styles.linkText, { color: colors.primary }]}>
                 {t('signUp')}
               </Text>

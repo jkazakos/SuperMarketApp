@@ -1,6 +1,4 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { Product } from '@/features/products/types';
 import { ShoppingHistory } from '@/features/history/types';
 
@@ -11,8 +9,23 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
+export type MainTabScreenProps<
+  T extends keyof MainTabParamList = keyof MainTabParamList,
+> = {
+  navigation: any;
+  route: { key: string; name: T; params?: any };
+};
+
 export type RootStackParamList = {
-  MainTabs: NavigatorScreenParams<MainTabParamList>;
+  '(tabs)': undefined;
+  MainTabs: undefined;
+  'product-details': { product: Product };
+  checkout: undefined;
+  history: undefined;
+  'history-details': { history: ShoppingHistory };
+  settings: undefined;
+  'sign-in': undefined;
+  'sign-up': undefined;
   ProductDetails: { product: Product };
   Checkout: undefined;
   History: undefined;
@@ -24,6 +37,3 @@ export type RootStackParamList = {
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
-
-export type MainTabScreenProps<T extends keyof MainTabParamList> =
-  BottomTabScreenProps<MainTabParamList, T>;

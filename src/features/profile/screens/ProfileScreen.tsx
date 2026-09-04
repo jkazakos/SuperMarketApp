@@ -39,19 +39,19 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   };
 
   const navigateToHistory = () => {
-    (navigation as any).navigate('History');
+    (navigation as any).navigate('history');
   };
 
   const navigateToSettings = () => {
-    (navigation as any).navigate('Settings');
+    (navigation as any).navigate('settings');
   };
 
   const navigateToSignIn = () => {
-    (navigation as any).navigate('SignIn');
+    (navigation as any).navigate('sign-in');
   };
 
   const navigateToSignUp = () => {
-    (navigation as any).navigate('SignUp');
+    (navigation as any).navigate('sign-up');
   };
 
   return (

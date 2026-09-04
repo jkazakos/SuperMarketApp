@@ -17,6 +17,9 @@ web-build/
 .env.local
 .env.*.local
 
+#Logs
+*.log
+
 # macOS & Editor
 .DS_Store
 *.pem

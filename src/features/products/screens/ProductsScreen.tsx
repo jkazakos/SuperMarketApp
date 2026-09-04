@@ -82,7 +82,7 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
   }, [products, searchQuery, selectedCategory, sortType, i18n.language]);
 
   const handleProductPress = (product: Product) => {
-    (navigation as any).navigate('ProductDetails', { product });
+    (navigation as any).navigate('product-details', { product });
   };
 
   const handleToggleWishlist = async (productId: string) => {

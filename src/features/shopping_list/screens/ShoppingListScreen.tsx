@@ -41,7 +41,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
   };
 
   const handleCheckoutPress = () => {
-    (navigation as any).navigate('Checkout');
+    (navigation as any).navigate('checkout');
   };
 
   if (!user) {
@@ -102,7 +102,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
           <ShoppingListTile
             item={item}
             onPress={() =>
-              (navigation as any).navigate('ProductDetails', {
+              (navigation as any).navigate('product-details', {
                 product: item.product,
               })
             }

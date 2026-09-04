@@ -6,7 +6,6 @@ workflows:
     environment:
       node: 20
       xcode: latest
-      cocoapods: default
       vars:
         XCODE_WORKSPACE: 'ios/SuperMarketApp.xcworkspace'
         XCODE_SCHEME: 'SuperMarketApp'
@@ -14,19 +13,13 @@ workflows:
       - name: Install npm dependencies
         script: |
           npm install --legacy-peer-deps
-      - name: Expo Prebuild (Generate native iOS project)
+      - name: Expo Prebuild
         script: |
-          npx expo prebuild --platform ios --clean
-      - name: Install CocoaPods
-        script: |
-          cd ios && pod install
+          npx expo prebuild --platform ios
       - name: Build unsigned IPA
         script: |
           set -e
-          set -o pipefail
 
-          mkdir -p /tmp/xcodebuild_logs
-          mkdir -p build/ios/xcarchive
           mkdir -p build/ios/ipa
 
           xcodebuild archive \
@@ -38,8 +31,7 @@ workflows:
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            | tee /tmp/xcodebuild_logs/xcodebuild.log
+            CODE_SIGNING_ALLOWED=NO
 
           # Package .app bundle into unsigned .ipa
           rm -rf Payload
@@ -49,4 +41,3 @@ workflows:
           rm -rf Payload
     artifacts:
       - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log

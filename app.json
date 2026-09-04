@@ -2,6 +2,7 @@
   "expo": {
     "name": "SuperMarketApp",
     "slug": "supermarket-app",
+    "scheme": "supermarketapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/placeholder_image.png",
@@ -29,7 +30,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#111827"
         }
-      ]
+      ],
+      "expo-router"
     ],
     "extra": {
       "eas": {
