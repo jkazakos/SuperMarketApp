@@ -1,23 +1,29 @@
 {
   "expo": {
-    "name": "SuperMarketApp",
+    "name": "Market",
     "slug": "supermarket-app",
     "scheme": "supermarketapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/placeholder_image.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jason.supermarketapp",
+      "icon": {
+        "light": "./assets/images/icon-light.png",
+        "dark": "./assets/images/icon-dark.png",
+        "tinted": "./assets/images/icon-tinted.png"
+      },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/placeholder_image.png",
-        "backgroundColor": "#111827"
+        "foregroundImage": "./assets/images/android-adaptive-foreground.png",
+        "backgroundColor": "#4F46E5",
+        "monochromeImage": "./assets/images/android-adaptive-monochrome.png"
       },
       "package": "com.jason.supermarketapp"
     },
@@ -26,9 +32,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/placeholder_image.png",
+          "image": "./assets/images/splash-icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#111827"
+          "backgroundColor": "#111827",
+          "dark": {
+            "image": "./assets/images/splash-icon.png",
+            "backgroundColor": "#0B0F19"
+          }
         }
       ],
       "expo-router"
