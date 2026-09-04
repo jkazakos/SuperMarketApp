@@ -181,7 +181,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 { color: colors.textPrimary, marginTop: 24, marginBottom: 8 },
               ]}
             >
-              Spending Dashboard
+              {t('SpendingDashboard')}
             </Text>
 
             <SpendingCard
