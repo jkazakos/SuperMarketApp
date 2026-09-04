@@ -7,7 +7,7 @@ import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
 export default function TabLayout() {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
-  const cartCount = useCartStore((s) => s.totalQuantity);
+  const cartCount = useCartStore((s) => s.cartItems.length);
 
   return (
     <NativeTabs minimizeBehavior="onScrollDown" tintColor={colors.primary}>
