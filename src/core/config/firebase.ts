@@ -5,11 +5,13 @@ import { getFirestore } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDHhRpBphM4fdmEA3BbOTiHcuT3V2k4lpU',
-  appId: '1:398537824373:android:dbd4c18d09db871cafc03c',
-  messagingSenderId: '398537824373',
+  apiKey: 'AIzaSyBLC1mD6V64oYQXdqTsSMdTXxHIyV0ZPDE',
+  authDomain: 'supermarketapp-55d3a.firebaseapp.com',
   projectId: 'supermarketapp-55d3a',
   storageBucket: 'supermarketapp-55d3a.firebasestorage.app',
+  messagingSenderId: '398537824373',
+  appId: '1:398537824373:web:25899db54c569699afc03c',
+  measurementId: 'G-2JWZFL3WWR',
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
