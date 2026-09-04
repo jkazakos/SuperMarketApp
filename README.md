@@ -1,34 +1,14 @@
 # SuperMarketApp (In Development)
 
-A modern, cross-platform grocery shopping application built with **React Native**, **Expo**, **TypeScript**, and **Firebase**, ported from Flutter with clean feature-first architecture.
-
-## Features
-
-- **Cross-Platform**: Runs natively on iOS and Android.
-- **Modern Navigation**: Floating pill bottom navigation bar with real-time badges for cart items and wishlist count.
-- **Real-Time Product Catalog**:
-  - Live updates from Google Cloud Firestore.
-  - Search by localized name.
-  - Category filters and multiple sorting options (name, price, discount).
-  - Sale badges, discount price calculation, and stock availability indicators.
-- **Wishlist**: Quick toggle to save favorite products with cloud persistence.
-- **Dynamic Shopping List (Cart)**:
-  - Quantity controls with live total computation.
-  - Out-of-stock validation.
-- **Atomic Checkout**:
-  - Validates and decrements product inventory using atomic Firestore transactions.
-  - Generates immutable purchase history records with server timestamps.
-- **Spending Dashboard**: Real-time weekly and monthly spending calculations on the user profile.
-- **Theming**: Full Light and Dark mode support with persistent user preference.
-- **Multi-Language (i18n)**: Instant in-app language switching between **English** and **Greek** powered by `i18next`.
+A modern, cross-platform grocery shopping application built with **React Native**, **Expo (SDK 57)**, **TypeScript**, and **Firebase**, ported from Flutter with clean feature-first architecture.
 
 ## Tech Stack
 
-- **Framework**: [React Native](https://reactnative.dev/) with [Expo](https://expo.dev/) (SDK 52)
+- **Framework**: [React Native](https://reactnative.dev/) (0.86) with [Expo](https://expo.dev/) (SDK 57)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Routing**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing, Native Tabs & Native Stack)
 - **State Management**: [Zustand](https://zustand-demo.pmnd.rs/) with AsyncStorage persistence
 - **Localization**: [i18next](https://www.i18next.com/) & `react-i18next` with `expo-localization`
-- **Navigation**: [React Navigation 7](https://reactnavigation.org/) (Bottom Tabs + Native Stack)
 - **Backend & Database**: [Firebase](https://firebase.google.com/) (Auth & Cloud Firestore modular SDK)
 - **Formatting**: [Prettier](https://prettier.io/)
 
@@ -36,7 +16,7 @@ A modern, cross-platform grocery shopping application built with **React Native*
 
 ### Prerequisites
 
-- Node.js 18+ (tested on Node 22)
+- Node.js 18+ (tested on Node 20 / 22)
 - [npm](https://www.npmjs.com/) package manager
 
 ### Installation
@@ -47,7 +27,7 @@ A modern, cross-platform grocery shopping application built with **React Native*
    npm install
    ```
 
-2. **Run the development server**:
+2. **Start the development server**:
 
    ```bash
    npm run start
@@ -60,3 +40,15 @@ A modern, cross-platform grocery shopping application built with **React Native*
    # or
    npm run ios
    ```
+
+### Additional Commands
+
+- `npm run format` - Format code with Prettier.
+- `npm run build:apk` - Build release APK for Android (`cd android && ./gradlew assembleRelease`).
+- `npm run build:apk-debug` - Build debug APK for Android.
+- `npm run build:aab` - Build Android App Bundle (`cd android && ./gradlew bundleRelease`).
+- `npm run android:clean` - Clean Android Gradle build cache.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
