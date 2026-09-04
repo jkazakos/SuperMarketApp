@@ -144,11 +144,11 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
           </View>
 
           <TouchableOpacity
-            style={styles.deleteButton}
+            style={[styles.deleteButton, { backgroundColor: colors.error + '12' }]}
             onPress={onRemove}
             activeOpacity={0.7}
           >
-            <Ionicons name="trash-outline" size={20} color={colors.error} />
+            <Ionicons name="trash-outline" size={18} color={colors.error} />
           </TouchableOpacity>
         </View>
       </View>
@@ -159,21 +159,21 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     padding: 12,
     marginHorizontal: 16,
     marginVertical: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
     elevation: 2,
   },
   imageContainer: {
     width: 84,
     height: 84,
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: 'hidden',
   },
   image: {
@@ -224,14 +224,14 @@ const styles = StyleSheet.create({
   quantityControls: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: 4,
-    height: 32,
+    height: 34,
   },
   qtyButton: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -241,6 +241,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   deleteButton: {
-    padding: 6,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

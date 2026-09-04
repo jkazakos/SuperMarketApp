@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
+import { useWishlistStore } from '@/features/wishlist/stores/useWishlistStore';
 import { useSpendingTotals } from '../stores/useProfileStore';
 import { SpendingCard } from '../components/SpendingCard';
 import { ConfirmDialog } from '@/core/components/ConfirmDialog';
@@ -23,6 +24,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   const profile = useAuthStore((s) => s.profile);
   const signOut = useAuthStore((s) => s.signOut);
   const spending = useSpendingTotals();
+  const wishlistCount = useWishlistStore((s) => s.items.length);
 
   const [signOutDialogVisible, setSignOutDialogVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState('');
@@ -40,6 +42,10 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
 
   const navigateToHistory = () => {
     (navigation as any).navigate('history');
+  };
+
+  const navigateToWishlist = () => {
+    (navigation as any).navigate('wishlist');
   };
 
   const navigateToSettings = () => {
@@ -190,7 +196,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               icon="trending-up-outline"
             />
 
-            {/* View Purchase History Button */}
+            {/* Wishlist Button */}
             <TouchableOpacity
               style={[
                 styles.menuItem,
@@ -198,6 +204,53 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                   backgroundColor: colors.card,
                   borderColor: colors.border,
                   marginTop: 16,
+                },
+              ]}
+              onPress={navigateToWishlist}
+              activeOpacity={0.7}
+            >
+              <View style={styles.menuItemLeft}>
+                <View
+                  style={[
+                    styles.menuIconContainer,
+                    { backgroundColor: colors.secondaryContainer },
+                  ]}
+                >
+                  <Ionicons name="heart" size={20} color={colors.secondary} />
+                </View>
+                <Text style={[styles.menuItemLabel, { color: colors.textPrimary }]}>
+                  {t('wishlist')}
+                </Text>
+              </View>
+              <View style={styles.menuItemRight}>
+                {wishlistCount > 0 && (
+                  <View
+                    style={[
+                      styles.countBadge,
+                      { backgroundColor: colors.primaryContainer },
+                    ]}
+                  >
+                    <Text style={[styles.countBadgeText, { color: colors.primary }]}>
+                      {wishlistCount > 99 ? '99+' : wishlistCount}
+                    </Text>
+                  </View>
+                )}
+                <Ionicons
+                  name="chevron-forward"
+                  size={18}
+                  color={colors.textSecondary}
+                />
+              </View>
+            </TouchableOpacity>
+
+            {/* View Purchase History Button */}
+            <TouchableOpacity
+              style={[
+                styles.menuItem,
+                {
+                  backgroundColor: colors.card,
+                  borderColor: colors.border,
+                  marginTop: 10,
                 },
               ]}
               onPress={navigateToHistory}
@@ -359,11 +412,33 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
   },
   menuItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+  },
+  menuItemRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  countBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+    minWidth: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
   },
   menuIconContainer: {
     width: 36,

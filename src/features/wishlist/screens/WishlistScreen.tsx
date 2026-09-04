@@ -14,9 +14,9 @@ import { QuantityModal } from '@/features/products/components/QuantityModal';
 import { ConfirmDialog } from '@/core/components/ConfirmDialog';
 import { EmptyStateView } from '@/core/components/EmptyStateView';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
-import { MainTabScreenProps } from '@/navigation/types';
+import { RootStackScreenProps } from '@/navigation/types';
 
-export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
+export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
@@ -82,9 +82,19 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
           },
         ]}
       >
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('wishlist')}
-        </Text>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+          </TouchableOpacity>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
+            {t('wishlist')}
+          </Text>
+          <View style={{ width: 40 }} />
+        </View>
         <EmptyStateView message={t('guestMessage')} icon="lock-closed-outline" />
       </View>
     );
@@ -100,13 +110,21 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
         },
       ]}
     >
-      {/* Header with Title and Clear Action */}
+      {/* Header with Back, Title, and Clear Action */}
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+        </TouchableOpacity>
+
         <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
           {t('wishlist')}
         </Text>
 
-        {wishlistProducts.length > 0 && (
+        {wishlistProducts.length > 0 ? (
           <TouchableOpacity
             style={styles.clearButton}
             onPress={() => setClearDialogVisible(true)}
@@ -114,6 +132,8 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
           >
             <Ionicons name="trash-outline" size={20} color={colors.error} />
           </TouchableOpacity>
+        ) : (
+          <View style={{ width: 40 }} />
         )}
       </View>
 
@@ -122,7 +142,7 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
         data={wishlistProducts}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{
-          paddingBottom: 110,
+          paddingBottom: Math.max(insets.bottom + 20, 40),
           flexGrow: 1,
         }}
         renderItem={({ item }) => (
@@ -134,7 +154,14 @@ export const WishlistScreen: React.FC<MainTabScreenProps<'Wishlist'>> = ({
           />
         )}
         ListEmptyComponent={
-          <EmptyStateView message={t('emptyWishlistText')} icon="heart-outline" />
+          <EmptyStateView
+            message={t('emptyWishlistText')}
+            icon="heart-outline"
+            actionLabel={t('titleActivityProducts')}
+            onAction={() =>
+              (navigation as any).navigate('(tabs)', { screen: 'index' })
+            }
+          />
         }
       />
 
@@ -174,14 +201,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingBottom: 14,
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   headerTitle: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '800',
+    flex: 1,
+    textAlign: 'center',
   },
   clearButton: {
-    padding: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -65,6 +65,13 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
             resizeMode="contain"
           />
         )}
+        {isSale && (
+          <View style={[styles.saleBadge, { backgroundColor: colors.discount }]}>
+            <Text style={styles.badgeText}>
+              -{Math.round(product.discount * 100)}%
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Details */}
@@ -100,11 +107,11 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
       {/* Action Buttons */}
       <View style={styles.actionColumn}>
         <TouchableOpacity
-          style={styles.removeButton}
+          style={[styles.removeButton, { backgroundColor: colors.error + '12' }]}
           onPress={onRemove}
           activeOpacity={0.7}
         >
-          <Ionicons name="trash-outline" size={20} color={colors.error} />
+          <Ionicons name="trash-outline" size={18} color={colors.error} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -133,26 +140,40 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     padding: 12,
     marginHorizontal: 16,
     marginVertical: 6,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
     elevation: 2,
   },
   imageContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
+    width: 84,
+    height: 84,
+    borderRadius: 14,
     overflow: 'hidden',
+    position: 'relative',
   },
   image: {
     width: '100%',
     height: '100%',
+  },
+  saleBadge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  badgeText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '700',
   },
   detailsContainer: {
     flex: 1,
@@ -187,15 +208,19 @@ const styles = StyleSheet.create({
   actionColumn: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
     marginLeft: 8,
   },
   removeButton: {
-    padding: 6,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cartButton: {
-    width: 36,
-    height: 36,
+    width: 38,
+    height: 38,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',

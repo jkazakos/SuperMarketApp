@@ -18,6 +18,7 @@ function RootLayoutNav() {
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="wishlist" />
         <Stack.Screen name="product-details" />
         <Stack.Screen name="checkout" />
         <Stack.Screen name="history" />

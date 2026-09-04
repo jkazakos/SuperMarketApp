@@ -4,7 +4,6 @@ import { ShoppingHistory } from '@/features/history/types';
 
 export type MainTabParamList = {
   Products: undefined;
-  Wishlist: undefined;
   ShoppingList: undefined;
   Profile: undefined;
 };
@@ -19,6 +18,8 @@ export type MainTabScreenProps<
 export type RootStackParamList = {
   '(tabs)': undefined;
   MainTabs: undefined;
+  wishlist: undefined;
+  Wishlist: undefined;
   'product-details': { product: Product; id?: string };
   checkout: undefined;
   history: undefined;

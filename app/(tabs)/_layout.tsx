@@ -3,13 +3,11 @@ import { NativeTabs } from 'expo-router/unstable-native-tabs';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
-import { useWishlistStore } from '@/features/wishlist/stores/useWishlistStore';
 
 export default function TabLayout() {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const cartCount = useCartStore((s) => s.totalQuantity);
-  const wishlistCount = useWishlistStore((s) => s.items.length);
 
   return (
     <NativeTabs minimizeBehavior="onScrollDown" tintColor={colors.primary}>
@@ -18,16 +16,6 @@ export default function TabLayout() {
         <NativeTabs.Trigger.Label>
           {t('titleActivityProducts')}
         </NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="wishlist">
-        <NativeTabs.Trigger.Icon sf="heart.fill" md="favorite" />
-        <NativeTabs.Trigger.Label>{t('wishlist')}</NativeTabs.Trigger.Label>
-        {wishlistCount > 0 && (
-          <NativeTabs.Trigger.Badge>
-            {wishlistCount > 99 ? '99+' : `${wishlistCount}`}
-          </NativeTabs.Trigger.Badge>
-        )}
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="shopping-list">

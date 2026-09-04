@@ -82,7 +82,7 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
       await AuthService.signUp(firstName, lastName, email, password);
       navigation.reset({
         index: 0,
-        routes: [{ name: 'MainTabs' }],
+        routes: [{ name: '(tabs)' }],
       });
     } catch (e: any) {
       setSnackMessage(e.message || t('signUpError'));

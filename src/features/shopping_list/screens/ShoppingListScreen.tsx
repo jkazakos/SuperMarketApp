@@ -113,7 +113,14 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
           />
         )}
         ListEmptyComponent={
-          <EmptyStateView message={t('emptyShoppingListText')} icon="cart-outline" />
+          <EmptyStateView
+            message={t('emptyShoppingListText')}
+            icon="cart-outline"
+            actionLabel={t('titleActivityProducts')}
+            onAction={() =>
+              (navigation as any).navigate('(tabs)', { screen: 'index' })
+            }
+          />
         }
       />
 
@@ -125,6 +132,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
             {
               backgroundColor: colors.card,
               borderColor: colors.border,
+              bottom: Math.max(insets.bottom + 65, 80),
             },
           ]}
         >
@@ -190,7 +198,6 @@ const styles = StyleSheet.create({
   },
   checkoutBar: {
     position: 'absolute',
-    bottom: 84, // Above the floating pill tab bar
     left: 16,
     right: 16,
     flexDirection: 'row',

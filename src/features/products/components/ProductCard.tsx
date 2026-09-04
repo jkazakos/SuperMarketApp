@@ -86,14 +86,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Wishlist Button */}
         <TouchableOpacity
-          style={styles.wishlistButton}
+          style={[
+            styles.wishlistButton,
+            {
+              backgroundColor: colors.isDark
+                ? 'rgba(30, 41, 59, 0.88)'
+                : 'rgba(255, 255, 255, 0.92)',
+              borderColor: colors.isDark
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.06)',
+              borderWidth: 1,
+            },
+          ]}
           onPress={onToggleWishlist}
           activeOpacity={0.7}
         >
           <Ionicons
             name={isInWishlist ? 'heart' : 'heart-outline'}
-            size={22}
-            color={isInWishlist ? colors.secondary : '#475569'}
+            size={20}
+            color={
+              isInWishlist ? colors.secondary : colors.isDark ? '#CBD5E1' : '#64748B'
+            }
           />
         </TouchableOpacity>
       </View>
@@ -157,17 +170,17 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: 6,
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 2,
   },
   imageContainer: {
-    height: 140,
+    height: 145,
     width: '100%',
     position: 'relative',
     alignItems: 'center',
@@ -183,7 +196,7 @@ const styles = StyleSheet.create({
     left: 8,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   badgeText: {
     color: '#FFFFFF',
@@ -206,10 +219,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -250,8 +262,8 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   cartButton: {
-    width: 34,
-    height: 34,
+    width: 36,
+    height: 36,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
