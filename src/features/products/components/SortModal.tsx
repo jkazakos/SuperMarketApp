@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Modal,
   View,
@@ -7,8 +6,10 @@ import {
   ScrollView,
   StyleSheet,
   Pressable,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { SortType } from '../types';
@@ -44,8 +45,13 @@ export const SortModal: React.FC<SortModalProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onClose}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
+        {Platform.OS === 'ios' && (
+          <BlurView tint="dark" intensity={40} style={StyleSheet.absoluteFill} />
+        )}
         <Pressable
           style={[
             styles.dialogContainer,
@@ -53,9 +59,7 @@ export const SortModal: React.FC<SortModalProps> = ({
           ]}
           onPress={(e) => e.stopPropagation()}
         >
-          <Text style={[styles.title, { color: colors.textPrimary }]}>
-            {t('sortBy')}
-          </Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>{t('sortBy')}</Text>
 
           <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             {options.map((opt) => {
@@ -72,6 +76,9 @@ export const SortModal: React.FC<SortModalProps> = ({
                     onClose();
                   }}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <Text
                     style={[
@@ -84,9 +91,7 @@ export const SortModal: React.FC<SortModalProps> = ({
                   >
                     {opt.label}
                   </Text>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               );
             })}
@@ -97,6 +102,9 @@ export const SortModal: React.FC<SortModalProps> = ({
               style={styles.cancelButton}
               onPress={onClose}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('cancelText')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {t('cancelText')}
@@ -112,7 +120,7 @@ export const SortModal: React.FC<SortModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
@@ -121,13 +129,14 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 380,
     maxHeight: '75%',
-    borderRadius: 20,
+    borderRadius: 24,
+    borderCurve: 'continuous',
     borderWidth: 1,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.25,
-    shadowRadius: 15,
+    shadowRadius: 18,
     elevation: 8,
   },
   title: {

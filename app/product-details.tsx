@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalSearchParams, useNavigation, useRoute } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { ProductDetailsScreen } from '@/features/products/screens/ProductDetailsScreen';

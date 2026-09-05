@@ -30,29 +30,16 @@ export const CheckoutItemTile: React.FC<CheckoutItemTileProps> = ({ item }) => {
         },
       ]}
     >
-      <View
-        style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
-      >
+      <View style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}>
         {product.imageUrl ? (
-          <Image
-            source={{ uri: product.imageUrl }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
-          <Image
-            source={PLACEHOLDER_IMAGE}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={PLACEHOLDER_IMAGE} style={styles.image} resizeMode="contain" />
         )}
       </View>
 
       <View style={styles.detailsContainer}>
-        <Text
-          numberOfLines={2}
-          style={[styles.title, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.title, { color: colors.textPrimary }]}>
           {localizedName}
         </Text>
         <Text style={[styles.quantity, { color: colors.textSecondary }]}>

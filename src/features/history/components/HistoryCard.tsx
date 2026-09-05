@@ -20,9 +20,7 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ history, onPress }) =>
     ? DateFormatter.formatShortDate(history.datePurchased, i18n.language)
     : t('unknownDate');
 
-  const names = history.items.map((item) =>
-    getHistoryItemLocalizedName(item, i18n.language)
-  );
+  const names = history.items.map((item) => getHistoryItemLocalizedName(item, i18n.language));
 
   let preview = '';
   if (names.length > 2) {
@@ -47,21 +45,18 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ history, onPress }) =>
       ]}
       onPress={onPress}
       activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={`${t('shoppingHistory')}: ${dateStr}, ${CurrencyFormatter.format(history.totalAmount)} €, ${t('itemCount', { count: history.items.length })}, ${preview}`}
     >
       <View style={styles.content}>
         <View style={styles.topRow}>
-          <Text style={[styles.dateText, { color: colors.textSecondary }]}>
-            {dateStr}
-          </Text>
+          <Text style={[styles.dateText, { color: colors.textSecondary }]}>{dateStr}</Text>
           <Text style={[styles.totalAmount, { color: colors.primary }]}>
             {CurrencyFormatter.format(history.totalAmount)} €
           </Text>
         </View>
 
-        <Text
-          numberOfLines={2}
-          style={[styles.previewText, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.previewText, { color: colors.textPrimary }]}>
           {preview}
         </Text>
 

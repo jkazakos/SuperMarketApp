@@ -8,9 +8,7 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
-export type MainTabScreenProps<
-  T extends keyof MainTabParamList = keyof MainTabParamList,
-> = {
+export type MainTabScreenProps<T extends keyof MainTabParamList = keyof MainTabParamList> = {
   navigation: any;
   route: { key: string; name: T; params?: any };
 };
@@ -23,18 +21,20 @@ export type RootStackParamList = {
   'product-details': { product: Product; id?: string };
   checkout: undefined;
   history: undefined;
-  'history-details': { history: ShoppingHistory; id?: string };
+  'history-details': { id: string };
   settings: undefined;
   'sign-in': undefined;
   'sign-up': undefined;
   ProductDetails: { product: Product; id?: string };
   Checkout: undefined;
   History: undefined;
-  HistoryDetails: { history: ShoppingHistory; id?: string };
+  HistoryDetails: { id: string; history?: ShoppingHistory };
   Settings: undefined;
   SignIn: undefined;
   SignUp: undefined;
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, T>;
+export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
+  RootStackParamList,
+  T
+>;

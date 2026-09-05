@@ -10,7 +10,8 @@
     "build:apk-debug": "cd android && ./gradlew assembleDebug",
     "build:aab": "cd android && ./gradlew bundleRelease",
     "android:clean": "cd android && ./gradlew clean",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@expo/ui": "~57.0.16",
@@ -19,7 +20,6 @@
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
-    "@uginy/react-native-liquid-glass": "^1.2.6",
     "expo": "^57.0.19",
     "expo-asset": "~57.0.16",
     "expo-blur": "^57.0.2",

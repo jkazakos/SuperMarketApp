@@ -40,13 +40,10 @@ AuthService.watchAuthState(async (firebaseUser) => {
   useAuthStore.getState().setUser(firebaseUser);
 
   if (firebaseUser) {
-    unsubscribeProfile = AuthService.watchUserProfile(
-      firebaseUser.uid,
-      (profile) => {
-        useAuthStore.getState().setProfile(profile);
-        useAuthStore.getState().setLoading(false);
-      }
-    );
+    unsubscribeProfile = AuthService.watchUserProfile(firebaseUser.uid, (profile) => {
+      useAuthStore.getState().setProfile(profile);
+      useAuthStore.getState().setLoading(false);
+    });
   } else {
     useAuthStore.getState().setProfile(null);
     useAuthStore.getState().setLoading(false);

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '../theme/ThemeContext';
 
@@ -38,9 +31,12 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onCancel}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onCancel}>
         <Pressable
+          accessibilityRole="alert"
           style={[
             styles.dialogContainer,
             { backgroundColor: colors.card, borderColor: colors.border },
@@ -48,14 +44,15 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           onPress={(e) => e.stopPropagation()}
         >
           <Text style={[styles.title, { color: colors.textPrimary }]}>{title}</Text>
-          <Text style={[styles.message, { color: colors.textSecondary }]}>
-            {message}
-          </Text>
+          <Text style={[styles.message, { color: colors.textSecondary }]}>{message}</Text>
           <View style={styles.buttonRow}>
             <TouchableOpacity
               style={[styles.button, styles.cancelButton]}
               onPress={onCancel}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={negativeText || t('no')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {negativeText || t('no')}
@@ -65,6 +62,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               style={[styles.button, { backgroundColor: colors.primary }]}
               onPress={onConfirm}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel={positiveText || t('yes')}
+              hitSlop={8}
             >
               <Text style={styles.confirmText}>{positiveText || t('yes')}</Text>
             </TouchableOpacity>

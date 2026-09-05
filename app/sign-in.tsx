@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigation } from 'expo-router';
 import { SignInScreen } from '@/features/auth/screens/SignInScreen';
 

@@ -17,9 +17,6 @@ export const getHistoryItemLocalizedName = (
   locale: string = 'en'
 ): string => {
   return (
-    item.productName[locale] ||
-    item.productName['en'] ||
-    Object.values(item.productName)[0] ||
-    ''
+    item.productName[locale] || item.productName['en'] || Object.values(item.productName)[0] || ''
   );
 };

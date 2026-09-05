@@ -1,7 +1,16 @@
 export class DateFormatter {
-  static formatShortDate(date: Date, locale: string = 'en'): string {
+  static formatShortDate(
+    date: Date | string | number | null | undefined,
+    locale: string = 'en'
+  ): string {
+    if (!date) return '';
     try {
-      const day = date.getDate().toString().padStart(2, '0');
+      const d = date instanceof Date ? date : new Date(date);
+      if (isNaN(d.getTime())) {
+        return '';
+      }
+
+      const day = d.getDate().toString().padStart(2, '0');
       const monthsEn = [
         'Jan',
         'Feb',
@@ -32,12 +41,12 @@ export class DateFormatter {
       ];
 
       const months = locale === 'el' ? monthsEl : monthsEn;
-      const month = months[date.getMonth()] || monthsEn[date.getMonth()];
-      const year = date.getFullYear();
+      const month = months[d.getMonth()] || monthsEn[d.getMonth()];
+      const year = d.getFullYear();
 
       return `${day} ${month} ${year}`;
     } catch {
-      return date.toDateString();
+      return '';
     }
   }
 }

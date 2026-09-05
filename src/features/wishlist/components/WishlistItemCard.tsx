@@ -47,29 +47,19 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={`${localizedName}, ${CurrencyFormatter.format(finalPrice)} €${isSoldOut ? `, ${t('soldOut')}` : ''}`}
     >
       {/* Thumbnail */}
-      <View
-        style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
-      >
+      <View style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}>
         {product.imageUrl ? (
-          <Image
-            source={{ uri: product.imageUrl }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
-          <Image
-            source={PLACEHOLDER_IMAGE}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={PLACEHOLDER_IMAGE} style={styles.image} resizeMode="contain" />
         )}
         {isSale && (
           <View style={[styles.saleBadge, { backgroundColor: colors.discount }]}>
-            <Text style={styles.badgeText}>
-              -{Math.round(product.discount * 100)}%
-            </Text>
+            <Text style={styles.badgeText}>-{Math.round(product.discount * 100)}%</Text>
           </View>
         )}
       </View>
@@ -77,18 +67,12 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
       {/* Details */}
       <View style={styles.detailsContainer}>
         {localizedCategory !== '' && (
-          <Text
-            numberOfLines={1}
-            style={[styles.categoryText, { color: colors.textSecondary }]}
-          >
+          <Text numberOfLines={1} style={[styles.categoryText, { color: colors.textSecondary }]}>
             {localizedCategory}
           </Text>
         )}
 
-        <Text
-          numberOfLines={2}
-          style={[styles.title, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.title, { color: colors.textPrimary }]}>
           {localizedName}
         </Text>
 
@@ -110,6 +94,9 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
           style={[styles.removeButton, { backgroundColor: colors.error + '12' }]}
           onPress={onRemove}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel={t('removeFromWishlist')}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons name="trash-outline" size={18} color={colors.error} />
         </TouchableOpacity>
@@ -124,6 +111,10 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
           onPress={onAddToCart}
           disabled={isSoldOut}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel={t('addToShoppingList')}
+          accessibilityState={{ disabled: isSoldOut }}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons
             name="cart-outline"
@@ -171,9 +162,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: '#0F172A',
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   detailsContainer: {
     flex: 1,

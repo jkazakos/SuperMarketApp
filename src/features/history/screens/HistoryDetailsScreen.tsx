@@ -5,62 +5,67 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { HistoryItemTile } from '../components/HistoryItemTile';
+import { HistoryHeader } from '../components/HistoryHeader';
 import { DateFormatter } from '@/core/utils/dateFormatter';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const HistoryDetailsScreen: React.FC<
-  RootStackScreenProps<'HistoryDetails'>
-> = ({ route, navigation }) => {
+export const HistoryDetailsScreen: React.FC<RootStackScreenProps<'HistoryDetails'>> = ({
+  route,
+  navigation,
+}) => {
   const history = route?.params?.history;
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   if (!history || typeof history !== 'object' || !Array.isArray(history.items)) {
     return (
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.background,
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <HistoryHeader title={t('shoppingHistory')} onBack={handleBack} />
+        <View
+          style={{
+            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             padding: 24,
-            paddingTop: Math.max(insets.top, 16),
-          },
-        ]}
-      >
-        <Ionicons
-          name="alert-circle-outline"
-          size={64}
-          color={colors.textSecondary}
-        />
-        <Text
-          style={{
-            color: colors.textPrimary,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 16,
-            textAlign: 'center',
           }}
         >
-          {t('historyNotFound', 'Order details not found')}
-        </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primary,
-            paddingHorizontal: 24,
-            paddingVertical: 12,
-            borderRadius: 8,
-            marginTop: 20,
-          }}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-            {t('goBack', 'Go Back')}
+          <Ionicons name="alert-circle-outline" size={64} color={colors.textSecondary} />
+          <Text
+            style={{
+              color: colors.textPrimary,
+              fontSize: 18,
+              fontWeight: '600',
+              marginTop: 16,
+              textAlign: 'center',
+            }}
+          >
+            {t('historyNotFound', 'Order details not found')}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              borderRadius: 8,
+              marginTop: 20,
+            }}
+            onPress={handleBack}
+            accessibilityRole="button"
+            accessibilityLabel={t('goBack', 'Go Back')}
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>{t('goBack', 'Go Back')}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -70,29 +75,9 @@ export const HistoryDetailsScreen: React.FC<
     : t('unknownDate');
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('shoppingHistory')}
-        </Text>
-        <View style={{ width: 40 }} />
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
+      <HistoryHeader title={t('shoppingHistory')} onBack={handleBack} />
 
       {/* Date & Total Overview */}
       <View
@@ -106,17 +91,13 @@ export const HistoryDetailsScreen: React.FC<
       >
         <View>
           <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
-            Date of Purchase
+            {t('dateOfPurchase')}
           </Text>
-          <Text style={[styles.dateValue, { color: colors.textPrimary }]}>
-            {dateStr}
-          </Text>
+          <Text style={[styles.dateValue, { color: colors.textPrimary }]}>{dateStr}</Text>
         </View>
 
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
-            Total Paid
-          </Text>
+          <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>{t('totalPaid')}</Text>
           <Text style={[styles.totalAmount, { color: colors.primary }]}>
             {CurrencyFormatter.format(history.totalAmount)} €
           </Text>
@@ -132,9 +113,12 @@ export const HistoryDetailsScreen: React.FC<
 
       {/* Items List */}
       <FlatList
+        contentInsetAdjustmentBehavior="automatic"
         data={history.items}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        contentContainerStyle={{
+          paddingBottom: Math.max(insets.bottom + 20, 40),
+        }}
         renderItem={({ item }) => <HistoryItemTile item={item} />}
       />
     </View>
@@ -144,20 +128,6 @@ export const HistoryDetailsScreen: React.FC<
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
   },
   overviewCard: {
     flexDirection: 'row',

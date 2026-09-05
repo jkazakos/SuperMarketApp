@@ -2,21 +2,14 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
-import {
-  useSettingsStore,
-  ThemeMode,
-  AppLanguage,
-} from '../stores/useSettingsStore';
+import { useSettingsStore, ThemeMode, AppLanguage } from '../stores/useSettingsStore';
+import { SettingsHeader } from '../components/SettingsHeader';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
-  navigation,
-}) => {
+export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors, themeMode, setThemeMode } = useAppTheme();
-  const insets = useSafeAreaInsets();
 
   const currentLanguage = useSettingsStore((s) => s.language);
   const setLanguage = useSettingsStore((s) => s.setLanguage);
@@ -36,33 +29,22 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
     { lang: 'el', label: t('greek'), flag: '🇬🇷' },
   ];
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('settings')}
-        </Text>
-        <View style={{ width: 40 }} />
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
+      <SettingsHeader title={t('settings')} onBack={handleBack} />
 
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* Appearance Section */}
@@ -83,15 +65,14 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
             const isSelected = themeMode === opt.mode;
             return (
               <React.Fragment key={opt.mode}>
-                {index > 0 && (
-                  <View
-                    style={[styles.divider, { backgroundColor: colors.border }]}
-                  />
-                )}
+                {index > 0 && <View style={[styles.divider, { backgroundColor: colors.border }]} />}
                 <TouchableOpacity
                   style={styles.optionRow}
                   onPress={() => setThemeMode(opt.mode)}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <View style={styles.optionLeft}>
                     <Ionicons
@@ -111,9 +92,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                       {opt.label}
                     </Text>
                   </View>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               </React.Fragment>
             );
@@ -121,12 +100,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
         </View>
 
         {/* Language Section */}
-        <Text
-          style={[
-            styles.sectionTitle,
-            { color: colors.textSecondary, marginTop: 28 },
-          ]}
-        >
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary, marginTop: 28 }]}>
           {t('language').toUpperCase()}
         </Text>
 
@@ -143,15 +117,14 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
             const isSelected = currentLanguage === opt.lang;
             return (
               <React.Fragment key={opt.lang}>
-                {index > 0 && (
-                  <View
-                    style={[styles.divider, { backgroundColor: colors.border }]}
-                  />
-                )}
+                {index > 0 && <View style={[styles.divider, { backgroundColor: colors.border }]} />}
                 <TouchableOpacity
                   style={styles.optionRow}
                   onPress={() => setLanguage(opt.lang)}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <View style={styles.optionLeft}>
                     <Text style={{ fontSize: 20 }}>{opt.flag}</Text>
@@ -167,9 +140,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                       {opt.label}
                     </Text>
                   </View>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               </React.Fragment>
             );
@@ -184,19 +155,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 40,
   },
   sectionTitle: {
     fontSize: 12,

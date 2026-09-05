@@ -2,23 +2,20 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { useWishlistStore } from '@/features/wishlist/stores/useWishlistStore';
 import { useSpendingTotals } from '../stores/useProfileStore';
 import { SpendingCard } from '../components/SpendingCard';
+import { ProfileHeader } from '../components/ProfileHeader';
 import { ConfirmDialog } from '@/core/components/ConfirmDialog';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { MainTabScreenProps } from '@/navigation/types';
 import { getFullName } from '@/features/auth/types';
 
-export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
-  navigation,
-}) => {
+export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
 
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
@@ -30,8 +27,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
 
-  const displayName =
-    getFullName(profile) || user?.displayName || user?.email || 'User';
+  const displayName = getFullName(profile) || user?.displayName || user?.email || 'User';
 
   const handleSignOut = async () => {
     await signOut();
@@ -61,31 +57,19 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('userProfile')}
-        </Text>
-        <TouchableOpacity
-          style={styles.settingsButton}
-          onPress={navigateToSettings}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="settings-outline" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
+      <ProfileHeader title={t('userProfile')} onOpenSettings={navigateToSettings} />
 
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 110 }}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: 8,
+            paddingBottom: 110,
+          },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* User Card or Guest Card */}
@@ -99,18 +83,11 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               },
             ]}
           >
-            <View
-              style={[
-                styles.avatarCircle,
-                { backgroundColor: colors.primaryContainer },
-              ]}
-            >
+            <View style={[styles.avatarCircle, { backgroundColor: colors.primaryContainer }]}>
               <Ionicons name="person" size={32} color={colors.primary} />
             </View>
             <View style={styles.userInfo}>
-              <Text style={[styles.userName, { color: colors.textPrimary }]}>
-                {displayName}
-              </Text>
+              <Text style={[styles.userName, { color: colors.textPrimary }]}>{displayName}</Text>
               {user.email && (
                 <Text style={[styles.userEmail, { color: colors.textSecondary }]}>
                   {user.email}
@@ -128,11 +105,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               },
             ]}
           >
-            <Ionicons
-              name="person-circle-outline"
-              size={56}
-              color={colors.textSecondary}
-            />
+            <Ionicons name="person-circle-outline" size={56} color={colors.textSecondary} />
             <Text style={[styles.guestPrompt, { color: colors.textPrimary }]}>
               {t('guestMessage')}
             </Text>
@@ -146,6 +119,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 ]}
                 onPress={navigateToSignIn}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={t('signIn')}
               >
                 <Text style={styles.guestButtonText}>{t('signIn')}</Text>
               </TouchableOpacity>
@@ -161,10 +136,10 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 ]}
                 onPress={navigateToSignUp}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={t('signUp')}
               >
-                <Text
-                  style={[styles.guestButtonText, { color: colors.textPrimary }]}
-                >
+                <Text style={[styles.guestButtonText, { color: colors.textPrimary }]}>
                   {t('signUp')}
                 </Text>
               </TouchableOpacity>
@@ -208,13 +183,12 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={navigateToWishlist}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('wishlist')}${wishlistCount > 0 ? `, ${t('itemCount', { count: wishlistCount })}` : ''}`}
             >
               <View style={styles.menuItemLeft}>
                 <View
-                  style={[
-                    styles.menuIconContainer,
-                    { backgroundColor: colors.secondaryContainer },
-                  ]}
+                  style={[styles.menuIconContainer, { backgroundColor: colors.secondaryContainer }]}
                 >
                   <Ionicons name="heart" size={20} color={colors.secondary} />
                 </View>
@@ -224,22 +198,13 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               </View>
               <View style={styles.menuItemRight}>
                 {wishlistCount > 0 && (
-                  <View
-                    style={[
-                      styles.countBadge,
-                      { backgroundColor: colors.primaryContainer },
-                    ]}
-                  >
+                  <View style={[styles.countBadge, { backgroundColor: colors.primaryContainer }]}>
                     <Text style={[styles.countBadgeText, { color: colors.primary }]}>
                       {wishlistCount > 99 ? '99+' : wishlistCount}
                     </Text>
                   </View>
                 )}
-                <Ionicons
-                  name="chevron-forward"
-                  size={18}
-                  color={colors.textSecondary}
-                />
+                <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
               </View>
             </TouchableOpacity>
 
@@ -255,29 +220,20 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={navigateToHistory}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('viewHistory')}
             >
               <View style={styles.menuItemLeft}>
                 <View
-                  style={[
-                    styles.menuIconContainer,
-                    { backgroundColor: colors.surfaceVariant },
-                  ]}
+                  style={[styles.menuIconContainer, { backgroundColor: colors.surfaceVariant }]}
                 >
-                  <Ionicons
-                    name="receipt-outline"
-                    size={20}
-                    color={colors.primary}
-                  />
+                  <Ionicons name="receipt-outline" size={20} color={colors.primary} />
                 </View>
                 <Text style={[styles.menuItemLabel, { color: colors.textPrimary }]}>
                   {t('viewHistory')}
                 </Text>
               </View>
-              <Ionicons
-                name="chevron-forward"
-                size={18}
-                color={colors.textSecondary}
-              />
+              <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
             </TouchableOpacity>
 
             {/* Sign Out Button */}
@@ -291,11 +247,11 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={() => setSignOutDialogVisible(true)}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('signOut')}
             >
               <Ionicons name="log-out-outline" size={20} color={colors.error} />
-              <Text style={[styles.signOutText, { color: colors.error }]}>
-                {t('signOut')}
-              </Text>
+              <Text style={[styles.signOutText, { color: colors.error }]}>{t('signOut')}</Text>
             </TouchableOpacity>
           </>
         )}
@@ -327,19 +283,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 14,
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: '800',
-  },
-  settingsButton: {
-    padding: 8,
   },
   userCard: {
     flexDirection: 'row',

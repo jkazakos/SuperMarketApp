@@ -14,10 +14,7 @@ export class WishlistService {
     return collection(db, 'users', userId, 'wishlist');
   }
 
-  static watchWishlistProductIds(
-    userId: string,
-    callback: (productIds: string[]) => void
-  ) {
+  static watchWishlistProductIds(userId: string, callback: (productIds: string[]) => void) {
     const colRef = WishlistService.getCollection(userId);
     return onSnapshot(
       colRef,

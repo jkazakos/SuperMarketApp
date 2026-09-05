@@ -1,8 +1,5 @@
 import { useHistoryStore } from '@/features/history/stores/useHistoryStore';
-import {
-  calculateSpendingTotals,
-  SpendingTotals,
-} from '../utils/spendingCalculation';
+import { calculateSpendingTotals, SpendingTotals } from '../utils/spendingCalculation';
 
 export { calculateSpendingTotals, SpendingTotals };
 

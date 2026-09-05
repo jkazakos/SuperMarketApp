@@ -18,9 +18,7 @@ import { AuthService } from '../services/authService';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
-  navigation,
-}) => {
+export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -112,12 +110,13 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
             style={styles.backButton}
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={t('cancelText')}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+            <Ionicons name="close" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-            {t('signUp')}
-          </Text>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>{t('signUp')}</Text>
           <View style={{ width: 40 }} />
         </View>
 
@@ -130,11 +129,10 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
           keyboardShouldPersistTaps="handled"
         >
           <Text style={[styles.welcomeText, { color: colors.textPrimary }]}>
-            Create Account
+            {t('createAccount')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Join Market for personalized shopping lists, favorites, and fast
-            checkout.
+            {t('signUpSubtitle')}
           </Text>
 
           {/* First Name & Last Name */}
@@ -188,9 +186,7 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
 
           {/* Email Input */}
           <View style={styles.field}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>
-              {t('emailHint')}
-            </Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t('emailHint')}</Text>
             <View
               style={[
                 styles.inputWrapper,
@@ -220,9 +216,7 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
 
           {/* Password Input */}
           <View style={styles.field}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>
-              {t('passwordHint')}
-            </Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t('passwordHint')}</Text>
             <View
               style={[
                 styles.inputWrapper,
@@ -249,6 +243,14 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
               <TouchableOpacity
                 onPress={() => setObscurePassword(!obscurePassword)}
                 activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  obscurePassword
+                    ? t('showPassword', 'Show password')
+                    : t('hidePassword', 'Hide password')
+                }
+                accessibilityState={{ checked: !obscurePassword }}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 <Ionicons
                   name={obscurePassword ? 'eye-outline' : 'eye-off-outline'}
@@ -271,6 +273,9 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
             onPress={handleSignUp}
             disabled={loading}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel={t('signUp')}
+            accessibilityState={{ busy: loading, disabled: loading }}
           >
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
@@ -281,15 +286,19 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
 
           {/* Prompt to Sign In */}
           <View style={styles.promptRow}>
-            <Text style={{ color: colors.textSecondary }}>
-              Already have an account?{' '}
-            </Text>
+            <Text style={{ color: colors.textSecondary }}>{t('alreadyHaveAccount')} </Text>
             <TouchableOpacity
-              onPress={() => (navigation as any).navigate('sign-in')}
+              onPress={() => {
+                if (typeof (navigation as any).replace === 'function') {
+                  (navigation as any).replace('sign-in');
+                } else {
+                  (navigation as any).navigate('sign-in');
+                }
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={t('signIn')}
             >
-              <Text style={[styles.linkText, { color: colors.primary }]}>
-                {t('signIn')}
-              </Text>
+              <Text style={[styles.linkText, { color: colors.primary }]}>{t('signIn')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

@@ -17,14 +17,8 @@ export class HistoryService {
     return collection(db, 'users', userId, 'purchaseHistory');
   }
 
-  static watchPurchaseHistory(
-    userId: string,
-    callback: (history: ShoppingHistory[]) => void
-  ) {
-    const q = query(
-      HistoryService.getCollection(userId),
-      orderBy('datePurchased', 'desc')
-    );
+  static watchPurchaseHistory(userId: string, callback: (history: ShoppingHistory[]) => void) {
+    const q = query(HistoryService.getCollection(userId), orderBy('datePurchased', 'desc'));
 
     return onSnapshot(
       q,
@@ -34,15 +28,19 @@ export class HistoryService {
           let datePurchased: Date | null = null;
           if (data.datePurchased instanceof Timestamp) {
             datePurchased = data.datePurchased.toDate();
-          } else if (typeof data.datePurchased === 'number') {
+          } else if (typeof data.datePurchased?.toDate === 'function') {
+            datePurchased = data.datePurchased.toDate();
+          } else if (
+            typeof data.datePurchased === 'number' ||
+            typeof data.datePurchased === 'string'
+          ) {
             datePurchased = new Date(data.datePurchased);
           }
 
           const rawItems = Array.isArray(data.items) ? data.items : [];
           const items: ShoppingHistoryItem[] = rawItems.map((item: any) => ({
             productId: String(item.productId || ''),
-            productName:
-              typeof item.productName === 'object' ? item.productName : {},
+            productName: typeof item.productName === 'object' ? item.productName : {},
             quantity: Number(item.quantity) || 1,
             priceAtPurchase: Number(item.priceAtPurchase) || 0,
           }));

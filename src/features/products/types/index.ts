@@ -19,19 +19,11 @@ export enum SortType {
   DiscountDesc = 'discountDesc',
 }
 
-export const getLocalizedName = (
-  product?: Product | null,
-  locale: string = 'en'
-): string => {
+export const getLocalizedName = (product?: Product | null, locale: string = 'en'): string => {
   if (!product || !product.name || typeof product.name !== 'object') {
     return '';
   }
-  return (
-    product.name[locale] ||
-    product.name['en'] ||
-    Object.values(product.name)[0] ||
-    ''
-  );
+  return product.name[locale] || product.name['en'] || Object.values(product.name)[0] || '';
 };
 
 export const getLocalizedDescription = (
@@ -49,18 +41,12 @@ export const getLocalizedDescription = (
   );
 };
 
-export const getLocalizedCategory = (
-  product?: Product | null,
-  locale: string = 'en'
-): string => {
+export const getLocalizedCategory = (product?: Product | null, locale: string = 'en'): string => {
   if (!product || !product.category || typeof product.category !== 'object') {
     return '';
   }
   return (
-    product.category[locale] ||
-    product.category['en'] ||
-    Object.values(product.category)[0] ||
-    ''
+    product.category[locale] || product.category['en'] || Object.values(product.category)[0] || ''
   );
 };
 

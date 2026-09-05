@@ -1,10 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import { lightColors, darkColors, ThemeColors } from '../constants/colors';
-import {
-  useSettingsStore,
-  ThemeMode,
-} from '@/features/settings/stores/useSettingsStore';
+import { useSettingsStore, ThemeMode } from '@/features/settings/stores/useSettingsStore';
 
 interface ThemeContextValue {
   colors: ThemeColors;
@@ -20,9 +17,7 @@ const ThemeContext = createContext<ThemeContextValue>({
   setThemeMode: () => {},
 });
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemScheme = useColorScheme();
   const themeMode = useSettingsStore((s) => s.themeMode);
   const setThemeMode = useSettingsStore((s) => s.setThemeMode);

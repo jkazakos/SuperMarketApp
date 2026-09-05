@@ -21,15 +21,11 @@ export const EmptyStateView: React.FC<EmptyStateViewProps> = ({
   return (
     <View style={styles.container}>
       {icon && (
-        <View
-          style={[styles.iconContainer, { backgroundColor: colors.surfaceVariant }]}
-        >
+        <View style={[styles.iconContainer, { backgroundColor: colors.surfaceVariant }]}>
           <Ionicons name={icon} size={48} color={colors.textSecondary} />
         </View>
       )}
-      <Text style={[styles.message, { color: colors.textSecondary }]}>
-        {message}
-      </Text>
+      <Text style={[styles.message, { color: colors.textSecondary }]}>{message}</Text>
       {actionLabel && onAction && (
         <TouchableOpacity
           style={[styles.actionButton, { backgroundColor: colors.primary }]}

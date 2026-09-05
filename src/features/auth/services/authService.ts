@@ -16,11 +16,7 @@ export class AuthService {
   }
 
   static async signIn(email: string, password: string): Promise<User> {
-    const cred = await signInWithEmailAndPassword(
-      auth,
-      email.trim(),
-      password.trim()
-    );
+    const cred = await signInWithEmailAndPassword(auth, email.trim(), password.trim());
     return cred.user;
   }
 
@@ -30,11 +26,7 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<User> {
-    const cred = await createUserWithEmailAndPassword(
-      auth,
-      email.trim(),
-      password.trim()
-    );
+    const cred = await createUserWithEmailAndPassword(auth, email.trim(), password.trim());
     const user = cred.user;
 
     const fullName = `${firstName} ${lastName}`.trim();
@@ -62,10 +54,7 @@ export class AuthService {
     return snap.data() as UserProfile;
   }
 
-  static watchUserProfile(
-    userId: string,
-    callback: (profile: UserProfile | null) => void
-  ) {
+  static watchUserProfile(userId: string, callback: (profile: UserProfile | null) => void) {
     return onSnapshot(doc(db, 'users', userId), (snap) => {
       if (snap.exists()) {
         callback(snap.data() as UserProfile);
