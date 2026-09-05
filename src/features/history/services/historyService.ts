@@ -34,7 +34,9 @@ export class HistoryService {
           let datePurchased: Date | null = null;
           if (data.datePurchased instanceof Timestamp) {
             datePurchased = data.datePurchased.toDate();
-          } else if (typeof data.datePurchased === 'number') {
+          } else if (typeof data.datePurchased?.toDate === 'function') {
+            datePurchased = data.datePurchased.toDate();
+          } else if (typeof data.datePurchased === 'number' || typeof data.datePurchased === 'string') {
             datePurchased = new Date(data.datePurchased);
           }
 

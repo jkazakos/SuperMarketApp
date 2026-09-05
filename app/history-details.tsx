@@ -1,53 +1,39 @@
 import { useMemo } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useNavigation, useRoute } from 'expo-router';
 import { HistoryDetailsScreen } from '@/features/history/screens/HistoryDetailsScreen';
 import { useHistoryStore } from '@/features/history/stores/useHistoryStore';
-import { ShoppingHistory } from '@/features/history/types';
+import { useAppTheme } from '@/core/theme/ThemeContext';
 
-export default function HistoryDetailsRoute(props: any) {
+export default function HistoryDetailsRoute() {
   const navigation = useNavigation();
+  const rawParams = useLocalSearchParams<{ id?: string }>();
   const rnRoute = useRoute<any>();
-  const rawParams = useLocalSearchParams();
   const historyList = useHistoryStore((s) => s.history);
+  const loading = useHistoryStore((s) => s.loading);
+  const { colors } = useAppTheme();
 
-  const history = useMemo((): ShoppingHistory | null => {
-    // 1. Direct route param from React Navigation
-    const directHistory = rnRoute?.params?.history || props?.route?.params?.history;
-    if (directHistory && typeof directHistory === 'object' && directHistory.id) {
-      return directHistory;
-    }
+  const historyId = rawParams.id || rnRoute?.params?.id;
 
-    // 2. Parsed JSON from stringified route param
-    if (typeof directHistory === 'string' && directHistory !== '[object Object]') {
-      try {
-        const parsed = JSON.parse(directHistory);
-        if (parsed && typeof parsed === 'object' && parsed.id) return parsed;
-      } catch {}
-    }
+  const history = useMemo(() => {
+    if (!historyId) return null;
+    return historyList.find((h) => h.id === String(historyId)) ?? null;
+  }, [historyId, historyList]);
 
-    // 3. Raw search params from expo-router (if JSON string)
-    const raw = rawParams.history;
-    if (typeof raw === 'string' && raw !== '[object Object]') {
-      try {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.id) return parsed;
-      } catch {}
-    }
-
-    // 4. By ID lookup
-    const historyId =
-      directHistory?.id ||
-      rnRoute?.params?.id ||
-      props?.route?.params?.id ||
-      (typeof rawParams.id === 'string' ? rawParams.id : undefined);
-
-    if (historyId) {
-      const found = historyList.find((h) => h.id === String(historyId));
-      if (found) return found;
-    }
-
-    return null;
-  }, [rnRoute?.params, props?.route?.params, rawParams, historyList]);
+  if (loading && !history) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <HistoryDetailsScreen
@@ -55,7 +41,7 @@ export default function HistoryDetailsRoute(props: any) {
       route={{
         key: 'HistoryDetails',
         name: 'HistoryDetails',
-        params: { history: history as any },
+        params: { history: history as any, id: historyId },
       }}
     />
   );

@@ -23,14 +23,14 @@ export type RootStackParamList = {
   'product-details': { product: Product; id?: string };
   checkout: undefined;
   history: undefined;
-  'history-details': { history: ShoppingHistory; id?: string };
+  'history-details': { id: string };
   settings: undefined;
   'sign-in': undefined;
   'sign-up': undefined;
   ProductDetails: { product: Product; id?: string };
   Checkout: undefined;
   History: undefined;
-  HistoryDetails: { history: ShoppingHistory; id?: string };
+  HistoryDetails: { id: string; history?: ShoppingHistory };
   Settings: undefined;
   SignIn: undefined;
   SignUp: undefined;
