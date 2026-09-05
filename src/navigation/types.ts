@@ -8,9 +8,7 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
-export type MainTabScreenProps<
-  T extends keyof MainTabParamList = keyof MainTabParamList,
-> = {
+export type MainTabScreenProps<T extends keyof MainTabParamList = keyof MainTabParamList> = {
   navigation: any;
   route: { key: string; name: T; params?: any };
 };
@@ -36,5 +34,7 @@ export type RootStackParamList = {
   SignUp: undefined;
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, T>;
+export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
+  RootStackParamList,
+  T
+>;

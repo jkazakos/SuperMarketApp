@@ -4,10 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { ProfileHeaderProps } from './ProfileHeader.types';
 
-export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
-  title,
-  onOpenSettings,
-}) => {
+export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ title, onOpenSettings }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
 

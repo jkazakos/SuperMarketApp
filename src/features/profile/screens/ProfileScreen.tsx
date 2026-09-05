@@ -13,9 +13,7 @@ import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { MainTabScreenProps } from '@/navigation/types';
 import { getFullName } from '@/features/auth/types';
 
-export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
-  navigation,
-}) => {
+export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
 
@@ -29,8 +27,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
 
-  const displayName =
-    getFullName(profile) || user?.displayName || user?.email || 'User';
+  const displayName = getFullName(profile) || user?.displayName || user?.email || 'User';
 
   const handleSignOut = async () => {
     await signOut();
@@ -86,18 +83,11 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               },
             ]}
           >
-            <View
-              style={[
-                styles.avatarCircle,
-                { backgroundColor: colors.primaryContainer },
-              ]}
-            >
+            <View style={[styles.avatarCircle, { backgroundColor: colors.primaryContainer }]}>
               <Ionicons name="person" size={32} color={colors.primary} />
             </View>
             <View style={styles.userInfo}>
-              <Text style={[styles.userName, { color: colors.textPrimary }]}>
-                {displayName}
-              </Text>
+              <Text style={[styles.userName, { color: colors.textPrimary }]}>{displayName}</Text>
               {user.email && (
                 <Text style={[styles.userEmail, { color: colors.textSecondary }]}>
                   {user.email}
@@ -115,11 +105,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               },
             ]}
           >
-            <Ionicons
-              name="person-circle-outline"
-              size={56}
-              color={colors.textSecondary}
-            />
+            <Ionicons name="person-circle-outline" size={56} color={colors.textSecondary} />
             <Text style={[styles.guestPrompt, { color: colors.textPrimary }]}>
               {t('guestMessage')}
             </Text>
@@ -153,9 +139,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 accessibilityRole="button"
                 accessibilityLabel={t('signUp')}
               >
-                <Text
-                  style={[styles.guestButtonText, { color: colors.textPrimary }]}
-                >
+                <Text style={[styles.guestButtonText, { color: colors.textPrimary }]}>
                   {t('signUp')}
                 </Text>
               </TouchableOpacity>
@@ -204,10 +188,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
             >
               <View style={styles.menuItemLeft}>
                 <View
-                  style={[
-                    styles.menuIconContainer,
-                    { backgroundColor: colors.secondaryContainer },
-                  ]}
+                  style={[styles.menuIconContainer, { backgroundColor: colors.secondaryContainer }]}
                 >
                   <Ionicons name="heart" size={20} color={colors.secondary} />
                 </View>
@@ -217,22 +198,13 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               </View>
               <View style={styles.menuItemRight}>
                 {wishlistCount > 0 && (
-                  <View
-                    style={[
-                      styles.countBadge,
-                      { backgroundColor: colors.primaryContainer },
-                    ]}
-                  >
+                  <View style={[styles.countBadge, { backgroundColor: colors.primaryContainer }]}>
                     <Text style={[styles.countBadgeText, { color: colors.primary }]}>
                       {wishlistCount > 99 ? '99+' : wishlistCount}
                     </Text>
                   </View>
                 )}
-                <Ionicons
-                  name="chevron-forward"
-                  size={18}
-                  color={colors.textSecondary}
-                />
+                <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
               </View>
             </TouchableOpacity>
 
@@ -253,26 +225,15 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
             >
               <View style={styles.menuItemLeft}>
                 <View
-                  style={[
-                    styles.menuIconContainer,
-                    { backgroundColor: colors.surfaceVariant },
-                  ]}
+                  style={[styles.menuIconContainer, { backgroundColor: colors.surfaceVariant }]}
                 >
-                  <Ionicons
-                    name="receipt-outline"
-                    size={20}
-                    color={colors.primary}
-                  />
+                  <Ionicons name="receipt-outline" size={20} color={colors.primary} />
                 </View>
                 <Text style={[styles.menuItemLabel, { color: colors.textPrimary }]}>
                   {t('viewHistory')}
                 </Text>
               </View>
-              <Ionicons
-                name="chevron-forward"
-                size={18}
-                color={colors.textSecondary}
-              />
+              <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
             </TouchableOpacity>
 
             {/* Sign Out Button */}
@@ -290,9 +251,7 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               accessibilityLabel={t('signOut')}
             >
               <Ionicons name="log-out-outline" size={20} color={colors.error} />
-              <Text style={[styles.signOutText, { color: colors.error }]}>
-                {t('signOut')}
-              </Text>
+              <Text style={[styles.signOutText, { color: colors.error }]}>{t('signOut')}</Text>
             </TouchableOpacity>
           </>
         )}

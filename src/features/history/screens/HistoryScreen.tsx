@@ -13,9 +13,7 @@ import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { RootStackScreenProps } from '@/navigation/types';
 import { ShoppingHistory } from '../types';
 
-export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
-  navigation,
-}) => {
+export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -81,10 +79,7 @@ export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
           <HistoryCard history={item} onPress={() => handleCardPress(item)} />
         )}
         ListEmptyComponent={
-          <EmptyStateView
-            message={t('emptyShoppingHistoryText')}
-            icon="receipt-outline"
-          />
+          <EmptyStateView message={t('emptyShoppingHistoryText')} icon="receipt-outline" />
         }
       />
 

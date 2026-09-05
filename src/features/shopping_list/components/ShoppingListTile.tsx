@@ -54,39 +54,23 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
       accessibilityLabel={`${localizedName}, ${t('totalPrice', { price: CurrencyFormatter.format(itemTotal) })}`}
     >
       {/* Thumbnail */}
-      <View
-        style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
-      >
+      <View style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}>
         {product.imageUrl ? (
-          <Image
-            source={{ uri: product.imageUrl }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
-          <Image
-            source={PLACEHOLDER_IMAGE}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={PLACEHOLDER_IMAGE} style={styles.image} resizeMode="contain" />
         )}
       </View>
 
       {/* Details */}
       <View style={styles.detailsContainer}>
         {localizedCategory !== '' && (
-          <Text
-            numberOfLines={1}
-            style={[styles.categoryText, { color: colors.textSecondary }]}
-          >
+          <Text numberOfLines={1} style={[styles.categoryText, { color: colors.textSecondary }]}>
             {localizedCategory}
           </Text>
         )}
 
-        <Text
-          numberOfLines={2}
-          style={[styles.title, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.title, { color: colors.textPrimary }]}>
           {localizedName}
         </Text>
 

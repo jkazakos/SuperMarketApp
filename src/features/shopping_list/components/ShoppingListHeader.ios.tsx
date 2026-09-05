@@ -4,10 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { ShoppingListHeaderProps } from './ShoppingListHeader.types';
 
-export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({
-  title,
-  onClear,
-}) => {
+export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({ title, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
 

@@ -65,11 +65,7 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({
   );
 };
 
-export const WishlistHeader: React.FC<WishlistHeaderProps> = ({
-  title,
-  onBack,
-  onClear,
-}) => {
+export const WishlistHeader: React.FC<WishlistHeaderProps> = ({ title, onBack, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -98,10 +94,7 @@ export const WishlistHeader: React.FC<WishlistHeaderProps> = ({
           <View style={styles.placeholder} />
         )}
 
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 

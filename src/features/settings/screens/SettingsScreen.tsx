@@ -3,17 +3,11 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
-import {
-  useSettingsStore,
-  ThemeMode,
-  AppLanguage,
-} from '../stores/useSettingsStore';
+import { useSettingsStore, ThemeMode, AppLanguage } from '../stores/useSettingsStore';
 import { SettingsHeader } from '../components/SettingsHeader';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
-  navigation,
-}) => {
+export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors, themeMode, setThemeMode } = useAppTheme();
 
@@ -71,11 +65,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
             const isSelected = themeMode === opt.mode;
             return (
               <React.Fragment key={opt.mode}>
-                {index > 0 && (
-                  <View
-                    style={[styles.divider, { backgroundColor: colors.border }]}
-                  />
-                )}
+                {index > 0 && <View style={[styles.divider, { backgroundColor: colors.border }]} />}
                 <TouchableOpacity
                   style={styles.optionRow}
                   onPress={() => setThemeMode(opt.mode)}
@@ -102,9 +92,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                       {opt.label}
                     </Text>
                   </View>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               </React.Fragment>
             );
@@ -112,12 +100,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
         </View>
 
         {/* Language Section */}
-        <Text
-          style={[
-            styles.sectionTitle,
-            { color: colors.textSecondary, marginTop: 28 },
-          ]}
-        >
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary, marginTop: 28 }]}>
           {t('language').toUpperCase()}
         </Text>
 
@@ -134,11 +117,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
             const isSelected = currentLanguage === opt.lang;
             return (
               <React.Fragment key={opt.lang}>
-                {index > 0 && (
-                  <View
-                    style={[styles.divider, { backgroundColor: colors.border }]}
-                  />
-                )}
+                {index > 0 && <View style={[styles.divider, { backgroundColor: colors.border }]} />}
                 <TouchableOpacity
                   style={styles.optionRow}
                   onPress={() => setLanguage(opt.lang)}
@@ -161,9 +140,7 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                       {opt.label}
                     </Text>
                   </View>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               </React.Fragment>
             );

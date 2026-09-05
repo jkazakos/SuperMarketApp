@@ -47,14 +47,9 @@ export const CustomSnackBar: React.FC<CustomSnackBarProps> = ({
   if (!visible) return null;
 
   const backgroundColor =
-    type === 'error'
-      ? colors.error
-      : type === 'success'
-        ? colors.success
-        : colors.card;
+    type === 'error' ? colors.error : type === 'success' ? colors.success : colors.card;
 
-  const textColor =
-    type === 'error' || type === 'success' ? '#FFFFFF' : colors.textPrimary;
+  const textColor = type === 'error' || type === 'success' ? '#FFFFFF' : colors.textPrimary;
 
   return (
     <Animated.View

@@ -59,9 +59,7 @@ export const SortModal: React.FC<SortModalProps> = ({
           ]}
           onPress={(e) => e.stopPropagation()}
         >
-          <Text style={[styles.title, { color: colors.textPrimary }]}>
-            {t('sortBy')}
-          </Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>{t('sortBy')}</Text>
 
           <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             {options.map((opt) => {
@@ -93,9 +91,7 @@ export const SortModal: React.FC<SortModalProps> = ({
                   >
                     {opt.label}
                   </Text>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               );
             })}

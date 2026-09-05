@@ -6,11 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { HistoryHeaderProps } from './HistoryHeader.types';
 
-export const HistoryHeader: React.FC<HistoryHeaderProps> = ({
-  title,
-  onBack,
-  onClear,
-}) => {
+export const HistoryHeader: React.FC<HistoryHeaderProps> = ({ title, onBack, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const router = useRouter();

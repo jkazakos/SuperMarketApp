@@ -119,9 +119,7 @@ export const ProductsHeader: React.FC<ProductsHeaderProps> = ({
               <Stack.Toolbar.MenuAction
                 key={category}
                 isOn={selectedCategory === category}
-                onPress={() =>
-                  onSelectCategory(selectedCategory === category ? null : category)
-                }
+                onPress={() => onSelectCategory(selectedCategory === category ? null : category)}
               >
                 {category}
               </Stack.Toolbar.MenuAction>

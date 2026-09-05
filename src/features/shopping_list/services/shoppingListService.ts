@@ -16,10 +16,7 @@ export class ShoppingListService {
     return collection(db, 'users', userId, 'shoppingList');
   }
 
-  static watchShoppingListItems(
-    userId: string,
-    callback: (items: ShoppingListItem[]) => void
-  ) {
+  static watchShoppingListItems(userId: string, callback: (items: ShoppingListItem[]) => void) {
     const colRef = ShoppingListService.getCollection(userId);
     return onSnapshot(
       colRef,
@@ -41,11 +38,7 @@ export class ShoppingListService {
     );
   }
 
-  static async addOrUpdateItem(
-    userId: string,
-    productId: string,
-    quantity: number
-  ): Promise<void> {
+  static async addOrUpdateItem(userId: string, productId: string, quantity: number): Promise<void> {
     const docRef = doc(db, 'users', userId, 'shoppingList', productId);
     await runTransaction(db, async (transaction) => {
       const snap = await transaction.get(docRef);

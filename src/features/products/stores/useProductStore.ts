@@ -47,9 +47,7 @@ export const getFilteredAndSortedProducts = (
   // 1. Filter by category
   if (selectedCategory && selectedCategory.trim() !== '') {
     filtered = filtered.filter(
-      (p) =>
-        getLocalizedCategory(p, locale).toLowerCase() ===
-        selectedCategory.toLowerCase()
+      (p) => getLocalizedCategory(p, locale).toLowerCase() === selectedCategory.toLowerCase()
     );
   }
 
@@ -66,13 +64,9 @@ export const getFilteredAndSortedProducts = (
   filtered.sort((a, b) => {
     switch (sortType) {
       case SortType.NameAsc:
-        return getLocalizedName(a, locale).localeCompare(
-          getLocalizedName(b, locale)
-        );
+        return getLocalizedName(a, locale).localeCompare(getLocalizedName(b, locale));
       case SortType.NameDesc:
-        return getLocalizedName(b, locale).localeCompare(
-          getLocalizedName(a, locale)
-        );
+        return getLocalizedName(b, locale).localeCompare(getLocalizedName(a, locale));
       case SortType.PriceAsc:
         return getDiscountedPrice(a) - getDiscountedPrice(b);
       case SortType.PriceDesc:

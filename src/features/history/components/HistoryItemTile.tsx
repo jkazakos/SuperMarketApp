@@ -27,10 +27,7 @@ export const HistoryItemTile: React.FC<HistoryItemTileProps> = ({ item }) => {
       ]}
     >
       <View style={styles.detailsContainer}>
-        <Text
-          numberOfLines={2}
-          style={[styles.title, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.title, { color: colors.textPrimary }]}>
           {localizedName}
         </Text>
         <Text style={[styles.quantity, { color: colors.textSecondary }]}>

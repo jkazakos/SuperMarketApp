@@ -61,10 +61,7 @@ const HeaderIconButton: React.FC<HeaderIconButtonProps> = ({
   );
 };
 
-export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
-  title,
-  onOpenSettings,
-}) => {
+export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ title, onOpenSettings }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -81,10 +78,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       ]}
     >
       <View style={styles.titleRow}>
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 

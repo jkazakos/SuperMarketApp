@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -27,18 +20,17 @@ import { ProductDetailsHeader } from '../components/ProductDetailsHeader';
 
 const PLACEHOLDER_IMAGE = require('../../../../assets/images/placeholder_image.png');
 
-export const ProductDetailsScreen: React.FC<
-  RootStackScreenProps<'ProductDetails'>
-> = ({ route, navigation }) => {
+export const ProductDetailsScreen: React.FC<RootStackScreenProps<'ProductDetails'>> = ({
+  route,
+  navigation,
+}) => {
   const product = route?.params?.product;
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const user = useAuthStore((s) => s.user);
-  const isInWishlist = useWishlistStore((s) =>
-    product?.id ? s.isInWishlist(product.id) : false
-  );
+  const isInWishlist = useWishlistStore((s) => (product?.id ? s.isInWishlist(product.id) : false));
   const toggleWishlist = useWishlistStore((s) => s.toggleWishlist);
   const addToCart = useCartStore((s) => s.addItem);
 
@@ -69,11 +61,7 @@ export const ProductDetailsScreen: React.FC<
             padding: 24,
           }}
         >
-          <Ionicons
-            name="alert-circle-outline"
-            size={64}
-            color={colors.textSecondary}
-          />
+          <Ionicons name="alert-circle-outline" size={64} color={colors.textSecondary} />
           <Text
             style={{
               color: colors.textPrimary,
@@ -97,9 +85,7 @@ export const ProductDetailsScreen: React.FC<
             accessibilityRole="button"
             accessibilityLabel={t('goBack', 'Go Back')}
           >
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-              {t('goBack', 'Go Back')}
-            </Text>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>{t('goBack', 'Go Back')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -155,28 +141,16 @@ export const ProductDetailsScreen: React.FC<
         showsVerticalScrollIndicator={false}
       >
         {/* Image Container */}
-        <View
-          style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
-        >
+        <View style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}>
           {product.imageUrl ? (
-            <Image
-              source={{ uri: product.imageUrl }}
-              style={styles.image}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
           ) : (
-            <Image
-              source={PLACEHOLDER_IMAGE}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            <Image source={PLACEHOLDER_IMAGE} style={styles.image} resizeMode="contain" />
           )}
 
           {isSale && (
             <View style={[styles.saleBadge, { backgroundColor: colors.discount }]}>
-              <Text style={styles.badgeText}>
-                -{Math.round(product.discount * 100)}%
-              </Text>
+              <Text style={styles.badgeText}>-{Math.round(product.discount * 100)}%</Text>
             </View>
           )}
         </View>
@@ -189,9 +163,7 @@ export const ProductDetailsScreen: React.FC<
             </Text>
           )}
 
-          <Text style={[styles.title, { color: colors.textPrimary }]}>
-            {localizedName}
-          </Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>{localizedName}</Text>
 
           {/* Price & Stock Row */}
           <View style={styles.priceStockRow}>
@@ -201,9 +173,7 @@ export const ProductDetailsScreen: React.FC<
                   {CurrencyFormatter.format(finalPrice)} €
                 </Text>
                 {isSale && (
-                  <Text
-                    style={[styles.originalPrice, { color: colors.textSecondary }]}
-                  >
+                  <Text style={[styles.originalPrice, { color: colors.textSecondary }]}>
                     {CurrencyFormatter.format(product.price)} €
                   </Text>
                 )}
@@ -214,17 +184,12 @@ export const ProductDetailsScreen: React.FC<
               style={[
                 styles.stockBadge,
                 {
-                  backgroundColor: isSoldOut
-                    ? colors.error + '20'
-                    : colors.success + '20',
+                  backgroundColor: isSoldOut ? colors.error + '20' : colors.success + '20',
                 },
               ]}
             >
               <Text
-                style={[
-                  styles.stockText,
-                  { color: isSoldOut ? colors.error : colors.success },
-                ]}
+                style={[styles.stockText, { color: isSoldOut ? colors.error : colors.success }]}
               >
                 {isSoldOut
                   ? t('outOfStock')
@@ -237,9 +202,7 @@ export const ProductDetailsScreen: React.FC<
 
           {/* Description */}
           <View style={styles.divider} />
-          <Text style={[styles.sectionHeading, { color: colors.textPrimary }]}>
-            Description
-          </Text>
+          <Text style={[styles.sectionHeading, { color: colors.textPrimary }]}>Description</Text>
           <Text style={[styles.description, { color: colors.textSecondary }]}>
             {localizedDescription || t('noDescription')}
           </Text>
@@ -284,15 +247,11 @@ export const ProductDetailsScreen: React.FC<
               />
             </TouchableOpacity>
 
-            <Text style={[styles.qtyText, { color: colors.textPrimary }]}>
-              {quantity}
-            </Text>
+            <Text style={[styles.qtyText, { color: colors.textPrimary }]}>{quantity}</Text>
 
             <TouchableOpacity
               style={styles.qtyButton}
-              onPress={() =>
-                setQuantity((q) => Math.min(product.quantityAvailable, q + 1))
-              }
+              onPress={() => setQuantity((q) => Math.min(product.quantityAvailable, q + 1))}
               disabled={quantity >= product.quantityAvailable}
               accessibilityRole="button"
               accessibilityLabel={t('increaseQuantity')}
@@ -305,9 +264,7 @@ export const ProductDetailsScreen: React.FC<
                 name="add"
                 size={18}
                 color={
-                  quantity >= product.quantityAvailable
-                    ? colors.textSecondary
-                    : colors.textPrimary
+                  quantity >= product.quantityAvailable ? colors.textSecondary : colors.textPrimary
                 }
               />
             </TouchableOpacity>
@@ -335,10 +292,7 @@ export const ProductDetailsScreen: React.FC<
             color={isSoldOut ? colors.textSecondary : '#FFFFFF'}
           />
           <Text
-            style={[
-              styles.addToCartText,
-              { color: isSoldOut ? colors.textSecondary : '#FFFFFF' },
-            ]}
+            style={[styles.addToCartText, { color: isSoldOut ? colors.textSecondary : '#FFFFFF' }]}
           >
             {isSoldOut ? t('soldOut') : t('addToShoppingList')}
           </Text>

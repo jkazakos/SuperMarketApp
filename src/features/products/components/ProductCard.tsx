@@ -3,12 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
-import {
-  Product,
-  getLocalizedName,
-  getLocalizedCategory,
-  getDiscountedPrice,
-} from '../types';
+import { Product, getLocalizedName, getLocalizedCategory, getDiscountedPrice } from '../types';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 
 interface ProductCardProps {
@@ -53,29 +48,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       accessibilityLabel={`${localizedName}, ${CurrencyFormatter.format(finalPrice)} €${isSoldOut ? `, ${t('soldOut')}` : ''}`}
     >
       {/* Image container */}
-      <View
-        style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
-      >
+      <View style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}>
         {product.imageUrl ? (
-          <Image
-            source={{ uri: product.imageUrl }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
-          <Image
-            source={PLACEHOLDER_IMAGE}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={PLACEHOLDER_IMAGE} style={styles.image} resizeMode="contain" />
         )}
 
         {/* Sale badge */}
         {isSale && (
           <View style={[styles.saleBadge, { backgroundColor: colors.discount }]}>
-            <Text style={styles.badgeText}>
-              -{Math.round(product.discount * 100)}%
-            </Text>
+            <Text style={styles.badgeText}>-{Math.round(product.discount * 100)}%</Text>
           </View>
         )}
 
@@ -94,9 +77,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               backgroundColor: colors.isDark
                 ? 'rgba(30, 41, 59, 0.88)'
                 : 'rgba(255, 255, 255, 0.92)',
-              borderColor: colors.isDark
-                ? 'rgba(255, 255, 255, 0.1)'
-                : 'rgba(0, 0, 0, 0.06)',
+              borderColor: colors.isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
               borderWidth: 1,
             },
           ]}
@@ -114,9 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <Ionicons
             name={isInWishlist ? 'heart' : 'heart-outline'}
             size={20}
-            color={
-              isInWishlist ? colors.secondary : colors.isDark ? '#CBD5E1' : '#64748B'
-            }
+            color={isInWishlist ? colors.secondary : colors.isDark ? '#CBD5E1' : '#64748B'}
           />
         </TouchableOpacity>
       </View>
@@ -124,18 +103,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Info Container */}
       <View style={styles.infoContainer}>
         {localizedCategory !== '' && (
-          <Text
-            numberOfLines={1}
-            style={[styles.categoryText, { color: colors.textSecondary }]}
-          >
+          <Text numberOfLines={1} style={[styles.categoryText, { color: colors.textSecondary }]}>
             {localizedCategory}
           </Text>
         )}
 
-        <Text
-          numberOfLines={2}
-          style={[styles.titleText, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={2} style={[styles.titleText, { color: colors.textPrimary }]}>
           {localizedName}
         </Text>
 
@@ -168,11 +141,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             accessibilityState={{ disabled: isSoldOut }}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Ionicons
-              name="add"
-              size={20}
-              color={isSoldOut ? colors.textSecondary : '#FFFFFF'}
-            />
+            <Ionicons name="add" size={20} color={isSoldOut ? colors.textSecondary : '#FFFFFF'} />
           </TouchableOpacity>
         </View>
       </View>

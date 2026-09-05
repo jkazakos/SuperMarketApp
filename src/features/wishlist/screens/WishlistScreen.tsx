@@ -16,9 +16,7 @@ import { EmptyStateView } from '@/core/components/EmptyStateView';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
-  navigation,
-}) => {
+export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -32,8 +30,7 @@ export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
   const addToCart = useCartStore((s) => s.addItem);
 
   const [clearDialogVisible, setClearDialogVisible] = useState(false);
-  const [selectedProductForCart, setSelectedProductForCart] =
-    useState<Product | null>(null);
+  const [selectedProductForCart, setSelectedProductForCart] = useState<Product | null>(null);
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
 
@@ -95,9 +92,7 @@ export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
       <WishlistHeader
         title={t('wishlist')}
         onBack={handleBack}
-        onClear={
-          wishlistProducts.length > 0 ? () => setClearDialogVisible(true) : undefined
-        }
+        onClear={wishlistProducts.length > 0 ? () => setClearDialogVisible(true) : undefined}
       />
 
       {/* Wishlist Items List */}

@@ -60,12 +60,9 @@ useAuthStore.subscribe((state) => {
 
   if (user) {
     useWishlistStore.setState({ loading: true });
-    unsubscribeWishlist = WishlistService.watchWishlistProductIds(
-      user.uid,
-      (items) => {
-        useWishlistStore.setState({ items, loading: false });
-      }
-    );
+    unsubscribeWishlist = WishlistService.watchWishlistProductIds(user.uid, (items) => {
+      useWishlistStore.setState({ items, loading: false });
+    });
   } else {
     useWishlistStore.setState({ items: [], loading: false });
   }

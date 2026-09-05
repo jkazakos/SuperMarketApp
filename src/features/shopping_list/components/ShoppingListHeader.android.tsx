@@ -63,10 +63,7 @@ const HeaderIconButton: React.FC<HeaderIconButtonProps> = ({
   );
 };
 
-export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({
-  title,
-  onClear,
-}) => {
+export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({ title, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -83,10 +80,7 @@ export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({
       ]}
     >
       <View style={styles.titleRow}>
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 

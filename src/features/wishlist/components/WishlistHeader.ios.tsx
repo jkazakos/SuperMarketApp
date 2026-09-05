@@ -6,11 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { WishlistHeaderProps } from './WishlistHeader.types';
 
-export const WishlistHeader: React.FC<WishlistHeaderProps> = ({
-  title,
-  onBack,
-  onClear,
-}) => {
+export const WishlistHeader: React.FC<WishlistHeaderProps> = ({ title, onBack, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const router = useRouter();

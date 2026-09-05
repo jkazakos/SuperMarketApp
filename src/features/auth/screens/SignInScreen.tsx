@@ -18,9 +18,7 @@ import { AuthService } from '../services/authService';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
-  navigation,
-}) => {
+export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({ navigation }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -95,9 +93,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
           >
             <Ionicons name="close" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-            {t('signIn')}
-          </Text>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>{t('signIn')}</Text>
           <View style={{ width: 40 }} />
         </View>
 
@@ -114,9 +110,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
 
           {/* Email Input */}
           <View style={styles.field}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>
-              {t('emailHint')}
-            </Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t('emailHint')}</Text>
             <View
               style={[
                 styles.inputWrapper,
@@ -146,9 +140,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
 
           {/* Password Input */}
           <View style={styles.field}>
-            <Text style={[styles.label, { color: colors.textSecondary }]}>
-              {t('passwordHint')}
-            </Text>
+            <Text style={[styles.label, { color: colors.textSecondary }]}>{t('passwordHint')}</Text>
             <View
               style={[
                 styles.inputWrapper,
@@ -218,9 +210,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
 
           {/* Prompt to Sign Up */}
           <View style={styles.promptRow}>
-            <Text style={{ color: colors.textSecondary }}>
-              {t('dontHaveAccount')}{' '}
-            </Text>
+            <Text style={{ color: colors.textSecondary }}>{t('dontHaveAccount')} </Text>
             <TouchableOpacity
               onPress={() => {
                 if (typeof (navigation as any).replace === 'function') {
@@ -232,9 +222,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
               accessibilityRole="button"
               accessibilityLabel={t('signUp')}
             >
-              <Text style={[styles.linkText, { color: colors.primary }]}>
-                {t('signUp')}
-              </Text>
+              <Text style={[styles.linkText, { color: colors.primary }]}>{t('signUp')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

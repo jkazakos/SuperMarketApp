@@ -10,11 +10,7 @@ interface SpendingCardProps {
   icon: keyof typeof Ionicons.glyphMap;
 }
 
-export const SpendingCard: React.FC<SpendingCardProps> = ({
-  title,
-  amount,
-  icon,
-}) => {
+export const SpendingCard: React.FC<SpendingCardProps> = ({ title, amount, icon }) => {
   const { colors } = useAppTheme();
 
   return (
@@ -29,9 +25,7 @@ export const SpendingCard: React.FC<SpendingCardProps> = ({
         },
       ]}
     >
-      <View
-        style={[styles.iconContainer, { backgroundColor: colors.primaryContainer }]}
-      >
+      <View style={[styles.iconContainer, { backgroundColor: colors.primaryContainer }]}>
         <Ionicons name={icon} size={22} color={colors.primary} />
       </View>
 

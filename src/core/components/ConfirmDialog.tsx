@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '../theme/ThemeContext';
 
@@ -51,9 +44,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           onPress={(e) => e.stopPropagation()}
         >
           <Text style={[styles.title, { color: colors.textPrimary }]}>{title}</Text>
-          <Text style={[styles.message, { color: colors.textSecondary }]}>
-            {message}
-          </Text>
+          <Text style={[styles.message, { color: colors.textSecondary }]}>{message}</Text>
           <View style={styles.buttonRow}>
             <TouchableOpacity
               style={[styles.button, styles.cancelButton]}

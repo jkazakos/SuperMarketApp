@@ -20,9 +20,7 @@ import { CheckoutHeader } from '../components/CheckoutHeader';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
-  navigation,
-}) => {
+export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -62,10 +60,7 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
         },
       ]);
     } else if (result.outOfStockProduct) {
-      Alert.alert(
-        t('stockIssuesTitle'),
-        t('outOfStockItem', { item: result.outOfStockProduct })
-      );
+      Alert.alert(t('stockIssuesTitle'), t('outOfStockItem', { item: result.outOfStockProduct }));
     } else {
       Alert.alert(t('appName'), t('purchaseFailed'));
     }
@@ -111,9 +106,7 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
             </View>
             <View style={styles.summaryDivider} />
             <View style={styles.summaryRow}>
-              <Text style={[styles.totalLabel, { color: colors.textPrimary }]}>
-                {t('total')}
-              </Text>
+              <Text style={[styles.totalLabel, { color: colors.textPrimary }]}>{t('total')}</Text>
               <Text style={[styles.totalValue, { color: colors.primary }]}>
                 {CurrencyFormatter.format(totalAmount)} €
               </Text>

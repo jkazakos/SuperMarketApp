@@ -57,9 +57,7 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
   const tintColor = isActive ? colors.primary : colors.textPrimary;
 
   return (
-    <Animated.View
-      style={[styles.buttonOuter, { transform: [{ scale: scaleAnim }] }]}
-    >
+    <Animated.View style={[styles.buttonOuter, { transform: [{ scale: scaleAnim }] }]}>
       <Pressable
         onPress={onPress}
         onPressIn={handlePressIn}
@@ -69,20 +67,13 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
         style={[
           styles.actionButton,
           {
-            backgroundColor: isActive
-              ? colors.primaryContainer
-              : colors.surfaceVariant,
+            backgroundColor: isActive ? colors.primaryContainer : colors.surfaceVariant,
             borderColor: isActive ? colors.primary : colors.border,
           },
         ]}
       >
         <View style={styles.buttonContent}>
-          <Ionicons
-            name={icon}
-            size={17}
-            color={tintColor}
-            style={styles.buttonIcon}
-          />
+          <Ionicons name={icon} size={17} color={tintColor} style={styles.buttonIcon} />
 
           <Text
             numberOfLines={1}
@@ -114,11 +105,7 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
                 style={[
                   styles.badgeText,
                   {
-                    color: isActive
-                      ? '#FFFFFF'
-                      : colors.isDark
-                        ? '#E2E8F0'
-                        : '#475569',
+                    color: isActive ? '#FFFFFF' : colors.isDark ? '#E2E8F0' : '#475569',
                   },
                 ]}
               >
@@ -173,9 +160,7 @@ export const ProductsHeader: React.FC<ProductsHeaderProps> = ({
       ]}
     >
       <View style={styles.titleRow}>
-        <Text style={[styles.screenTitle, { color: colors.textPrimary }]}>
-          {title}
-        </Text>
+        <Text style={[styles.screenTitle, { color: colors.textPrimary }]}>{title}</Text>
       </View>
 
       {/* Modern Search Bar */}

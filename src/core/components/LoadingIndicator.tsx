@@ -2,9 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAppTheme } from '../theme/ThemeContext';
 
-export const LoadingIndicator: React.FC<{ size?: 'small' | 'large' }> = ({
-  size = 'large',
-}) => {
+export const LoadingIndicator: React.FC<{ size?: 'small' | 'large' }> = ({ size = 'large' }) => {
   const { colors } = useAppTheme();
 
   return (

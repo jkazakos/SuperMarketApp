@@ -74,18 +74,12 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({ title, onBack })
     >
       <View style={styles.titleRow}>
         {onBack ? (
-          <BackButton
-            onPress={onBack}
-            accessibilityLabel={t('backButton') || 'Back'}
-          />
+          <BackButton onPress={onBack} accessibilityLabel={t('backButton') || 'Back'} />
         ) : (
           <View style={styles.placeholder} />
         )}
 
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 

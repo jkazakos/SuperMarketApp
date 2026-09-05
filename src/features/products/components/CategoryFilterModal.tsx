@@ -51,9 +51,7 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
           ]}
           onPress={(e) => e.stopPropagation()}
         >
-          <Text style={[styles.title, { color: colors.textPrimary }]}>
-            {t('filterCategories')}
-          </Text>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>{t('filterCategories')}</Text>
 
           <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             {/* All Categories option */}
@@ -82,9 +80,7 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
               >
                 {t('allProducts')}
               </Text>
-              {!selectedCategory && (
-                <Ionicons name="checkmark" size={20} color={colors.primary} />
-              )}
+              {!selectedCategory && <Ionicons name="checkmark" size={20} color={colors.primary} />}
             </TouchableOpacity>
 
             {categories.map((cat) => {
@@ -116,9 +112,7 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
                   >
                     {cat}
                   </Text>
-                  {isSelected && (
-                    <Ionicons name="checkmark" size={20} color={colors.primary} />
-                  )}
+                  {isSelected && <Ionicons name="checkmark" size={20} color={colors.primary} />}
                 </TouchableOpacity>
               );
             })}

@@ -99,10 +99,7 @@ export const ProductDetailsHeader: React.FC<ProductDetailsHeaderProps> = ({
           <View style={styles.placeholder} />
         )}
 
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 

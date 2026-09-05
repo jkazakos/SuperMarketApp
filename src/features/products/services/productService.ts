@@ -1,10 +1,4 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  runTransaction,
-} from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, runTransaction } from 'firebase/firestore';
 import { db } from '@/core/config/firebase';
 import { Product } from '../types';
 
@@ -28,9 +22,7 @@ export class ProductService {
     return onSnapshot(
       productsRef,
       (snapshot) => {
-        const products = snapshot.docs.map((d) =>
-          ProductService.parseProduct(d.id, d.data())
-        );
+        const products = snapshot.docs.map((d) => ProductService.parseProduct(d.id, d.data()));
         callback(products);
       },
       (error) => {
@@ -47,10 +39,7 @@ export class ProductService {
     return ProductService.parseProduct(snap.id, snap.data());
   }
 
-  static async decreaseProductQuantity(
-    productId: string,
-    quantity: number
-  ): Promise<boolean> {
+  static async decreaseProductQuantity(productId: string, quantity: number): Promise<boolean> {
     const docRef = doc(db, 'products', productId);
     try {
       return await runTransaction(db, async (transaction) => {

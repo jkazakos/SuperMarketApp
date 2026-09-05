@@ -10,9 +10,10 @@ import { DateFormatter } from '@/core/utils/dateFormatter';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 import { RootStackScreenProps } from '@/navigation/types';
 
-export const HistoryDetailsScreen: React.FC<
-  RootStackScreenProps<'HistoryDetails'>
-> = ({ route, navigation }) => {
+export const HistoryDetailsScreen: React.FC<RootStackScreenProps<'HistoryDetails'>> = ({
+  route,
+  navigation,
+}) => {
   const history = route?.params?.history;
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
@@ -38,11 +39,7 @@ export const HistoryDetailsScreen: React.FC<
             padding: 24,
           }}
         >
-          <Ionicons
-            name="alert-circle-outline"
-            size={64}
-            color={colors.textSecondary}
-          />
+          <Ionicons name="alert-circle-outline" size={64} color={colors.textSecondary} />
           <Text
             style={{
               color: colors.textPrimary,
@@ -66,9 +63,7 @@ export const HistoryDetailsScreen: React.FC<
             accessibilityRole="button"
             accessibilityLabel={t('goBack', 'Go Back')}
           >
-            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-              {t('goBack', 'Go Back')}
-            </Text>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>{t('goBack', 'Go Back')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -98,15 +93,11 @@ export const HistoryDetailsScreen: React.FC<
           <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
             {t('dateOfPurchase')}
           </Text>
-          <Text style={[styles.dateValue, { color: colors.textPrimary }]}>
-            {dateStr}
-          </Text>
+          <Text style={[styles.dateValue, { color: colors.textPrimary }]}>{dateStr}</Text>
         </View>
 
         <View style={{ alignItems: 'flex-end' }}>
-          <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
-            {t('totalPaid')}
-          </Text>
+          <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>{t('totalPaid')}</Text>
           <Text style={[styles.totalAmount, { color: colors.primary }]}>
             {CurrencyFormatter.format(history.totalAmount)} €
           </Text>

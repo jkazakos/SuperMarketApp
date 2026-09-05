@@ -101,19 +101,16 @@ useAuthStore.subscribe((state) => {
 
   if (user) {
     useCartStore.setState({ loading: true });
-    unsubscribeCart = ShoppingListService.watchShoppingListItems(
-      user.uid,
-      (rawItems) => {
-        const { cartItems, totalAmount, totalQuantity } = computeCart(rawItems);
-        useCartStore.setState({
-          rawItems,
-          cartItems,
-          totalAmount,
-          totalQuantity,
-          loading: false,
-        });
-      }
-    );
+    unsubscribeCart = ShoppingListService.watchShoppingListItems(user.uid, (rawItems) => {
+      const { cartItems, totalAmount, totalQuantity } = computeCart(rawItems);
+      useCartStore.setState({
+        rawItems,
+        cartItems,
+        totalAmount,
+        totalQuantity,
+        loading: false,
+      });
+    });
   } else {
     useCartStore.setState({
       rawItems: [],

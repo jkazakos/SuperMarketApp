@@ -65,11 +65,7 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({
   );
 };
 
-export const HistoryHeader: React.FC<HistoryHeaderProps> = ({
-  title,
-  onBack,
-  onClear,
-}) => {
+export const HistoryHeader: React.FC<HistoryHeaderProps> = ({ title, onBack, onClear }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
@@ -98,10 +94,7 @@ export const HistoryHeader: React.FC<HistoryHeaderProps> = ({
           <View style={styles.placeholder} />
         )}
 
-        <Text
-          numberOfLines={1}
-          style={[styles.screenTitle, { color: colors.textPrimary }]}
-        >
+        <Text numberOfLines={1} style={[styles.screenTitle, { color: colors.textPrimary }]}>
           {title}
         </Text>
 
@@ -111,9 +104,7 @@ export const HistoryHeader: React.FC<HistoryHeaderProps> = ({
             iconColor={colors.error}
             iconSize={20}
             onPress={onClear}
-            accessibilityLabel={
-              t('clearShoppingHistory') || 'Clear Shopping History'
-            }
+            accessibilityLabel={t('clearShoppingHistory') || 'Clear Shopping History'}
           />
         ) : (
           <View style={styles.placeholder} />

@@ -60,9 +60,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
       {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
       <ShoppingListHeader
         title={t('shoppingList')}
-        onClear={
-          cartItems.length > 0 ? () => setClearDialogVisible(true) : undefined
-        }
+        onClear={cartItems.length > 0 ? () => setClearDialogVisible(true) : undefined}
       />
 
       {/* Cart Items List */}
@@ -93,9 +91,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
             message={t('emptyShoppingListText')}
             icon="cart-outline"
             actionLabel={t('titleActivityProducts')}
-            onAction={() =>
-              (navigation as any).navigate('(tabs)', { screen: '(products)' })
-            }
+            onAction={() => (navigation as any).navigate('(tabs)', { screen: '(products)' })}
           />
         }
       />

@@ -3,10 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
-import {
-  useProductStore,
-  getFilteredAndSortedProducts,
-} from '../stores/useProductStore';
+import { useProductStore, getFilteredAndSortedProducts } from '../stores/useProductStore';
 import { useWishlistStore } from '@/features/wishlist/stores/useWishlistStore';
 import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
@@ -21,9 +18,7 @@ import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { ProductsHeader } from '../components/ProductsHeader';
 import { MainTabScreenProps } from '@/navigation/types';
 
-export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
-  navigation,
-}) => {
+export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
 
@@ -44,8 +39,7 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
 
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
   const [sortModalVisible, setSortModalVisible] = useState(false);
-  const [selectedProductForCart, setSelectedProductForCart] =
-    useState<Product | null>(null);
+  const [selectedProductForCart, setSelectedProductForCart] = useState<Product | null>(null);
 
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
@@ -177,9 +171,7 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
         ListEmptyComponent={
           <EmptyStateView
             message={
-              searchQuery
-                ? t('noResultsFound', { query: searchQuery })
-                : t('noProductsAvailable')
+              searchQuery ? t('noResultsFound', { query: searchQuery }) : t('noProductsAvailable')
             }
             icon="search-outline"
           />

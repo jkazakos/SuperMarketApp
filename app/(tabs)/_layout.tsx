@@ -16,9 +16,7 @@ export default function TabLayout() {
     <NativeTabs minimizeBehavior="onScrollDown" tintColor={colors.primary}>
       <NativeTabs.Trigger name="(products)">
         <NativeTabs.Trigger.Icon sf="storefront.fill" md="storefront" />
-        <NativeTabs.Trigger.Label>
-          {t('titleActivityProducts')}
-        </NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label>{t('titleActivityProducts')}</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="(shopping-list)">
