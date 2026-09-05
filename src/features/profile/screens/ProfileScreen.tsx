@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { useWishlistStore } from '@/features/wishlist/stores/useWishlistStore';
 import { useSpendingTotals } from '../stores/useProfileStore';
 import { SpendingCard } from '../components/SpendingCard';
+import { ProfileHeader } from '../components/ProfileHeader';
 import { ConfirmDialog } from '@/core/components/ConfirmDialog';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
 import { MainTabScreenProps } from '@/navigation/types';
@@ -18,7 +18,6 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
 }) => {
   const { t } = useTranslation();
   const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
 
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
@@ -61,31 +60,19 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('userProfile')}
-        </Text>
-        <TouchableOpacity
-          style={styles.settingsButton}
-          onPress={navigateToSettings}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="settings-outline" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
+      <ProfileHeader title={t('userProfile')} onOpenSettings={navigateToSettings} />
 
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 110 }}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: 8,
+            paddingBottom: 110,
+          },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* User Card or Guest Card */}
@@ -327,19 +314,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 14,
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: '800',
-  },
-  settingsButton: {
-    padding: 8,
   },
   userCard: {
     flexDirection: 'row',

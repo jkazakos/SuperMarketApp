@@ -28,7 +28,7 @@ export default function TabLayout() {
         )}
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="profile">
+      <NativeTabs.Trigger name="(profile)">
         <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
         <NativeTabs.Trigger.Label>{t('userProfile')}</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
