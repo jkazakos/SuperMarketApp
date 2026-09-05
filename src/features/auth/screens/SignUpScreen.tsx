@@ -113,7 +113,7 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+            <Ionicons name="close" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
           <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
             {t('signUp')}
@@ -285,7 +285,13 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
               Already have an account?{' '}
             </Text>
             <TouchableOpacity
-              onPress={() => (navigation as any).navigate('sign-in')}
+              onPress={() => {
+                if (typeof (navigation as any).replace === 'function') {
+                  (navigation as any).replace('sign-in');
+                } else {
+                  (navigation as any).navigate('sign-in');
+                }
+              }}
             >
               <Text style={[styles.linkText, { color: colors.primary }]}>
                 {t('signIn')}

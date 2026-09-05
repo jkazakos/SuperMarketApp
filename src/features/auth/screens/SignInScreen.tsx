@@ -208,7 +208,13 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
               Don't have an account?{' '}
             </Text>
             <TouchableOpacity
-              onPress={() => (navigation as any).navigate('sign-up')}
+              onPress={() => {
+                if (typeof (navigation as any).replace === 'function') {
+                  (navigation as any).replace('sign-up');
+                } else {
+                  (navigation as any).navigate('sign-up');
+                }
+              }}
             >
               <Text style={[styles.linkText, { color: colors.primary }]}>
                 {t('signUp')}
