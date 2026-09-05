@@ -18,7 +18,7 @@ export default function TabLayout() {
         </NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="shopping-list">
+      <NativeTabs.Trigger name="(shopping-list)">
         <NativeTabs.Trigger.Icon sf="cart.fill" md="shopping_cart" />
         <NativeTabs.Trigger.Label>{t('shoppingList')}</NativeTabs.Trigger.Label>
         {cartCount > 0 && (

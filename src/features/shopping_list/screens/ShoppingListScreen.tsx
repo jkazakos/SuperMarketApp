@@ -7,6 +7,7 @@ import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useCartStore } from '../stores/useCartStore';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { ShoppingListTile } from '../components/ShoppingListTile';
+import { ShoppingListHeader } from '../components/ShoppingListHeader';
 import { ConfirmDialog } from '@/core/components/ConfirmDialog';
 import { EmptyStateView } from '@/core/components/EmptyStateView';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
@@ -46,52 +47,27 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
 
   if (!user) {
     return (
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.background,
-            paddingTop: Math.max(insets.top, 16),
-          },
-        ]}
-      >
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('shoppingList')}
-        </Text>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
+        <ShoppingListHeader title={t('shoppingList')} />
         <EmptyStateView message={t('guestMessage')} icon="lock-closed-outline" />
       </View>
     );
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('shoppingList')}
-        </Text>
-
-        {cartItems.length > 0 && (
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={() => setClearDialogVisible(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="trash-outline" size={20} color={colors.error} />
-          </TouchableOpacity>
-        )}
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
+      <ShoppingListHeader
+        title={t('shoppingList')}
+        onClear={
+          cartItems.length > 0 ? () => setClearDialogVisible(true) : undefined
+        }
+      />
 
       {/* Cart Items List */}
       <FlatList
+        contentInsetAdjustmentBehavior="automatic"
         data={cartItems}
         keyExtractor={(item) => item.product.id}
         contentContainerStyle={{
@@ -118,7 +94,7 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
             icon="cart-outline"
             actionLabel={t('titleActivityProducts')}
             onAction={() =>
-              (navigation as any).navigate('(tabs)', { screen: 'index' })
+              (navigation as any).navigate('(tabs)', { screen: '(products)' })
             }
           />
         }
@@ -181,20 +157,6 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingBottom: 14,
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: '800',
-  },
-  clearButton: {
-    padding: 8,
   },
   checkoutBar: {
     position: 'absolute',
