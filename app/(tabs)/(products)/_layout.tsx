@@ -16,6 +16,8 @@ export default function ProductsStackLayout() {
         headerTintColor: colors.primary,
         headerTitleStyle: {
           color: colors.textPrimary,
+          fontSize: 18,
+          fontWeight: '700',
         },
         contentStyle: {
           backgroundColor: colors.background,

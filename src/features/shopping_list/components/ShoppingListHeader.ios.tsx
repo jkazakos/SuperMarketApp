@@ -18,7 +18,7 @@ export const ShoppingListHeader: React.FC<ShoppingListHeaderProps> = ({
           title,
           headerTitleStyle: {
             color: colors.textPrimary,
-            fontSize: 26,
+            fontSize: 18,
             fontWeight: '700',
           },
         }}
