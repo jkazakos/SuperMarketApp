@@ -16,6 +16,7 @@ import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { CheckoutService } from '../services/checkoutService';
 import { CheckoutItemTile } from '../components/CheckoutItemTile';
+import { CheckoutHeader } from '../components/CheckoutHeader';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 import { RootStackScreenProps } from '@/navigation/types';
 
@@ -71,32 +72,13 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('checkout')}
-        </Text>
-        <View style={{ width: 40 }} />
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
+      <CheckoutHeader title={t('checkout')} onBack={() => navigation.goBack()} />
 
       {/* Items List */}
       <FlatList
+        contentInsetAdjustmentBehavior="automatic"
         data={cartItems}
         keyExtractor={(item) => item.product.id}
         contentContainerStyle={{ paddingBottom: 160 }}
@@ -184,20 +166,6 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
   },
   summaryCard: {
     marginHorizontal: 16,
