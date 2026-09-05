@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProductsScreen } from '@/features/products/screens/ProductsScreen';
 import { useNavigation } from 'expo-router';
 

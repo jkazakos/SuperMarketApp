@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Modal,
   View,
@@ -7,8 +6,10 @@ import {
   ScrollView,
   StyleSheet,
   Pressable,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { SortType } from '../types';
@@ -46,6 +47,9 @@ export const SortModal: React.FC<SortModalProps> = ({
       onRequestClose={onClose}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
+        {Platform.OS === 'ios' && (
+          <BlurView tint="dark" intensity={40} style={StyleSheet.absoluteFill} />
+        )}
         <Pressable
           style={[
             styles.dialogContainer,
@@ -112,7 +116,7 @@ export const SortModal: React.FC<SortModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
@@ -121,13 +125,14 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 380,
     maxHeight: '75%',
-    borderRadius: 20,
+    borderRadius: 24,
+    borderCurve: 'continuous',
     borderWidth: 1,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.25,
-    shadowRadius: 15,
+    shadowRadius: 18,
     elevation: 8,
   },
   title: {

@@ -1,8 +1,11 @@
-import React from 'react';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
+
+export const unstable_settings = {
+  anchor: '(products)',
+};
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -11,7 +14,7 @@ export default function TabLayout() {
 
   return (
     <NativeTabs minimizeBehavior="onScrollDown" tintColor={colors.primary}>
-      <NativeTabs.Trigger name="index">
+      <NativeTabs.Trigger name="(products)">
         <NativeTabs.Trigger.Icon sf="storefront.fill" md="storefront" />
         <NativeTabs.Trigger.Label>
           {t('titleActivityProducts')}

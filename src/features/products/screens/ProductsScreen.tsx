@@ -1,15 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import {
   useProductStore,
@@ -26,6 +18,7 @@ import { QuantityModal } from '../components/QuantityModal';
 import { EmptyStateView } from '@/core/components/EmptyStateView';
 import { LoadingIndicator } from '@/core/components/LoadingIndicator';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
+import { ProductsHeader } from '../components/ProductsHeader';
 import { MainTabScreenProps } from '@/navigation/types';
 
 export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
@@ -33,7 +26,6 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const { colors } = useAppTheme();
-  const insets = useSafeAreaInsets();
 
   const user = useAuthStore((s) => s.user);
   const products = useProductStore((s) => s.products);
@@ -115,108 +107,61 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Top Header & Search Bar */}
-      <View style={styles.header}>
-        <View
-          style={[
-            styles.searchBar,
-            {
-              backgroundColor: colors.surfaceVariant,
-              borderColor: colors.border,
-            },
-          ]}
-        >
-          <Ionicons
-            name="search-outline"
-            size={20}
-            color={colors.textSecondary}
-            style={{ marginRight: 8 }}
-          />
-          <TextInput
-            style={[styles.searchInput, { color: colors.textPrimary }]}
-            placeholder={t('search')}
-            placeholderTextColor={colors.textSecondary}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          {searchQuery !== '' && (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Ionicons name="close-circle" size={18} color={colors.textSecondary} />
-            </TouchableOpacity>
-          )}
-        </View>
-
-        {/* Filter & Sort Action Buttons */}
-        <View style={styles.actionRow}>
-          <TouchableOpacity
-            style={[
-              styles.actionButton,
-              {
-                backgroundColor: selectedCategory
-                  ? colors.primaryContainer
-                  : colors.surfaceVariant,
-                borderColor: selectedCategory ? colors.primary : colors.border,
-              },
-            ]}
-            onPress={() => setCategoryModalVisible(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons
-              name="filter-outline"
-              size={18}
-              color={selectedCategory ? colors.primary : colors.textPrimary}
-            />
-            <Text
-              style={[
-                styles.actionButtonText,
-                { color: selectedCategory ? colors.primary : colors.textPrimary },
-              ]}
-            >
-              {selectedCategory || t('categoryFilter')}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.actionButton,
-              {
-                backgroundColor: colors.surfaceVariant,
-                borderColor: colors.border,
-              },
-            ]}
-            onPress={() => setSortModalVisible(true)}
-            activeOpacity={0.7}
-          >
-            <Ionicons
-              name="swap-vertical-outline"
-              size={18}
-              color={colors.textPrimary}
-            />
-            <Text style={[styles.actionButtonText, { color: colors.textPrimary }]}>
-              {t('sort')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit bar items vs Android Material 3 header) */}
+      <ProductsHeader
+        title={t('titleActivityProducts')}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+        onOpenCategoryFilter={() => setCategoryModalVisible(true)}
+        sortType={sortType}
+        onOpenSort={() => setSortModalVisible(true)}
+        onSelectSort={setSortType}
+        categories={categories}
+      />
 
       {/* Product Grid */}
       <FlatList
         data={displayProducts}
         keyExtractor={(item) => item.id}
         numColumns={2}
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: 100 }, // Space for floating bottom pill bar
+          {
+            paddingTop: 8,
+            paddingBottom: 110, // Generous padding so cards scroll comfortably above NativeTabs
+          },
         ]}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          selectedCategory ? (
+            <View style={styles.categoryPillRow}>
+              <TouchableOpacity
+                style={[
+                  styles.activeCategoryPill,
+                  {
+                    backgroundColor: colors.isDark
+                      ? 'rgba(99, 102, 241, 0.25)'
+                      : 'rgba(79, 70, 229, 0.12)',
+                    borderColor: colors.isDark
+                      ? 'rgba(129, 140, 248, 0.45)'
+                      : 'rgba(79, 70, 229, 0.3)',
+                  },
+                ]}
+                onPress={() => setSelectedCategory(null)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.activeCategoryText, { color: colors.primary }]}>
+                  {selectedCategory}
+                </Text>
+                <Ionicons name="close-circle" size={14} color={colors.primary} />
+              </TouchableOpacity>
+            </View>
+          ) : null
+        }
         renderItem={({ item }) => (
           <ProductCard
             product={item}
@@ -278,45 +223,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-  },
-  searchBar: {
+  categoryPillRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    height: 46,
-    borderRadius: 14,
-    borderWidth: 1,
-    paddingHorizontal: 12,
-    marginBottom: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 15,
-    height: '100%',
-  },
-  actionRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 38,
-    borderRadius: 12,
-    borderWidth: 1,
-    gap: 6,
-  },
-  actionButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
+    paddingTop: 8,
   },
   listContent: {
     paddingHorizontal: 10,
-    paddingTop: 4,
     flexGrow: 1,
+  },
+  activeCategoryPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+  },
+  activeCategoryText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
