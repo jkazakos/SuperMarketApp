@@ -23,6 +23,7 @@ import { useCartStore } from '@/features/shopping_list/stores/useCartStore';
 import { useAuthStore } from '@/features/auth/stores/useAuthStore';
 import { CurrencyFormatter } from '@/core/utils/currencyFormatter';
 import { CustomSnackBar } from '@/core/components/CustomSnackBar';
+import { ProductDetailsHeader } from '../components/ProductDetailsHeader';
 
 const PLACEHOLDER_IMAGE = require('../../../../assets/images/placeholder_image.png');
 
@@ -47,48 +48,50 @@ export const ProductDetailsScreen: React.FC<
 
   if (!product || typeof product !== 'object' || !product.id) {
     return (
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.background,
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ProductDetailsHeader
+          title={t('productNotFound', 'Product not found')}
+          onBack={() => navigation.goBack()}
+        />
+        <View
+          style={{
+            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             padding: 24,
-            paddingTop: Math.max(insets.top, 16),
-          },
-        ]}
-      >
-        <Ionicons
-          name="alert-circle-outline"
-          size={64}
-          color={colors.textSecondary}
-        />
-        <Text
-          style={{
-            color: colors.textPrimary,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 16,
-            textAlign: 'center',
           }}
         >
-          {t('productNotFound', 'Product not found')}
-        </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primary,
-            paddingHorizontal: 24,
-            paddingVertical: 12,
-            borderRadius: 8,
-            marginTop: 20,
-          }}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-            {t('goBack', 'Go Back')}
+          <Ionicons
+            name="alert-circle-outline"
+            size={64}
+            color={colors.textSecondary}
+          />
+          <Text
+            style={{
+              color: colors.textPrimary,
+              fontSize: 18,
+              fontWeight: '600',
+              marginTop: 16,
+              textAlign: 'center',
+            }}
+          >
+            {t('productNotFound', 'Product not found')}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              borderRadius: 8,
+              marginTop: 20,
+            }}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+              {t('goBack', 'Go Back')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -128,11 +131,20 @@ export const ProductDetailsScreen: React.FC<
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
+      <ProductDetailsHeader
+        title={localizedName}
+        onBack={() => navigation.goBack()}
+        isInWishlist={isInWishlist}
+        onToggleWishlist={handleToggleWishlist}
+      />
+
       <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Image Container with floating action buttons */}
+        {/* Image Container */}
         <View
           style={[styles.imageContainer, { backgroundColor: colors.surfaceVariant }]}
         >
@@ -149,31 +161,6 @@ export const ProductDetailsScreen: React.FC<
               resizeMode="contain"
             />
           )}
-
-          {/* Top Bar Floating Buttons */}
-          <View
-            style={[styles.floatingNav, { paddingTop: Math.max(insets.top, 16) }]}
-          >
-            <TouchableOpacity
-              style={styles.circleButton}
-              onPress={() => navigation.goBack()}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="arrow-back" size={22} color="#0F172A" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.circleButton}
-              onPress={handleToggleWishlist}
-              activeOpacity={0.8}
-            >
-              <Ionicons
-                name={isInWishlist ? 'heart' : 'heart-outline'}
-                size={22}
-                color={isInWishlist ? colors.secondary : '#0F172A'}
-              />
-            </TouchableOpacity>
-          </View>
 
           {isSale && (
             <View style={[styles.saleBadge, { backgroundColor: colors.discount }]}>
@@ -358,29 +345,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-  },
-  floatingNav: {
-    position: 'absolute',
-    top: 0,
-    left: 16,
-    right: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  circleButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
   },
   saleBadge: {
     position: 'absolute',
