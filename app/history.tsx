@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigation } from 'expo-router';
 import { HistoryScreen } from '@/features/history/screens/HistoryScreen';
 

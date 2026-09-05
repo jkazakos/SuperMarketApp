@@ -1,4 +1,3 @@
-import React from 'react';
 import { WishlistScreen } from '@/features/wishlist/screens/WishlistScreen';
 import { useNavigation } from 'expo-router';
 

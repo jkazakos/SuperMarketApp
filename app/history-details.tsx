@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useLocalSearchParams, useNavigation, useRoute } from 'expo-router';
 import { HistoryDetailsScreen } from '@/features/history/screens/HistoryDetailsScreen';
 import { useHistoryStore } from '@/features/history/stores/useHistoryStore';
