@@ -46,12 +46,20 @@ export const ProductDetailsScreen: React.FC<
   const [snackMessage, setSnackMessage] = useState('');
   const [snackVisible, setSnackVisible] = useState(false);
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   if (!product || typeof product !== 'object' || !product.id) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <ProductDetailsHeader
           title={t('productNotFound', 'Product not found')}
-          onBack={() => navigation.goBack()}
+          onBack={handleBack}
         />
         <View
           style={{
@@ -85,7 +93,7 @@ export const ProductDetailsScreen: React.FC<
               borderRadius: 8,
               marginTop: 20,
             }}
-            onPress={() => navigation.goBack()}
+            onPress={handleBack}
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>
               {t('goBack', 'Go Back')}
@@ -134,7 +142,7 @@ export const ProductDetailsScreen: React.FC<
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
       <ProductDetailsHeader
         title={localizedName}
-        onBack={() => navigation.goBack()}
+        onBack={handleBack}
         isInWishlist={isInWishlist}
         onToggleWishlist={handleToggleWishlist}
       />

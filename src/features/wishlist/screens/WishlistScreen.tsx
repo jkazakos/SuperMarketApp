@@ -71,11 +71,19 @@ export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
     setSnackVisible(true);
   };
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   if (!user) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
-        <WishlistHeader title={t('wishlist')} onBack={() => navigation.goBack()} />
+        <WishlistHeader title={t('wishlist')} onBack={handleBack} />
         <EmptyStateView message={t('guestMessage')} icon="lock-closed-outline" />
       </View>
     );
@@ -86,7 +94,7 @@ export const WishlistScreen: React.FC<RootStackScreenProps<'Wishlist'>> = ({
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
       <WishlistHeader
         title={t('wishlist')}
-        onBack={() => navigation.goBack()}
+        onBack={handleBack}
         onClear={
           wishlistProducts.length > 0 ? () => setClearDialogVisible(true) : undefined
         }

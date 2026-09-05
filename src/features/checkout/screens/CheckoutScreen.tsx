@@ -71,10 +71,18 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
     }
   };
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
-      <CheckoutHeader title={t('checkout')} onBack={() => navigation.goBack()} />
+      <CheckoutHeader title={t('checkout')} onBack={handleBack} />
 
       {/* Items List */}
       <FlatList

@@ -18,50 +18,60 @@ export const HistoryDetailsScreen: React.FC<
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   if (!history || typeof history !== 'object' || !Array.isArray(history.items)) {
     return (
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.background,
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <HistoryHeader
+          title={t('shoppingHistory')}
+          onBack={handleBack}
+        />
+        <View
+          style={{
+            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             padding: 24,
-            paddingTop: Math.max(insets.top, 16),
-          },
-        ]}
-      >
-        <Ionicons
-          name="alert-circle-outline"
-          size={64}
-          color={colors.textSecondary}
-        />
-        <Text
-          style={{
-            color: colors.textPrimary,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 16,
-            textAlign: 'center',
           }}
         >
-          {t('historyNotFound', 'Order details not found')}
-        </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primary,
-            paddingHorizontal: 24,
-            paddingVertical: 12,
-            borderRadius: 8,
-            marginTop: 20,
-          }}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-            {t('goBack', 'Go Back')}
+          <Ionicons
+            name="alert-circle-outline"
+            size={64}
+            color={colors.textSecondary}
+          />
+          <Text
+            style={{
+              color: colors.textPrimary,
+              fontSize: 18,
+              fontWeight: '600',
+              marginTop: 16,
+              textAlign: 'center',
+            }}
+          >
+            {t('historyNotFound', 'Order details not found')}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              borderRadius: 8,
+              marginTop: 20,
+            }}
+            onPress={handleBack}
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+              {t('goBack', 'Go Back')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -75,7 +85,7 @@ export const HistoryDetailsScreen: React.FC<
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
       <HistoryHeader
         title={t('shoppingHistory')}
-        onBack={() => navigation.goBack()}
+        onBack={handleBack}
       />
 
       {/* Date & Total Overview */}

@@ -35,10 +35,18 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
     { lang: 'el', label: t('greek'), flag: '🇬🇷' },
   ];
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
-      <SettingsHeader title={t('settings')} onBack={() => navigation.goBack()} />
+      <SettingsHeader title={t('settings')} onBack={handleBack} />
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"

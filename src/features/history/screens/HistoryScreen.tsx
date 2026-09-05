@@ -41,13 +41,21 @@ export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
     });
   };
 
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      (navigation as any).navigate('(tabs)', { screen: '(products)' });
+    }
+  };
+
   if (!user) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
         <HistoryHeader
           title={t('shoppingHistory')}
-          onBack={() => navigation.goBack()}
+          onBack={handleBack}
         />
         <EmptyStateView message={t('guestMessage')} icon="lock-closed-outline" />
       </View>
@@ -59,7 +67,7 @@ export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
       <HistoryHeader
         title={t('shoppingHistory')}
-        onBack={() => navigation.goBack()}
+        onBack={handleBack}
         onClear={history.length > 0 ? () => setClearDialogVisible(true) : undefined}
       />
 

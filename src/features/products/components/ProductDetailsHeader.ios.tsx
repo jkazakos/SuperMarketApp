@@ -16,6 +16,18 @@ export const ProductDetailsHeader: React.FC<ProductDetailsHeaderProps> = ({
   const { colors } = useAppTheme();
   const router = useRouter();
 
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      if (onBack) {
+        onBack();
+      } else {
+        router.back();
+      }
+    } else {
+      router.replace('/(tabs)/(products)');
+    }
+  };
+
   return (
     <>
       <Stack.Screen
@@ -41,10 +53,12 @@ export const ProductDetailsHeader: React.FC<ProductDetailsHeaderProps> = ({
             onBack && !router.canGoBack()
               ? () => (
                   <TouchableOpacity
-                    onPress={onBack}
+                    onPress={handleBack}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                     activeOpacity={0.7}
                     style={{ marginRight: 8 }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Back"
                   >
                     <Ionicons name="chevron-back" size={26} color={colors.primary} />
                   </TouchableOpacity>
