@@ -29,10 +29,7 @@ export const HistoryDetailsScreen: React.FC<
   if (!history || typeof history !== 'object' || !Array.isArray(history.items)) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <HistoryHeader
-          title={t('shoppingHistory')}
-          onBack={handleBack}
-        />
+        <HistoryHeader title={t('shoppingHistory')} onBack={handleBack} />
         <View
           style={{
             flex: 1,
@@ -83,10 +80,7 @@ export const HistoryDetailsScreen: React.FC<
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
-      <HistoryHeader
-        title={t('shoppingHistory')}
-        onBack={handleBack}
-      />
+      <HistoryHeader title={t('shoppingHistory')} onBack={handleBack} />
 
       {/* Date & Total Overview */}
       <View
@@ -100,7 +94,7 @@ export const HistoryDetailsScreen: React.FC<
       >
         <View>
           <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
-            Date of Purchase
+            {t('dateOfPurchase')}
           </Text>
           <Text style={[styles.dateValue, { color: colors.textPrimary }]}>
             {dateStr}
@@ -109,7 +103,7 @@ export const HistoryDetailsScreen: React.FC<
 
         <View style={{ alignItems: 'flex-end' }}>
           <Text style={[styles.dateLabel, { color: colors.textSecondary }]}>
-            Total Paid
+            {t('totalPaid')}
           </Text>
           <Text style={[styles.totalAmount, { color: colors.primary }]}>
             {CurrencyFormatter.format(history.totalAmount)} €

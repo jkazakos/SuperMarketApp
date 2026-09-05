@@ -127,5 +127,17 @@
   "english": "English",
   "greek": "Greek",
   "chooseTheme": "Choose theme",
-  "chooseLanguage": "Choose language"
+  "chooseLanguage": "Choose language",
+  "productNotFound": "Product not found",
+  "historyNotFound": "Order details not found",
+  "goBack": "Go Back",
+  "dateOfPurchase": "Date of Purchase",
+  "totalPaid": "Total Paid",
+  "total": "Total",
+  "welcomeBack": "Welcome Back",
+  "signInSubtitle": "Sign in to access your shopping list, wishlist, and orders.",
+  "dontHaveAccount": "Don't have an account?",
+  "createAccount": "Create Account",
+  "signUpSubtitle": "Join Market for personalized shopping lists, favorites, and fast checkout.",
+  "alreadyHaveAccount": "Already have an account?"
 }

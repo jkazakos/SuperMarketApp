@@ -130,11 +130,10 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
           keyboardShouldPersistTaps="handled"
         >
           <Text style={[styles.welcomeText, { color: colors.textPrimary }]}>
-            Create Account
+            {t('createAccount')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Join Market for personalized shopping lists, favorites, and fast
-            checkout.
+            {t('signUpSubtitle')}
           </Text>
 
           {/* First Name & Last Name */}
@@ -282,7 +281,7 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
           {/* Prompt to Sign In */}
           <View style={styles.promptRow}>
             <Text style={{ color: colors.textSecondary }}>
-              Already have an account?{' '}
+              {t('alreadyHaveAccount')}{' '}
             </Text>
             <TouchableOpacity
               onPress={() => {

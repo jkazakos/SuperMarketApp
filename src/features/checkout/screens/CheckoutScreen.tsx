@@ -112,7 +112,7 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
             <View style={styles.summaryDivider} />
             <View style={styles.summaryRow}>
               <Text style={[styles.totalLabel, { color: colors.textPrimary }]}>
-                Total
+                {t('total')}
               </Text>
               <Text style={[styles.totalValue, { color: colors.primary }]}>
                 {CurrencyFormatter.format(totalAmount)} €

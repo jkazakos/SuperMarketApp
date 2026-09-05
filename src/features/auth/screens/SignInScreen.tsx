@@ -103,10 +103,10 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
           keyboardShouldPersistTaps="handled"
         >
           <Text style={[styles.welcomeText, { color: colors.textPrimary }]}>
-            Welcome Back
+            {t('welcomeBack')}
           </Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            Sign in to access your shopping list, wishlist, and orders.
+            {t('signInSubtitle')}
           </Text>
 
           {/* Email Input */}
@@ -205,7 +205,7 @@ export const SignInScreen: React.FC<RootStackScreenProps<'SignIn'>> = ({
           {/* Prompt to Sign Up */}
           <View style={styles.promptRow}>
             <Text style={{ color: colors.textSecondary }}>
-              Don't have an account?{' '}
+              {t('dontHaveAccount')}{' '}
             </Text>
             <TouchableOpacity
               onPress={() => {
