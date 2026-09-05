@@ -49,6 +49,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={`${localizedName}, ${CurrencyFormatter.format(finalPrice)} €${isSoldOut ? `, ${t('soldOut')}` : ''}`}
     >
       {/* Image container */}
       <View
@@ -100,6 +102,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           ]}
           onPress={onToggleWishlist}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isInWishlist
+              ? t('removeFromWishlist') || 'Remove from wishlist'
+              : t('addToWishlist') || 'Add to wishlist'
+          }
+          accessibilityState={{ selected: isInWishlist }}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons
             name={isInWishlist ? 'heart' : 'heart-outline'}
@@ -153,6 +163,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onPress={onAddToCart}
             disabled={isSoldOut}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel={t('addToShoppingList')}
+            accessibilityState={{ disabled: isSoldOut }}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Ionicons
               name="add"
@@ -199,9 +213,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: '#0F172A',
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   soldOutOverlay: {
     ...StyleSheet.absoluteFill,

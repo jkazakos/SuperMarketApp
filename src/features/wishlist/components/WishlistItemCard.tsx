@@ -47,6 +47,8 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={`${localizedName}, ${CurrencyFormatter.format(finalPrice)} €${isSoldOut ? `, ${t('soldOut')}` : ''}`}
     >
       {/* Thumbnail */}
       <View
@@ -110,6 +112,9 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
           style={[styles.removeButton, { backgroundColor: colors.error + '12' }]}
           onPress={onRemove}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel={t('removeFromWishlist')}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons name="trash-outline" size={18} color={colors.error} />
         </TouchableOpacity>
@@ -124,6 +129,10 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
           onPress={onAddToCart}
           disabled={isSoldOut}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel={t('addToShoppingList')}
+          accessibilityState={{ disabled: isSoldOut }}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons
             name="cart-outline"
@@ -171,9 +180,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: '#0F172A',
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   detailsContainer: {
     flex: 1,

@@ -153,6 +153,9 @@ export const ProductsScreen: React.FC<MainTabScreenProps<'Products'>> = ({
                 ]}
                 onPress={() => setSelectedCategory(null)}
                 activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel={`${t('clearFilter')}: ${selectedCategory}`}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 <Text style={[styles.activeCategoryText, { color: colors.primary }]}>
                   {selectedCategory}

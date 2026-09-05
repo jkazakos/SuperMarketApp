@@ -138,6 +138,9 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
           onPress={() => navigation.goBack()}
           disabled={processing}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel={t('cancelText')}
+          accessibilityState={{ disabled: processing }}
         >
           <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
             {t('cancelText')}
@@ -155,6 +158,14 @@ export const CheckoutScreen: React.FC<RootStackScreenProps<'Checkout'>> = ({
           onPress={handlePurchase}
           disabled={processing || cartItems.length === 0}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel={t('purchaseWithPrice', {
+            price: CurrencyFormatter.format(totalAmount),
+          })}
+          accessibilityState={{
+            busy: processing,
+            disabled: processing || cartItems.length === 0,
+          }}
         >
           {processing ? (
             <ActivityIndicator color="#FFFFFF" />

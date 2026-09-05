@@ -63,6 +63,8 @@ export const HistoryDetailsScreen: React.FC<
               marginTop: 20,
             }}
             onPress={handleBack}
+            accessibilityRole="button"
+            accessibilityLabel={t('goBack', 'Go Back')}
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>
               {t('goBack', 'Go Back')}

@@ -19,6 +19,8 @@ export const SpendingCard: React.FC<SpendingCardProps> = ({
 
   return (
     <View
+      accessible={true}
+      accessibilityLabel={`${title}: ${CurrencyFormatter.format(amount)} €`}
       style={[
         styles.card,
         {

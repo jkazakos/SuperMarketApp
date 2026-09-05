@@ -45,6 +45,8 @@ export const SortModal: React.FC<SortModalProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onClose}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
         {Platform.OS === 'ios' && (
@@ -76,6 +78,9 @@ export const SortModal: React.FC<SortModalProps> = ({
                     onClose();
                   }}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <Text
                     style={[
@@ -101,6 +106,9 @@ export const SortModal: React.FC<SortModalProps> = ({
               style={styles.cancelButton}
               onPress={onClose}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('cancelText')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {t('cancelText')}

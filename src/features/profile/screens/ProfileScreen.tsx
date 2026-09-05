@@ -133,6 +133,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 ]}
                 onPress={navigateToSignIn}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={t('signIn')}
               >
                 <Text style={styles.guestButtonText}>{t('signIn')}</Text>
               </TouchableOpacity>
@@ -148,6 +150,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
                 ]}
                 onPress={navigateToSignUp}
                 activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={t('signUp')}
               >
                 <Text
                   style={[styles.guestButtonText, { color: colors.textPrimary }]}
@@ -195,6 +199,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={navigateToWishlist}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('wishlist')}${wishlistCount > 0 ? `, ${t('itemCount', { count: wishlistCount })}` : ''}`}
             >
               <View style={styles.menuItemLeft}>
                 <View
@@ -242,6 +248,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={navigateToHistory}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('viewHistory')}
             >
               <View style={styles.menuItemLeft}>
                 <View
@@ -278,6 +286,8 @@ export const ProfileScreen: React.FC<MainTabScreenProps<'Profile'>> = ({
               ]}
               onPress={() => setSignOutDialogVisible(true)}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('signOut')}
             >
               <Ionicons name="log-out-outline" size={20} color={colors.error} />
               <Text style={[styles.signOutText, { color: colors.error }]}>

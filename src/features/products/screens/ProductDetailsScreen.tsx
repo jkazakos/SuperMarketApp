@@ -94,6 +94,8 @@ export const ProductDetailsScreen: React.FC<
               marginTop: 20,
             }}
             onPress={handleBack}
+            accessibilityRole="button"
+            accessibilityLabel={t('goBack', 'Go Back')}
           >
             <Text style={{ color: '#fff', fontWeight: 'bold' }}>
               {t('goBack', 'Go Back')}
@@ -270,6 +272,10 @@ export const ProductDetailsScreen: React.FC<
               style={styles.qtyButton}
               onPress={() => setQuantity((q) => Math.max(1, q - 1))}
               disabled={quantity <= 1}
+              accessibilityRole="button"
+              accessibilityLabel={t('decreaseQuantity')}
+              accessibilityState={{ disabled: quantity <= 1 }}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Ionicons
                 name="remove"
@@ -288,6 +294,12 @@ export const ProductDetailsScreen: React.FC<
                 setQuantity((q) => Math.min(product.quantityAvailable, q + 1))
               }
               disabled={quantity >= product.quantityAvailable}
+              accessibilityRole="button"
+              accessibilityLabel={t('increaseQuantity')}
+              accessibilityState={{
+                disabled: quantity >= product.quantityAvailable,
+              }}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Ionicons
                 name="add"
@@ -313,6 +325,9 @@ export const ProductDetailsScreen: React.FC<
           onPress={handleAddToCart}
           disabled={isSoldOut}
           activeOpacity={0.8}
+          accessibilityRole="button"
+          accessibilityLabel={isSoldOut ? t('soldOut') : t('addToShoppingList')}
+          accessibilityState={{ disabled: isSoldOut }}
         >
           <Ionicons
             name="cart-outline"
@@ -363,9 +378,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: '#0F172A',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   contentSection: {
     padding: 20,

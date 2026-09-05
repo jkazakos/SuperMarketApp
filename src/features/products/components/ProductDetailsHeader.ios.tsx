@@ -58,7 +58,7 @@ export const ProductDetailsHeader: React.FC<ProductDetailsHeaderProps> = ({
                     activeOpacity={0.7}
                     style={{ marginRight: 8 }}
                     accessibilityRole="button"
-                    accessibilityLabel="Back"
+                    accessibilityLabel={t('backButton') || 'Back'}
                   >
                     <Ionicons name="chevron-back" size={26} color={colors.primary} />
                   </TouchableOpacity>

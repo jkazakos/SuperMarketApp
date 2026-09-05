@@ -53,10 +53,7 @@ export const HistoryScreen: React.FC<RootStackScreenProps<'History'>> = ({
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
-        <HistoryHeader
-          title={t('shoppingHistory')}
-          onBack={handleBack}
-        />
+        <HistoryHeader title={t('shoppingHistory')} onBack={handleBack} />
         <EmptyStateView message={t('guestMessage')} icon="lock-closed-outline" />
       </View>
     );

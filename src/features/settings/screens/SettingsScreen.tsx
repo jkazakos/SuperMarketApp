@@ -80,6 +80,9 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                   style={styles.optionRow}
                   onPress={() => setThemeMode(opt.mode)}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <View style={styles.optionLeft}>
                     <Ionicons
@@ -140,6 +143,9 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
                   style={styles.optionRow}
                   onPress={() => setLanguage(opt.lang)}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={opt.label}
                 >
                   <View style={styles.optionLeft}>
                     <Text style={{ fontSize: 20 }}>{opt.flag}</Text>

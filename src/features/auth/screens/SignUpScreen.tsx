@@ -112,6 +112,9 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
             style={styles.backButton}
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={t('cancelText')}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Ionicons name="close" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -248,6 +251,14 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
               <TouchableOpacity
                 onPress={() => setObscurePassword(!obscurePassword)}
                 activeOpacity={0.7}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  obscurePassword
+                    ? t('showPassword', 'Show password')
+                    : t('hidePassword', 'Hide password')
+                }
+                accessibilityState={{ checked: !obscurePassword }}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
                 <Ionicons
                   name={obscurePassword ? 'eye-outline' : 'eye-off-outline'}
@@ -270,6 +281,9 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
             onPress={handleSignUp}
             disabled={loading}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel={t('signUp')}
+            accessibilityState={{ busy: loading, disabled: loading }}
           >
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
@@ -291,6 +305,8 @@ export const SignUpScreen: React.FC<RootStackScreenProps<'SignUp'>> = ({
                   (navigation as any).navigate('sign-in');
                 }
               }}
+              accessibilityRole="button"
+              accessibilityLabel={t('signIn')}
             >
               <Text style={[styles.linkText, { color: colors.primary }]}>
                 {t('signIn')}

@@ -32,6 +32,7 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
   onPress,
   onClear,
 }) => {
+  const { t } = useTranslation();
   const { colors } = useAppTheme();
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -63,6 +64,8 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        accessibilityRole="button"
+        accessibilityLabel={label}
         style={[
           styles.actionButton,
           {
@@ -131,6 +134,8 @@ const HeaderActionButton: React.FC<HeaderActionButtonProps> = ({
                 e.stopPropagation();
                 onClear();
               }}
+              accessibilityRole="button"
+              accessibilityLabel={t('clearFilter')}
               style={styles.clearHit}
             >
               <Ionicons name="close-circle" size={16} color={tintColor} />
@@ -195,12 +200,16 @@ export const ProductsHeader: React.FC<ProductsHeaderProps> = ({
           placeholderTextColor={colors.textSecondary}
           value={searchQuery}
           onChangeText={onSearchChange}
+          accessibilityRole="search"
+          accessibilityLabel={t('search')}
         />
         {searchQuery !== '' && (
           <TouchableOpacity
             onPress={() => onSearchChange('')}
             hitSlop={8}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={t('clearSearch', 'Clear search')}
           >
             <Ionicons name="close-circle" size={18} color={colors.textSecondary} />
           </TouchableOpacity>

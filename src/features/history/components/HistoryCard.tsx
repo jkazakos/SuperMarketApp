@@ -47,6 +47,8 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ history, onPress }) =>
       ]}
       onPress={onPress}
       activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={`${t('shoppingHistory')}: ${dateStr}, ${CurrencyFormatter.format(history.totalAmount)} €, ${t('itemCount', { count: history.items.length })}, ${preview}`}
     >
       <View style={styles.content}>
         <View style={styles.topRow}>

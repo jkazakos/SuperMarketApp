@@ -50,6 +50,8 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
       ]}
       onPress={onPress}
       activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel={`${localizedName}, ${t('totalPrice', { price: CurrencyFormatter.format(itemTotal) })}`}
     >
       {/* Thumbnail */}
       <View
@@ -117,6 +119,9 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
               style={styles.qtyButton}
               onPress={onDecrement}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('decreaseQuantity')}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Ionicons name="remove" size={16} color={colors.textPrimary} />
             </TouchableOpacity>
@@ -130,6 +135,12 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
               onPress={onIncrement}
               disabled={item.quantity >= product.quantityAvailable}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('increaseQuantity')}
+              accessibilityState={{
+                disabled: item.quantity >= product.quantityAvailable,
+              }}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Ionicons
                 name="add"
@@ -147,6 +158,9 @@ export const ShoppingListTile: React.FC<ShoppingListTileProps> = ({
             style={[styles.deleteButton, { backgroundColor: colors.error + '12' }]}
             onPress={onRemove}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={t('removeFromShoppingList')}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
             <Ionicons name="trash-outline" size={18} color={colors.error} />
           </TouchableOpacity>

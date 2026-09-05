@@ -37,6 +37,8 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onClose}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
         {Platform.OS === 'ios' && (
@@ -65,6 +67,9 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
                 onClose();
               }}
               activeOpacity={0.7}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: !selectedCategory }}
+              accessibilityLabel={t('allProducts')}
             >
               <Text
                 style={[
@@ -96,6 +101,9 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
                     onClose();
                   }}
                   activeOpacity={0.7}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={cat}
                 >
                   <Text
                     style={[
@@ -121,6 +129,9 @@ export const CategoryFilterModal: React.FC<CategoryFilterModalProps> = ({
               style={styles.cancelButton}
               onPress={onClose}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('cancelText')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {t('cancelText')}

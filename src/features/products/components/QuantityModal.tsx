@@ -55,6 +55,8 @@ export const QuantityModal: React.FC<QuantityModalProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onClose}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onClose}>
         <Pressable
@@ -86,10 +88,14 @@ export const QuantityModal: React.FC<QuantityModalProps> = ({
               }}
               placeholder={t('enterQuantityHint')}
               placeholderTextColor={colors.textSecondary}
+              accessibilityLabel={t('enterQuantityHint')}
               autoFocus
             />
             {error && (
-              <Text style={[styles.errorText, { color: colors.error }]}>
+              <Text
+                accessibilityLiveRegion="polite"
+                style={[styles.errorText, { color: colors.error }]}
+              >
                 {error}
               </Text>
             )}
@@ -100,6 +106,9 @@ export const QuantityModal: React.FC<QuantityModalProps> = ({
               style={styles.cancelButton}
               onPress={onClose}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={t('cancelText')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {t('cancelText')}
@@ -110,6 +119,9 @@ export const QuantityModal: React.FC<QuantityModalProps> = ({
               style={[styles.confirmButton, { backgroundColor: colors.primary }]}
               onPress={handleConfirm}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel={t('add')}
+              hitSlop={8}
             >
               <Text style={styles.confirmText}>{t('add')}</Text>
             </TouchableOpacity>

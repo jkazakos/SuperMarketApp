@@ -38,9 +38,12 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       visible={visible}
       animationType="fade"
       onRequestClose={onCancel}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
     >
       <Pressable style={styles.backdrop} onPress={onCancel}>
         <Pressable
+          accessibilityRole="alert"
           style={[
             styles.dialogContainer,
             { backgroundColor: colors.card, borderColor: colors.border },
@@ -56,6 +59,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               style={[styles.button, styles.cancelButton]}
               onPress={onCancel}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={negativeText || t('no')}
+              hitSlop={8}
             >
               <Text style={[styles.cancelText, { color: colors.textSecondary }]}>
                 {negativeText || t('no')}
@@ -65,6 +71,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               style={[styles.button, { backgroundColor: colors.primary }]}
               onPress={onConfirm}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel={positiveText || t('yes')}
+              hitSlop={8}
             >
               <Text style={styles.confirmText}>{positiveText || t('yes')}</Text>
             </TouchableOpacity>

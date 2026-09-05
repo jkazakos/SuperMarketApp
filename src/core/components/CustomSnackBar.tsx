@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, StyleSheet, Animated } from 'react-native';
+import { Text, StyleSheet, Animated, AccessibilityInfo } from 'react-native';
 import { useAppTheme } from '../theme/ThemeContext';
 
 interface CustomSnackBarProps {
@@ -22,6 +22,10 @@ export const CustomSnackBar: React.FC<CustomSnackBarProps> = ({
 
   useEffect(() => {
     if (visible) {
+      if (message) {
+        AccessibilityInfo.announceForAccessibility(message);
+      }
+
       Animated.timing(opacity, {
         toValue: 1,
         duration: 250,
@@ -38,7 +42,7 @@ export const CustomSnackBar: React.FC<CustomSnackBarProps> = ({
 
       return () => clearTimeout(timer);
     }
-  }, [visible, duration, onDismiss, opacity]);
+  }, [visible, duration, message, onDismiss, opacity]);
 
   if (!visible) return null;
 
@@ -54,6 +58,8 @@ export const CustomSnackBar: React.FC<CustomSnackBarProps> = ({
 
   return (
     <Animated.View
+      accessibilityRole="alert"
+      accessibilityLiveRegion={type === 'error' ? 'assertive' : 'polite'}
       style={[
         styles.container,
         {

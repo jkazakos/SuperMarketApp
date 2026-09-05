@@ -127,6 +127,8 @@ export const ShoppingListScreen: React.FC<MainTabScreenProps<'ShoppingList'>> = 
             style={[styles.checkoutButton, { backgroundColor: colors.primary }]}
             onPress={handleCheckoutPress}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel={t('checkout')}
           >
             <Text style={styles.checkoutButtonText}>{t('checkout')}</Text>
             <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
