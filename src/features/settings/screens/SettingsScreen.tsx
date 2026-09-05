@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/core/theme/ThemeContext';
 import {
   useSettingsStore,
   ThemeMode,
   AppLanguage,
 } from '../stores/useSettingsStore';
+import { SettingsHeader } from '../components/SettingsHeader';
 import { RootStackScreenProps } from '@/navigation/types';
 
 export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
@@ -16,7 +16,6 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
 }) => {
   const { t } = useTranslation();
   const { colors, themeMode, setThemeMode } = useAppTheme();
-  const insets = useSafeAreaInsets();
 
   const currentLanguage = useSettingsStore((s) => s.language);
   const setLanguage = useSettingsStore((s) => s.setLanguage);
@@ -37,32 +36,13 @@ export const SettingsScreen: React.FC<RootStackScreenProps<'Settings'>> = ({
   ];
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.background,
-          paddingTop: Math.max(insets.top, 16),
-        },
-      ]}
-    >
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-          {t('settings')}
-        </Text>
-        <View style={{ width: 40 }} />
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Platform-Specific Native Header (iOS UIKit navigation vs Android Material 3 header) */}
+      <SettingsHeader title={t('settings')} onBack={() => navigation.goBack()} />
 
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* Appearance Section */}
@@ -184,19 +164,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 40,
   },
   sectionTitle: {
     fontSize: 12,
